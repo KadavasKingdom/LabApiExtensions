@@ -1,0 +1,82 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<AssemblyName>LabApiExtensions</AssemblyName>
+		<RootNamespace>LabApiExtensions</RootNamespace>
+		<Configurations>LabApi;Exiled</Configurations>
+		<Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+		<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+		<OutputType>Library</OutputType>
+		<FileAlignment>512</FileAlignment>
+		<LangVersion>12</LangVersion>
+		<IsPackable>false</IsPackable>
+		<TargetFramework>net48</TargetFramework>
+		<PlatformTarget>x64</PlatformTarget>
+		<IsPackable>false</IsPackable>
+		<ErrorReport>prompt</ErrorReport>
+		<WarningLevel>4</WarningLevel>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
+		<GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
+		<GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
+		<ExiledVersion>9.6.0-beta8</ExiledVersion>
+		<DebugType>pdbonly</DebugType>
+		<Optimize>true</Optimize>
+	</PropertyGroup>
+	<!-- Nuget References -->
+	<ItemGroup>
+		<PackageReference Include="BepInEx.AssemblyPublicizer.MSBuild" Version="0.4.3" PrivateAssets="all" ExcludeAssets="runtime" ReferenceOutputAssembly="false" Private="true" />
+		<PackageReference Include="Lib.Harmony" Version="2.2.2" />
+	</ItemGroup>
+	<!-- DLL References -->
+	<ItemGroup>
+		<Reference Include="Assembly-CSharp" Publicize="true" Private="false" />
+		<Reference Include="Assembly-CSharp-firstpass" Private="false" />
+		<Reference Include="CommandSystem.Core" Publicize="true" Private="false" />
+		<Reference Include="Mirror" Publicize="true" Private="false" />
+		<Reference Include="Mirror.Components" Private="false" />
+		<Reference Include="Pooling" Private="false" />
+		<Reference Include="Unity.TextMeshPro" Private="false" />
+		<Reference Include="UnityEngine" Private="false" />
+		<Reference Include="UnityEngine.CoreModule" Private="false" />
+		<Reference Include="UnityEngine.ParticleSystemModule" Private="false" />
+		<Reference Include="UnityEngine.PhysicsModule" Private="false" />
+	</ItemGroup>
+	<!-- Usings globals -->
+	<ItemGroup>
+		<Using Include="UnityEngine.Random">
+			<Alias>URandom</Alias>
+		</Using>
+	</ItemGroup>
+
+	<!-- Exiled related -->
+	<ItemGroup Condition=" '$(Configuration)' == 'Exiled' ">
+		<PackageReference Include="ExMod.Exiled" PrivateAssets="all" ExcludeAssets="runtime" Version="$(ExiledVersion)" Publicize="true" />
+		<Using Include="Exiled.API.Extensions"/>
+		<Using Include="Exiled.API.Features"/>
+		<Using Include="Exiled.API.Features.Log" Alias="CL" />
+	</ItemGroup>
+	<PropertyGroup Condition=" '$(Configuration)' == 'Exiled' ">
+		<DefineConstants>EXILED</DefineConstants>
+	</PropertyGroup>
+
+	<ItemGroup Condition=" '$(Configuration)' != 'Exiled' ">
+		<Reference Include="LabApi" Publicize="true" Private="false" />
+		<Using Include="LabApi.Features.Wrappers"/>
+		<Using Include="LabApi.Features.Console.Logger" Alias="CL" />
+	</ItemGroup>
+	<PropertyGroup Condition=" '$(Configuration)' != 'Exiled' ">
+		<DefineConstants>LABAPI</DefineConstants>
+	</PropertyGroup>
+
+	<!-- Remove unnessessary files in VS -->
+	<ItemGroup>
+		<None Remove=".*;*.md;LICENSE" />
+	</ItemGroup>
+
+	<Import Project="ReferencePaths.props.user" />
+	<PropertyGroup>
+		<AssemblySearchPaths>$(AssemblySearchPaths);$(ReferencePath);</AssemblySearchPaths>
+	</PropertyGroup>
+</Project>

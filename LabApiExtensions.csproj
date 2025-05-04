@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+		<PropertyGroup>
+		<AssemblyName>LabApiExtensions</AssemblyName>
+		<RootNamespace>LabApiExtensions</RootNamespace>
+		<Configurations>LabApi;Exiled</Configurations>
+		<Nullable>annotations</Nullable>
+	</PropertyGroup>
+
+	<!-- Remove unnessessary files in VS -->
+	<ItemGroup>
+		<None Remove=".*;*.md;LICENSE" />
+	</ItemGroup>
+</Project>
