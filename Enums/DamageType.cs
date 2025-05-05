@@ -20,5 +20,6 @@ public enum DamageType
     Scp3114,
     Scp1507,
     Scp956,
-    Snowball
+    Snowball,
+    Scp173,
 }

@@ -22,6 +22,8 @@ public static class DamageExtensions
                 return DamageType.Universal;
             case ScpDamageHandler scpDamage:
                 {
+                    if (scpDamage.Attacker.Role == PlayerRoles.RoleTypeId.Scp173)
+                        return DamageType.Scp173;
                     return scpDamage switch
                     {
                         Scp096DamageHandler => DamageType.Scp096,
