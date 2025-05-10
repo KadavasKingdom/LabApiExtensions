@@ -6,7 +6,7 @@ namespace LabApiExtensions.Extensions;
 
 public static class AppearanceSyncExtension
 {
-    static readonly float WaitTime = 10f;
+    static float WaitTime = 5f;
     static readonly Dictionary<Player, (RoleTypeId role, List<Player> players)> PlayerToSpyRole = [];
     static CoroutineHandle? handle;
 
@@ -24,6 +24,10 @@ public static class AppearanceSyncExtension
 
     public static void AddPlayer(Player player, RoleTypeId role)
     {
+        Start();
+        player.ChangeAppearance(role);
+        if (PlayerToSpyRole.ContainsKey(player))
+            RemovePlayer(player);
         lock (PlayerToSpyRole)
         {
             PlayerToSpyRole.Add(player, (role, []));
@@ -32,6 +36,7 @@ public static class AppearanceSyncExtension
 
     public static void RemovePlayer(Player player)
     {
+        player.ChangeAppearance(player.Role);
         lock (PlayerToSpyRole)
         {
             PlayerToSpyRole.Remove(player);
@@ -40,6 +45,7 @@ public static class AppearanceSyncExtension
 
     public static void ForceSync(Player player)
     {
+        Start();
         lock (PlayerToSpyRole)
         {
             for (int i = 0; i < PlayerToSpyRole.Count; i++)
@@ -71,9 +77,8 @@ public static class AppearanceSyncExtension
                         playersToSync = [.. playersToSync.Except(kv.Value.players)];
                     if (playersToSync.Count == 0)
                         continue;
-                    //Log.Info("Sync to Ids: " + string.Join(", ", playersToSync.Select(x=>x.Id)));
-                    byte unit = kv.Key.UnitId == -1 ? (byte)0 : (byte)kv.Key.UnitId;
-                    kv.Key.ChangeAppearance(kv.Value.role, playersToSync, false, unit);
+                    //CL.Info("Sync to Ids: " + string.Join(", ", playersToSync.Select(x=>x.PlayerId)));
+                    kv.Key.ChangeAppearance(kv.Value.role, playersToSync, false);
                     kv.Value.players.AddRange(playersToSync);
                     PlayerToSpyRole[kv.Key] = kv.Value;
                 }

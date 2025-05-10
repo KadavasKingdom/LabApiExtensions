@@ -20,7 +20,7 @@ public static class AppearanceExtension
 
     public static void ChangeAppearance(this Player player, RoleTypeId type, IEnumerable<Player> playersToAffect, bool skipJump = false, byte unitId = 0)
     {
-        if (player.Connection != null)
+        if (player.Connection == null)
             return;
 
         var roleBase = RoleExtensions.GetRoleBase(type);
@@ -28,8 +28,8 @@ public static class AppearanceExtension
         bool isRisky = type.GetTeam() is Team.Dead || !player.IsAlive;
 
         NetworkWriterPooled writer = NetworkWriterPool.Get();
-        writer.WriteUShort(38952);
-        writer.WriteUInt(player.NetworkId);
+        writer.WriteUShort(NetworkMessageId<RoleSyncInfo>.Id);
+        writer.WriteUInt(player.ReferenceHub.netId);
         writer.WriteRoleType(type);
 
         if (roleBase is HumanRole humanRole && humanRole.UsesUnitNames)
@@ -45,6 +45,7 @@ public static class AppearanceExtension
                 isRisky = true;
 
             writer.WriteUShort((ushort)Mathf.Clamp(Mathf.CeilToInt(player.MaxHealth), ushort.MinValue, ushort.MaxValue));
+            writer.WriteBool(true);
         }
 
         if (roleBase is Scp1507Role)
