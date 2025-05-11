@@ -27,16 +27,17 @@ public static class AppearanceSyncExtension
         Start();
         player.ChangeAppearance(role);
         if (PlayerToSpyRole.ContainsKey(player))
-            RemovePlayer(player);
+            RemovePlayer(player, false);
         lock (PlayerToSpyRole)
         {
             PlayerToSpyRole.Add(player, (role, []));
         }
     }
 
-    public static void RemovePlayer(Player player)
+    public static void RemovePlayer(Player player, bool ChangeAppearance = true)
     {
-        player.ChangeAppearance(player.Role);
+        if (ChangeAppearance)
+            player.ChangeAppearance(player.Role);
         lock (PlayerToSpyRole)
         {
             PlayerToSpyRole.Remove(player);
