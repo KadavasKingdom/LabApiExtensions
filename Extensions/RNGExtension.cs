@@ -1,4 +1,6 @@
-﻿namespace LabApiExtensions.Extensions;
+﻿using UnityEngine;
+
+namespace LabApiExtensions.Extensions;
 
 public static class RNGExtension
 {
@@ -12,7 +14,7 @@ public static class RNGExtension
     public static T GetRandomWeight<T>(this Dictionary<T, int> dic, T default_val = default)
     {
         var sum = dic.Values.Sum();
-        int chance = RandomGenerator.Random.Next(1, sum + 1);
+        int chance = RandomGenerator.GetInt32(1, sum + 1);
         T return_t = default_val;
         foreach (var kv in dic)
         {
@@ -42,5 +44,10 @@ public static class RNGExtension
     public static T GetRandom<T>(this IEnumerable<T> enumerator)
     {
         return enumerator.ToList().RandomItem();
+    }
+
+    public static Vector3 GetVector3(float min, float max)
+    {
+        return new Vector3(RandomGenerator.GetFloat(min, max), RandomGenerator.GetFloat(min, max), RandomGenerator.GetFloat(min, max));
     }
 }

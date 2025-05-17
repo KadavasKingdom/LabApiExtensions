@@ -23,6 +23,7 @@ public static class CustomDataStoreManagerExtended
 
     public static bool EnsureRightType(Type type)
     {
+        // TODO: Make sure this is right.
         return typeof(CustomDataStore).IsAssignableFrom(type);
     }
 

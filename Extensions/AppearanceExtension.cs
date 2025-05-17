@@ -16,7 +16,7 @@ namespace LabApiExtensions.Extensions;
 public static class AppearanceExtension
 {
     public static void ChangeAppearance(this Player player, RoleTypeId type, bool skipJump = false, byte unitId = 0) =>
-        ChangeAppearance(player, type, Player.ReadyList.Where(x => x != player), skipJump, unitId);
+        ChangeAppearance(player, type, Player.GetAll(LabApi.Features.Enums.PlayerSearchFlags.AuthenticatedPlayers).Where(x => x != player), skipJump, unitId);
 
     public static void ChangeAppearance(this Player player, RoleTypeId type, IEnumerable<Player> playersToAffect, bool skipJump = false, byte unitId = 0)
     {
@@ -73,7 +73,7 @@ public static class AppearanceExtension
 
         foreach (Player target in playersToAffect)
         {
-            if (target != player || !isRisky)
+            if (target != player || !isRisky || !target.IsReady)
                 target.Connection.Send(writer.ToArraySegment());
             else
                 CL.Error($"Prevent Seld-Desync of {player.Nickname} with {type}");
