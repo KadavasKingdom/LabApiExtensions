@@ -94,12 +94,12 @@ public static class CustomDataStoreManagerExtended
         Type typeFromHandle = typeof(TStore);
         if (!CustomDataStoreManager.IsRegistered<TStore>())
         {
-            return new Dictionary<Player, CustomDataStore>();
+            return [];
         }
 
         if (!CustomDataStore.StoreInstances.ContainsKey(typeFromHandle))
-        {
-            return new Dictionary<Player, CustomDataStore>();
+        {            
+            return [];
         }
 
         return CustomDataStore.StoreInstances[typeFromHandle];
@@ -135,7 +135,7 @@ public static class CustomDataStoreManagerExtended
 
         if (!CustomDataStore.StoreInstances.TryGetValue(typeFromHandle, out Dictionary<Player, CustomDataStore> value))
         {
-            value = new Dictionary<Player, CustomDataStore>();
+            value = [];
             CustomDataStore.StoreInstances[typeFromHandle] = value;
         }
 
