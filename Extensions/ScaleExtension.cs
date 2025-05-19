@@ -9,7 +9,7 @@ namespace LabApiExtensions.Extensions;
 /// </summary>
 public static class ScaleHelper
 {
-    public static void SetScale(this Player player, Vector3 value, bool IsFake = true)
+    public static void SetScale(this Player player, Vector3 value, bool IsFake = false)
     {
         if (value == GetScale(player))
             return;
