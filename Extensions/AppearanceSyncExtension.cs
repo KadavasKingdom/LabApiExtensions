@@ -6,7 +6,7 @@ namespace LabApiExtensions.Extensions;
 
 public static class AppearanceSyncExtension
 {
-    static float WaitTime = 5f;
+    public static float WaitTime = 5f;
     static readonly Dictionary<Player, (RoleTypeId role, List<Player> players)> PlayerToSpyRole = [];
     static CoroutineHandle? handle;
 

@@ -10,22 +10,10 @@ public static class FakeRpcExtension
         NetworkWriterPooled networkWriterPooled = NetworkWriterPool.Get();
         foreach (object obj in objects)
         {
-            var genericType = typeof(Writer<>).MakeGenericType(obj.GetType());
-            FieldInfo? writeField = genericType.GetField("write", BindingFlags.Static | BindingFlags.Public);
-            if (writeField == null)
+            if (!MirrorWriterExtension.Write(obj.GetType(), obj, networkWriterPooled))
             {
-                CL.Warn($"Tried to write type: {obj.GetType()} but has no NetworkWriter!");
+                CL.Error($"Not found NetworkWriter for type {obj.GetType()}");
                 return;
-            }
-
-            object? writeDelegate = writeField.GetValue(null);
-            if (writeDelegate is Delegate del)
-            {
-                del.DynamicInvoke(networkWriterPooled, obj);
-            }
-            else
-            {
-                CL.Warn($"Writer<{obj.GetType()}>.write is not a delegate!");
             }
         }
         player.Connection.Send(new RpcMessage()
