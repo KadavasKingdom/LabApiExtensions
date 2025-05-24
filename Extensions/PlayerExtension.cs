@@ -6,7 +6,7 @@ public static class PlayerExtension
 {
     public static void ThrewItem(this Player player, Item item)
     {
-        player.Inventory.ClientDropItem(item.Serial, true);
+        player.Inventory.UserCode_CmdDropItem__UInt16__Boolean(item.Serial, true);
     }
 
     public static void AddAhp(this Player player, float amount, float decay = 1.2f, float efficacy = 0.7f, float sustain = 0f, bool persistant = false)

@@ -35,4 +35,31 @@ public static class ScaleHelper
     {
         return player.ReferenceHub.transform.localScale;
     }
+
+    public static void SetScale(this NetworkBehaviour behaviour, Vector3 value, bool IsFake = false)
+    {
+        Vector3 original = behaviour.transform.localScale;
+        if (value == original)
+            return;
+
+        try
+        {
+            behaviour.transform.localScale = value;
+
+            foreach (Player target in Player.ReadyList)
+                NetworkServer.SendSpawnMessage(behaviour.netIdentity, target.Connection);
+
+            if (IsFake)
+                behaviour.transform.localScale = original;
+        }
+        catch (Exception exception)
+        {
+            CL.Error($"{nameof(SetScale)} error: {exception}");
+        }
+    }
+
+    public static Vector3 GetScale(this NetworkBehaviour behaviour)
+    {
+        return behaviour.transform.localScale;
+    }
 }
