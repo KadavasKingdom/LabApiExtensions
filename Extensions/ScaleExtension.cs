@@ -9,10 +9,10 @@ namespace LabApiExtensions.Extensions;
 /// </summary>
 public static class ScaleHelper
 {
-    public static void SetScale(this Player player, Vector3 value, bool IsFake = false)
+    public static void SetScale(this Player player, Vector3 value, bool IsFake = false, bool force = false)
     {
         Vector3 original = player.ReferenceHub.transform.localScale;
-        if (value == original)
+        if (value == original && !force)
             return;
 
         try
@@ -36,10 +36,10 @@ public static class ScaleHelper
         return player.ReferenceHub.transform.localScale;
     }
 
-    public static void SetScale(this NetworkBehaviour behaviour, Vector3 value, bool IsFake = false)
+    public static void SetScale(this NetworkBehaviour behaviour, Vector3 value, bool IsFake = false, bool force = false)
     {
         Vector3 original = behaviour.transform.localScale;
-        if (value == original)
+        if (value == original && !force)
             return;
 
         try
