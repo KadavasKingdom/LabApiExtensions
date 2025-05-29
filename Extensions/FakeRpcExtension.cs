@@ -34,6 +34,7 @@ public static class FakeRpcExtension
         int funcHash = Mirror.Extensions.GetStableHashCode(longName);
         SendFakeRPC(player, networkBehaviour, funcHash, objects);
     }
+
     public static string GetLongFuncName(Type type, MethodInfo method)
     {
         return $"{method.ReturnType.FullName} {type.FullName}::{method.Name}({string.Join(",", method.GetParameters().Select(x => x.ParameterType.FullName))})";
