@@ -61,6 +61,8 @@ public static class AppearanceSyncExtension
                 var kv = PlayerToSpyRole.ElementAt(i);
                 if (kv.Key == player)
                     continue;
+                if (!kv.Key.IsAlive)
+                    continue;
                 kv.Key.ChangeAppearance(kv.Value.role, [player]);
                 if (!kv.Value.players.Contains(player))
                 {
@@ -91,6 +93,8 @@ public static class AppearanceSyncExtension
                     if (kv.Value.players.Count != 0)
                         playersToSync = [.. playersToSync.Except(kv.Value.players)];
                     if (playersToSync.Count == 0)
+                        continue;
+                    if (!kv.Key.IsAlive)
                         continue;
                     CL.Debug($"Sync to Ids: {string.Join(", ", playersToSync.Select(x => x.PlayerId))}", DebugAppearanceSyncEnabled);
                     kv.Key.ChangeAppearance(kv.Value.role, playersToSync);
