@@ -147,6 +147,22 @@ public static class CustomDataStoreManagerExtended
         return value2;
     }
 
+    public static bool Exists(Player player, Type typeFromHandle)
+    {
+        if (!EnsureRightType(typeFromHandle))
+            return false;
+
+        if (!CustomDataStoreManager.IsRegistered(typeFromHandle))
+        {
+            RegisterStore(typeFromHandle);
+        }
+
+        if (!CustomDataStore.StoreInstances.TryGetValue(typeFromHandle, out Dictionary<Player, CustomDataStore> value))
+            return false;
+
+        return value.ContainsKey(player);
+    }
+
     public static void Destroy(Player player, Type typeFromHandle)
     {
         if (!EnsureRightType(typeFromHandle))

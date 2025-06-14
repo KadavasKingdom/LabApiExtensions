@@ -11,7 +11,7 @@ public static class ScaleHelper
 {
     public static void SetScale(this Player player, Vector3 value, bool IsFake = false, bool force = false)
     {
-        Vector3 original = player.ReferenceHub.transform.localScale;
+        Vector3 original = player.Scale;
         if (value == original && !force)
             return;
 
