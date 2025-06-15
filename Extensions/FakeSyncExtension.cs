@@ -38,7 +38,7 @@ public static class FakeSyncExtension
         {
             if (networkBehaviour.GetType().IsSubclassOf(item))
             {
-                writer.WriteULong(0);
+                writer.WriteULong(dirtyBit);
             }
         }
 
