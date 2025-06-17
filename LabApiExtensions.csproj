@@ -3,7 +3,6 @@
 		<PropertyGroup>
 		<AssemblyName>LabApiExtensions</AssemblyName>
 		<RootNamespace>LabApiExtensions</RootNamespace>
-		<Configurations>LabApi;Exiled</Configurations>
 		<Nullable>annotations</Nullable>
 		<Version>0.0.2.2</Version>
 	</PropertyGroup>

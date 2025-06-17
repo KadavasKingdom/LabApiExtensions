@@ -3,8 +3,7 @@
 	<PropertyGroup>
 		<AssemblyName>LabApiExtensions</AssemblyName>
 		<RootNamespace>LabApiExtensions</RootNamespace>
-		<Configurations>LabApi;Exiled</Configurations>
-		<Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+		<Configuration Condition=" '$(Configuration)' == '' ">Release</Configuration>
 		<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
 		<OutputType>Library</OutputType>
 		<FileAlignment>512</FileAlignment>
@@ -20,14 +19,12 @@
 		<GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
 		<GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
 		<GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
-		<ExiledVersion>9.6.0-beta8</ExiledVersion>
 		<DebugType>pdbonly</DebugType>
 		<Optimize>true</Optimize>
 	</PropertyGroup>
 	<!-- Nuget References -->
 	<ItemGroup>
 		<PackageReference Include="BepInEx.AssemblyPublicizer.MSBuild" Version="0.4.3" PrivateAssets="all" ExcludeAssets="runtime" ReferenceOutputAssembly="false" Private="true" />
-		<PackageReference Include="Lib.Harmony" Version="2.2.2" />
 	</ItemGroup>
 	<!-- DLL References -->
 	<ItemGroup>
@@ -42,40 +39,23 @@
 		<Reference Include="UnityEngine.CoreModule" Private="false" />
 		<Reference Include="UnityEngine.ParticleSystemModule" Private="false" />
 		<Reference Include="UnityEngine.PhysicsModule" Private="false" />
+		<Reference Include="LabApi" Publicize="true" Private="false" />
 	</ItemGroup>
 	<!-- Usings globals -->
 	<ItemGroup>
 		<Using Include="UnityEngine.Random">
 			<Alias>URandom</Alias>
 		</Using>
-	</ItemGroup>
-
-	<!-- Exiled related -->
-	<ItemGroup Condition=" '$(Configuration)' == 'Exiled' ">
-		<PackageReference Include="ExMod.Exiled" PrivateAssets="all" ExcludeAssets="runtime" Version="$(ExiledVersion)" Publicize="true" />
-		<Using Include="Exiled.API.Extensions"/>
-		<Using Include="Exiled.API.Features"/>
-		<Using Include="Exiled.API.Features.Log" Alias="CL" />
-	</ItemGroup>
-	<PropertyGroup Condition=" '$(Configuration)' == 'Exiled' ">
-		<DefineConstants>EXILED</DefineConstants>
-	</PropertyGroup>
-
-	<ItemGroup Condition=" '$(Configuration)' != 'Exiled' ">
-		<Reference Include="LabApi" Publicize="true" Private="false" />
 		<Using Include="LabApi.Features.Wrappers"/>
 		<Using Include="LabApi.Features.Console.Logger" Alias="CL" />
 	</ItemGroup>
-	<PropertyGroup Condition=" '$(Configuration)' != 'Exiled' ">
-		<DefineConstants>LABAPI</DefineConstants>
-	</PropertyGroup>
 
 	<!-- Remove unnessessary files in VS -->
 	<ItemGroup>
 		<None Remove=".*;*.md;LICENSE" />
 	</ItemGroup>
 
-	<Import Project="ReferencePaths.props.user" />
+	<Import Project="ReferencePaths.props.user" Condition="Exists('ReferencePaths.props.user')" />
 	<PropertyGroup>
 		<AssemblySearchPaths>$(AssemblySearchPaths);$(ReferencePath);</AssemblySearchPaths>
 	</PropertyGroup>

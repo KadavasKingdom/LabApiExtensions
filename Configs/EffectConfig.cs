@@ -6,11 +6,7 @@ public sealed class EffectConfig
     public float Duration { get; set; }
     public byte Intensity { get; set; }
 
-    public EffectConfig()
-    {
-
-    }
-
+    public EffectConfig() { }
     public EffectConfig(string effectName, byte intensity = 1, float duration = 0f)
     {
         EffectName = effectName;

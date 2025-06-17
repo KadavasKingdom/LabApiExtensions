@@ -1,8 +1,9 @@
 ﻿using AdminToys;
 using Mirror;
+
 namespace LabApiExtensions.Extensions;
 
-// Many stuff Copied from Exiled.
+// Many stuff Copied from Exiled & Mirror.
 
 // -----------------------------------------------------------------------
 // <copyright file="MirrorExtensions.cs" company="ExMod Team">
@@ -30,7 +31,7 @@ public static class FakeSyncExtension
         writer.WriteByte(0);
         int contentPosition = writer.Position;
 
-        // Serialize stuff. we dont want to ser objects only sync data
+        // Serialize Object Sync Data.
         writer.WriteULong(0);
         
         // some class write this stuff twice.
