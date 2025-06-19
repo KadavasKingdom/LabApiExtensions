@@ -9,7 +9,7 @@ public static class AppearanceSyncExtension
     public static float WaitTime = 5f;
     public static bool DebugAppearanceSyncEnabled = false;
     static bool IsChaning = false;
-    static readonly Dictionary<Player, (RoleTypeId role, List<Player> players)> PlayerToSpyRole = [];
+    static readonly Dictionary<Player, (RoleTypeId role, List<Player> players)> PlayerToAppearanceRole = [];
     static CoroutineHandle? handle;
 
     public static void Start()
@@ -28,12 +28,12 @@ public static class AppearanceSyncExtension
     {
         Start();
         player.ChangeAppearance(role);
-        if (PlayerToSpyRole.ContainsKey(player))
+        if (PlayerToAppearanceRole.ContainsKey(player))
             RemovePlayer(player, false);
         IsChaning = true;
-        lock (PlayerToSpyRole)
+        lock (PlayerToAppearanceRole)
         {
-            PlayerToSpyRole.Add(player, (role, []));
+            PlayerToAppearanceRole.Add(player, (role, []));
         }
         IsChaning = false;
     }
@@ -43,9 +43,9 @@ public static class AppearanceSyncExtension
         if (ChangeAppearance)
             player.ChangeAppearance(player.Role);
         IsChaning = true;
-        lock (PlayerToSpyRole)
+        lock (PlayerToAppearanceRole)
         {
-            PlayerToSpyRole.Remove(player);
+            PlayerToAppearanceRole.Remove(player);
         }
         IsChaning = false;
     }
@@ -54,20 +54,20 @@ public static class AppearanceSyncExtension
     {
         Start();
         IsChaning = true;
-        lock (PlayerToSpyRole)
+        lock (PlayerToAppearanceRole)
         {
-            for (int i = 0; i < PlayerToSpyRole.Count; i++)
+            for (int i = 0; i < PlayerToAppearanceRole.Count; i++)
             {
-                var kv = PlayerToSpyRole.ElementAt(i);
+                var kv = PlayerToAppearanceRole.ElementAt(i);
                 if (kv.Key == player)
                     continue;
                 if (!kv.Key.IsAlive)
                     continue;
-                kv.Key.ChangeAppearance(kv.Value.role, [player]);
+                kv.Key.ChangeAppearance(kv.Value.role, [player], false);
                 if (!kv.Value.players.Contains(player))
                 {
                     kv.Value.players.Add(player);
-                    PlayerToSpyRole[kv.Key] = kv.Value;
+                    PlayerToAppearanceRole[kv.Key] = kv.Value;
                 }
             }
         }
@@ -81,11 +81,11 @@ public static class AppearanceSyncExtension
         {
             if (IsChaning)
                 yield return WaitTime;
-            lock (PlayerToSpyRole)
+            lock (PlayerToAppearanceRole)
             {
-                for (int i = 0; i < PlayerToSpyRole.Count; i++)
+                for (int i = 0; i < PlayerToAppearanceRole.Count; i++)
                 {
-                    var kv = PlayerToSpyRole.ElementAt(i);
+                    var kv = PlayerToAppearanceRole.ElementAt(i);
                     // skip in elevator
                     if (ElevatorChamber.AllChambers.Any(x => x.WorldspaceBounds.Contains(kv.Key.Position)))
                         continue;
@@ -97,9 +97,9 @@ public static class AppearanceSyncExtension
                     if (!kv.Key.IsAlive)
                         continue;
                     CL.Debug($"Sync to Ids: {string.Join(", ", playersToSync.Select(x => x.PlayerId))}", DebugAppearanceSyncEnabled);
-                    kv.Key.ChangeAppearance(kv.Value.role, playersToSync);
+                    kv.Key.ChangeAppearance(kv.Value.role, playersToSync, false);
                     kv.Value.players.AddRange(playersToSync);
-                    PlayerToSpyRole[kv.Key] = kv.Value;
+                    PlayerToAppearanceRole[kv.Key] = kv.Value;
                 }
             }
             yield return WaitTime;
