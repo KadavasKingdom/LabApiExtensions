@@ -45,7 +45,7 @@ public static class FakeSyncExtension
 
         bool IsWritten = false;
 
-        foreach (var kv in SubWriteClassToMinULong)
+        foreach (KeyValuePair<Type, ulong> kv in SubWriteClassToMinULong)
         {
             if (networkType.IsSubclassOf(kv.Key))
             {

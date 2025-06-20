@@ -5,7 +5,7 @@ namespace LabApiExtensions.Extensions;
 
 public static class EffectExtension
 {
-    public static StatusEffectBase? GetEffectFromName(this Player player, string name)
+    public static StatusEffectBase GetEffectFromName(this Player player, string name)
     {
         player.TryGetEffect(name, out StatusEffectBase statusEffect);
         return statusEffect;

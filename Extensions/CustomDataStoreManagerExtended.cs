@@ -122,7 +122,7 @@ public static class CustomDataStoreManagerExtended
         return CustomDataStore.StoreInstances[typeFromHandle];
     }
 
-    public static CustomDataStore? GetOrAdd(Player player, Type typeFromHandle)
+    public static CustomDataStore GetOrAdd(Player player, Type typeFromHandle)
     {
         if (!EnsureRightType(typeFromHandle))
             return null;
@@ -138,7 +138,7 @@ public static class CustomDataStoreManagerExtended
             CustomDataStore.StoreInstances[typeFromHandle] = value;
         }
 
-        if (value.TryGetValue(player, out var value2))
+        if (value.TryGetValue(player, out CustomDataStore value2))
         {
             return value2;
         }
@@ -168,7 +168,7 @@ public static class CustomDataStoreManagerExtended
         if (!EnsureRightType(typeFromHandle))
             return;
 
-        if (CustomDataStore.StoreInstances.TryGetValue(typeFromHandle, out Dictionary<Player, CustomDataStore> value) && value.TryGetValue(player, out var value2))
+        if (CustomDataStore.StoreInstances.TryGetValue(typeFromHandle, out Dictionary<Player, CustomDataStore> value) && value.TryGetValue(player, out CustomDataStore value2))
         {
             value2.Destroy();
         }

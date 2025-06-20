@@ -28,8 +28,8 @@ public static class FakeRpcExtension
 
     public static void SendFakeRPC(this Player player, NetworkBehaviour networkBehaviour, string functionName, params object[] objects)
     {
-        var type = networkBehaviour.GetType();
-        var method = type.GetMethod(functionName, BindingFlags.Instance | BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public);
+        Type type = networkBehaviour.GetType();
+        MethodInfo method = type.GetMethod(functionName, BindingFlags.Instance | BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public);
         string longName = GetLongFuncName(type, method);
         int funcHash = Mirror.Extensions.GetStableHashCode(longName);
         SendFakeRPC(player, networkBehaviour, funcHash, objects);

@@ -23,7 +23,7 @@ public static class AppearanceExtension
         if (player.Connection == null)
             return;
 
-        var roleBase = RoleExtensions.GetRoleBase(type);
+        PlayerRoleBase roleBase = RoleExtensions.GetRoleBase(type);
         if (roleBase == null) return;
         bool isRisky = type.GetTeam() is Team.Dead || !player.IsAlive;
 

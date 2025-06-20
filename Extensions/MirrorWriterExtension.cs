@@ -12,8 +12,8 @@ public static class MirrorWriterExtension
 
     public static bool Write(Type type, object value, NetworkWriterPooled networkWriter)
     {
-        var genericType = typeof(Writer<>).MakeGenericType(type);
-        FieldInfo? writeField = genericType.GetField("write", BindingFlags.Static | BindingFlags.Public);
+        Type genericType = typeof(Writer<>).MakeGenericType(type);
+        FieldInfo writeField = genericType.GetField("write", BindingFlags.Static | BindingFlags.Public);
         if (writeField == null)
         {
             CL.Warn($"Tried to write type: {type} but has no NetworkWriter!");
