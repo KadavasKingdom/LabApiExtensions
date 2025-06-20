@@ -15,13 +15,19 @@ namespace LabApiExtensions.Extensions;
 
 public static class FakeSyncExtension
 {
-    private static readonly List<Type> SubClassWriteExtra = [typeof(AdminToyBase)];
+    private static readonly Dictionary<Type, ulong> SubWriteClassToMinULong = new()
+    {
+        [typeof(AdminToyBase)] = 16,
+    };
 
     // Easier syncVar
     public static void SendFakeSyncVar<T>(this Player target, NetworkBehaviour networkBehaviour, ulong dirtyBit, T syncVar)
     {
         if (target.Connection == null)
             return;
+
+        Type networkType = networkBehaviour.GetType();
+
         NetworkWriterPooled writer = NetworkWriterPool.Get();
         // always writing 1 because we only change 1 value!
         Compression.CompressVarUInt(writer, 1);
@@ -33,23 +39,32 @@ public static class FakeSyncExtension
 
         // Serialize Object Sync Data.
         writer.WriteULong(0);
-        
-        // some class write this stuff twice.
-        foreach (var item in SubClassWriteExtra)
+
+        // Write DrityBit always
+        writer.WriteULong(dirtyBit);
+
+        bool IsWritten = false;
+
+        foreach (var kv in SubWriteClassToMinULong)
         {
-            if (networkBehaviour.GetType().IsSubclassOf(item))
+            if (networkType.IsSubclassOf(kv.Key))
             {
+                if (kv.Value >= dirtyBit)
+                    writer.Write(syncVar);
+
+                // Write always
                 writer.WriteULong(dirtyBit);
+
+                if (kv.Value <= dirtyBit)
+                    writer.Write(syncVar);
+
+                IsWritten = true;
             }
         }
 
-        writer.WriteULong(dirtyBit);
-
-        if (!MirrorWriterExtension.Write(syncVar, writer))
-        {
-            CL.Error($"Not found NetworkWriter for type {typeof(T)}");
-            return;
-        }
+        if (!IsWritten)
+            // we can just write normally
+            writer.Write(syncVar);
 
         // end position safety write
         int endPosition = writer.Position;
@@ -68,6 +83,5 @@ public static class FakeSyncExtension
             netId = networkBehaviour.netId,
             payload = writer.ToArraySegment(),
         });
-
     }
 }
