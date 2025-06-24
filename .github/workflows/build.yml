@@ -44,3 +44,10 @@ jobs:
         shell: pwsh
         run: |
           dotnet build ${{ env.MAINPATH }} -c Release -o:Main
+
+      - name: Upload Main artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: LabApiExtensions
+          path: Main
+          if-no-files-found: error
