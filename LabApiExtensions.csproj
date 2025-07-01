@@ -4,7 +4,7 @@
 		<AssemblyName>LabApiExtensions</AssemblyName>
 		<RootNamespace>LabApiExtensions</RootNamespace>
 		<Nullable>annotations</Nullable>
-		<Version>0.0.2.2</Version>
+		<Version>0.1.0</Version>
 	</PropertyGroup>
 
 	<!-- Remove unnessessary files in VS -->
