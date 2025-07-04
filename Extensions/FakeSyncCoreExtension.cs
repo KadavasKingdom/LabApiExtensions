@@ -4,24 +4,17 @@ namespace LabApiExtensions.Extensions;
 
 internal static class FakeSyncCoreExtension
 {
-    internal static void SendFakeCore(this Player target, NetworkBehaviour networkBehaviour, Action<NetworkWriterPooled>? writeSyncData = null, Action<NetworkWriterPooled>? writeSyncVar = null)
+    internal static void SendFakeCore(this Player target, NetworkBehaviour networkBehaviour, Action<NetworkWriterPooled> writeSyncData, Action<NetworkWriterPooled> writeSyncVar)
     {
         if (target.Connection == null)
             return;
 
-        if (writeSyncData == null || writeSyncVar == null)
-        {
-            CL.Error("You have not made a SyncData or a SyncVar writer!");
-            return;
-        }
-
-        Type networkType = networkBehaviour.GetType();
-
-        NetworkWriterPooled writer = NetworkWriterPool.Get();
-
-        // We changing the First NetworkBehaviour of the NetId!
-        // Some prefabs have multiple NetworkBehaviour, in that case you are on your own :(
-        Compression.CompressVarUInt(writer, 1);
+        using NetworkWriterPooled writer = NetworkWriterPool.Get();
+        
+        // gets the dirty mask based on the changed behavior's index
+        NetworkBehaviour[] behaviors = networkBehaviour.netIdentity.NetworkBehaviours;
+        int index = behaviors == null ? 0 : Array.IndexOf(behaviors, networkBehaviour);
+        Compression.CompressVarUInt(writer, 1UL << index);
 
         // placeholder length
         int headerPosition = writer.Position;
@@ -29,10 +22,10 @@ internal static class FakeSyncCoreExtension
         int contentPosition = writer.Position;
 
         // Serialize Object Sync Data.
-        writeSyncData?.Invoke(writer);
+        writeSyncData.Invoke(writer);
 
         // Write Object Sync Vars
-        writeSyncVar?.Invoke(writer);
+        writeSyncVar.Invoke(writer);
 
         // end position safety write
         int endPosition = writer.Position;

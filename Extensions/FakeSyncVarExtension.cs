@@ -7,43 +7,46 @@ public static class FakeSyncVarExtension
 {
     private static readonly Dictionary<Type, ulong> SubWriteClassToMinULong = new()
     {
-        [typeof(AdminToyBase)] = 16,
+        [typeof(AdminToyBase)] = 32,
     };
+
+    private static ulong GetSubclassMinDirtyBit(Type type)
+    {
+        foreach (KeyValuePair<Type, ulong> kvp in SubWriteClassToMinULong)
+        {
+            if (type.IsSubclassOf(kvp.Key))
+                return kvp.Value;
+        }
+
+        return ulong.MaxValue;
+    }
 
     // Easier syncVar
     public static void SendFakeSyncVar<T>(this Player target, NetworkBehaviour networkBehaviour, ulong dirtyBit, T syncVar)
     {
         Type networkType = networkBehaviour.GetType();
 
-        target.SendFakeCore(networkBehaviour, 
+        target.SendFakeCore(networkBehaviour,
         (writer) => writer.WriteULong(0), // Write No SyncData
-        (writer) =>  // Write SyncVar
+        (writer) => // Write SyncVar
         {
             // Write DrityBit always
             writer.WriteULong(dirtyBit);
 
-            bool IsWritten = false;
+            ulong minDirtyBit = GetSubclassMinDirtyBit(networkType);
+            bool isWritten = false;
 
-            foreach (KeyValuePair<Type, ulong> kv in SubWriteClassToMinULong)
+            if (dirtyBit >= minDirtyBit)
             {
-                if (networkType.IsSubclassOf(kv.Key))
-                {
-                    if (kv.Value >= dirtyBit)
-                        writer.Write(syncVar);
-
-                    // Write always
-                    writer.WriteULong(dirtyBit);
-
-                    if (kv.Value <= dirtyBit)
-                        writer.Write(syncVar);
-
-                    IsWritten = true;
-                }
+                writer.WriteULong(dirtyBit);
+                isWritten = true;
             }
 
-            if (!IsWritten)
-                // we can just write normally
-                writer.Write(syncVar);
+            writer.Write(syncVar);
+
+            if (!isWritten)
+                writer.WriteULong(dirtyBit);
+
         });
     }
 
@@ -57,57 +60,33 @@ public static class FakeSyncVarExtension
 
         target.SendFakeCore(networkBehaviour,
         (writer) => writer.WriteULong(0), // Write No SyncData
-        (writer) =>  // Write SyncVar
+        (writer) => // Write SyncVar
         {
-            ulong dirtyBit = 0;
-            foreach (ulong dirty in syncVars.Select(x => x.DirtyBit).ToArray())
-            {
-                dirtyBit |= dirty;
-            }
+            ulong allDirtyBits = syncVars.Aggregate(0UL, (previous, tuple) => previous | tuple.DirtyBit);
 
             // Write DrityBit always
-            writer.WriteULong(dirtyBit);
+            writer.WriteULong(allDirtyBits);
 
-            bool IsWritten = false;
+            ulong minDirtyBit = GetSubclassMinDirtyBit(networkType);
+            bool isWritten = false;
 
-            foreach (var (DirtyBit, SyncVar) in syncVars.OrderBy(x => x.DirtyBit))
+            foreach ((ulong dirtyBit, object syncVar) in syncVars.OrderBy(x => x.DirtyBit))
             {
-
-                foreach (KeyValuePair<Type, ulong> kv in SubWriteClassToMinULong)
+                if (dirtyBit >= minDirtyBit && !isWritten)
                 {
-                    if (networkType.IsSubclassOf(kv.Key))
-                    {
-                        if (kv.Value >= DirtyBit)
-                        {
-                            if (!MirrorWriterExtension.Write(SyncVar.GetType(), SyncVar, writer))
-                            {
-                                CL.Error($"Not found NetworkWriter for type {SyncVar.GetType()}");
-                                return;
-                            }
-                        }
-
-                        // Write always
-                        writer.WriteULong(dirtyBit);
-
-                        if (kv.Value <= DirtyBit)
-                        {
-                            if (!MirrorWriterExtension.Write(SyncVar.GetType(), SyncVar, writer))
-                            {
-                                CL.Error($"Not found NetworkWriter for type {SyncVar.GetType()}");
-                                return;
-                            }
-                        }
-
-                        IsWritten = true;
-                    }
+                    writer.WriteULong(allDirtyBits);
+                    isWritten = true;
                 }
 
-                if (!IsWritten && !MirrorWriterExtension.Write(SyncVar.GetType(), SyncVar, writer))
+                if (!MirrorWriterExtension.Write(syncVar.GetType(), syncVar, writer))
                 {
-                    CL.Error($"Not found NetworkWriter for type {SyncVar.GetType()}");
+                    CL.Error($"No NetworkWriter found for type {syncVar.GetType()}");
                     return;
                 }
             }
+
+            if (!isWritten)
+                writer.WriteULong(allDirtyBits);
         });
     }
 }
