@@ -11,8 +11,7 @@ internal static class FakeSyncCoreExtension
 
         using NetworkWriterPooled writer = NetworkWriterPool.Get();
         
-        // We're changing the First NetworkBehaviour of the NetId!
-        // Some prefabs have multiple NetworkBehaviour, in that case you are on your own :(
+        // gets the dirty mask based on the changed behavior's index
         NetworkBehaviour[] behaviors = networkBehaviour.netIdentity.NetworkBehaviours;
         int index = behaviors == null ? 0 : Array.IndexOf(behaviors, networkBehaviour);
         Compression.CompressVarUInt(writer, 1UL << index);
