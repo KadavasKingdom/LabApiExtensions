@@ -4,16 +4,10 @@ namespace LabApiExtensions.Extensions;
 
 internal static class FakeSyncCoreExtension
 {
-    internal static void SendFakeCore(this Player target, NetworkBehaviour networkBehaviour, Action<NetworkWriterPooled>? writeSyncData = null, Action<NetworkWriterPooled>? writeSyncVar = null)
+    internal static void SendFakeCore(this Player target, NetworkBehaviour networkBehaviour, Action<NetworkWriterPooled> writeSyncData, Action<NetworkWriterPooled> writeSyncVar)
     {
         if (target.Connection == null)
             return;
-
-        if (writeSyncData == null || writeSyncVar == null)
-        {
-            CL.Error("You have not made a SyncData or a SyncVar writer!");
-            return;
-        }
 
         using NetworkWriterPooled writer = NetworkWriterPool.Get();
         
