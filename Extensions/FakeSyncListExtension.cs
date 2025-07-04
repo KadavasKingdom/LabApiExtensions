@@ -12,36 +12,36 @@ public static class FakeSyncListExtension
         public ListOperation operation;
     }
 
-    public static void SendFakeSyncListAdd<T>(this Player target, NetworkBehaviour networkBehaviour, ulong ListIndex, T value)
-        => SendFakeSyncList<T>(target, networkBehaviour, ListIndex, new()
+    public static void SendFakeSyncListAdd<T>(this Player target, NetworkBehaviour networkBehaviour, ulong listIndex, T value)
+        => SendFakeSyncList<T>(target, networkBehaviour, listIndex, new()
         {
             operation = ListOperation.Add,
             value = value
         });
 
-    public static void SendFakeSyncListClear<T>(this Player target, NetworkBehaviour networkBehaviour, ulong ListIndex)
-        => SendFakeSyncList<T>(target, networkBehaviour, ListIndex, new()
+    public static void SendFakeSyncListClear<T>(this Player target, NetworkBehaviour networkBehaviour, ulong listIndex)
+        => SendFakeSyncList<T>(target, networkBehaviour, listIndex, new()
         {
             operation = ListOperation.Clear,
         });
 
-    public static void SendFakeSyncListRemoveAt<T>(this Player target, NetworkBehaviour networkBehaviour, ulong ListIndex, int index)
-        => SendFakeSyncList<T>(target, networkBehaviour, ListIndex, new()
+    public static void SendFakeSyncListRemoveAt<T>(this Player target, NetworkBehaviour networkBehaviour, ulong listIndex, int index)
+        => SendFakeSyncList<T>(target, networkBehaviour, listIndex, new()
         {
             operation = ListOperation.RemoveAt,
             index = index
         });
 
-    public static void SendFakeSyncListInsert<T>(this Player target, NetworkBehaviour networkBehaviour, ulong ListIndex, int index, T value)
-        => SendFakeSyncList<T>(target, networkBehaviour, ListIndex, new()
+    public static void SendFakeSyncListInsert<T>(this Player target, NetworkBehaviour networkBehaviour, ulong listIndex, int index, T value)
+        => SendFakeSyncList<T>(target, networkBehaviour, listIndex, new()
         {
             operation = ListOperation.Insert,
             index = index,
             value = value
         });
 
-    public static void SendFakeSyncListSet<T>(this Player target, NetworkBehaviour networkBehaviour, ulong ListIndex, int index, T value)
-        => SendFakeSyncList<T>(target, networkBehaviour, ListIndex, new()
+    public static void SendFakeSyncListSet<T>(this Player target, NetworkBehaviour networkBehaviour, ulong listIndex, int index, T value)
+        => SendFakeSyncList<T>(target, networkBehaviour, listIndex, new()
         {
             operation = ListOperation.Set,
             index = index,
@@ -49,13 +49,13 @@ public static class FakeSyncListExtension
         });
 
 
-    public static void SendFakeSyncList<T>(this Player target, NetworkBehaviour networkBehaviour, ulong ListIndex, ListChanger<T> changer)
+    public static void SendFakeSyncList<T>(this Player target, NetworkBehaviour networkBehaviour, ulong listIndex, ListChanger<T> changer)
     {
         target.SendFakeCore(networkBehaviour,
         (writer) => 
         {
             // Serialize Object Sync Data.
-            writer.WriteULong(ListIndex);
+            writer.WriteULong(listIndex);
 
             // Copy from OnSerializeDelta
             writer.WriteUInt(1);
