@@ -36,7 +36,7 @@ public static class CustomDataStoreManagerExtended
             return false;
         }
 
-        MethodInfo method = typeof(CustomDataStore).GetMethod("GetOrAdd", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
+        MethodInfo method = typeof(CustomDataStore).GetMethod(nameof(CustomDataStore.GetOrAdd), BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
         if (method == null)
         {
             return false;
@@ -44,7 +44,7 @@ public static class CustomDataStoreManagerExtended
 
         method = method.MakeGenericMethod(typeFromHandle);
         CustomDataStoreManager.GetOrAddMethods.Add(typeFromHandle, method);
-        MethodInfo method2 = typeof(CustomDataStore).GetMethod("Destroy", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
+        MethodInfo method2 = typeof(CustomDataStore).GetMethod(nameof(CustomDataStore.Destroy), BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
         if (method2 == null)
         {
             return false;
@@ -52,7 +52,7 @@ public static class CustomDataStoreManagerExtended
 
         method2 = method2.MakeGenericMethod(typeFromHandle);
         CustomDataStoreManager.DestroyMethods.Add(typeFromHandle, method2);
-        MethodInfo method3 = typeof(CustomDataStore).GetMethod("DestroyAll", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
+        MethodInfo method3 = typeof(CustomDataStore).GetMethod(nameof(CustomDataStore.DestroyAll), BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
         if (method3 == null)
         {
             return false;

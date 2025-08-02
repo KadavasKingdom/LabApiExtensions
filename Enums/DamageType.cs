@@ -2,6 +2,7 @@
 
 public enum DamageType
 {
+    Any = -1,
     None = 0,
     Recontainment,
     Firearm,

@@ -61,22 +61,21 @@ public static class DamageExtensions
     public static float GetDamageValue(this DamageHandlerBase handlerBase)
     {
         if (handlerBase is StandardDamageHandler standardDamage)
-        {
             return standardDamage.Damage;
-        }
         return -1;
     }
 
     public static void SetDamageValue(this DamageHandlerBase handlerBase, float damage)
     {
         if (handlerBase is StandardDamageHandler standardDamage)
-        {
             standardDamage.Damage = damage;
-        }
     }
 
     public static object GetObjectBySubType(this DamageHandlerBase handlerBase, DamageSubType subType)
     {
+        if (subType == DamageSubType.Attacker_Role && handlerBase is AttackerDamageHandler attacker)
+            return attacker.Attacker.Role;
+
         switch (handlerBase)
         {
             case FirearmDamageHandler firearm:
@@ -125,14 +124,14 @@ public static class DamageExtensions
                 return null;
             case Scp3114DamageHandler scp3114Damage:
                 {
-                    if (subType == DamageSubType.Scp939_AttackType)
+                    if (subType == DamageSubType.Scp3114_AttackType)
                         return scp3114Damage.Subtype;
                 }
                 return null;
             case UniversalDamageHandler universalDamage:
                 {
                     if (subType == DamageSubType.UniversalSubType)
-                        return (DamageUniversalType)(int)universalDamage.TranslationId;
+                        return (DamageUniversalType)universalDamage.TranslationId;
                 }
                 return null;
             default:

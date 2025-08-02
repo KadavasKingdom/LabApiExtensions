@@ -47,4 +47,8 @@ public enum DamageSubType
     /// Check <see cref="Scp3114DamageHandler.HandlerType"/>.
     /// </summary>
     Scp3114_AttackType,
+    /// <summary>
+    /// <see cref="PlayerRoles.RoleTypeId"/> of the <see cref="AttackerDamageHandler.Attacker"/>.
+    /// </summary>
+    Attacker_Role,
 }

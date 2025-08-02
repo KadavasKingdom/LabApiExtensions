@@ -9,37 +9,10 @@ namespace LabApiExtensions.Extensions;
 /// </summary>
 public static class ScaleHelper
 {
-    public static void SetScale(this Player player, Vector3 value, bool IsFake = false, bool force = false)
-    {
-        Vector3 original = player.Scale;
-        if (value == original && !force)
-            return;
-
-        try
-        {
-            player.ReferenceHub.transform.localScale = value;
-
-            foreach (Player target in Player.ReadyList)
-                NetworkServer.SendSpawnMessage(player.ReferenceHub.networkIdentity, target.Connection);
-
-            if (IsFake)
-                player.ReferenceHub.transform.localScale = original;
-        }
-        catch (Exception exception)
-        {
-            CL.Error($"{nameof(SetScale)} error: {exception}");
-        }
-    }
-
-    public static Vector3 GetScale(this Player player)
-    {
-        return player.ReferenceHub.transform.localScale;
-    }
-
-    public static void SetScale(this NetworkBehaviour behaviour, Vector3 value, bool IsFake = false, bool force = false)
+    public static void SetScale(this NetworkBehaviour behaviour, Vector3 value)
     {
         Vector3 original = behaviour.transform.localScale;
-        if (value == original && !force)
+        if (value == original)
             return;
 
         try
@@ -48,9 +21,6 @@ public static class ScaleHelper
 
             foreach (Player target in Player.ReadyList)
                 NetworkServer.SendSpawnMessage(behaviour.netIdentity, target.Connection);
-
-            if (IsFake)
-                behaviour.transform.localScale = original;
         }
         catch (Exception exception)
         {
