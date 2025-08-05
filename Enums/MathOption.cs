@@ -1,5 +1,8 @@
 ﻿namespace LabApiExtensions.Enums;
 
+/// <summary>
+/// Options for changing the base value with Math.
+/// </summary>
 public enum MathOption
 {
     /// <summary>

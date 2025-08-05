@@ -18,7 +18,7 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<DebugType>pdbonly</DebugType>
 		<Optimize>true</Optimize>
-		<Version>0.1.1</Version>
+		<Version>0.1.2</Version>
 		<RepositoryType>git</RepositoryType>
 		<RepositoryUrl>https://github.com/KadavasKingdom/LabApiExtensions</RepositoryUrl>
 		<PackageProjectUrl>https://github.com/KadavasKingdom/LabApiExtensions</PackageProjectUrl>
@@ -45,9 +45,7 @@
 	</ItemGroup>
 	<!-- Usings globals -->
 	<ItemGroup>
-		<Using Include="UnityEngine.Random">
-			<Alias>URandom</Alias>
-		</Using>
+		<Using Include="UnityEngine.Random" Alias="URandom" />
 		<Using Include="LabApi.Features.Wrappers" />
 		<Using Include="LabApi.Features.Console.Logger" Alias="CL" />
 	</ItemGroup>

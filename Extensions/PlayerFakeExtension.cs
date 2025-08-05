@@ -1,4 +1,5 @@
-﻿using PlayerRoles;
+﻿#if false
+using PlayerRoles;
 using PlayerRoles.FirstPersonControl;
 using PlayerRoles.FirstPersonControl.NetworkMessages;
 using UnityEngine;
@@ -23,3 +24,4 @@ public static class PlayerFakeExtension
         FpcServerPositionDistributor.SendRole(target.ReferenceHub, player.ReferenceHub, targetRole);
     }
 }
+#endif
