@@ -18,7 +18,7 @@ jobs:
     env:
       REFERENCES_URL: https://exmod-team.github.io/SL-References/Dev.zip
       REFERENCES_PATH: ${{ github.workspace }}/References
-      MAINPATH: LabApiExtensions.Full.csproj
+      MAINPATH: LabApiExtensions.csproj
       
     steps:
       - name: Checkout

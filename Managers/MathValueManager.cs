@@ -5,6 +5,7 @@ namespace LabApiExtensions.Managers;
 
 public static class MathValueManager
 {
+    #region Float
     public static float MathCalculation(this MathValueFloat mathValue, float inValue)
     {
         return mathValue.Math.MathCalculation(inValue, mathValue.Value);
@@ -32,7 +33,8 @@ public static class MathValueManager
             _ => inValue,
         };
     }
-
+    #endregion
+    #region Long
     public static void MathCalculation(this MathValueLong mathValue, ref long inValue)
     {
         inValue = mathValue.Math.MathCalculation(inValue, mathValue.Value);
@@ -42,7 +44,6 @@ public static class MathValueManager
     {
         return mathValue.Math.MathCalculation(inValue, mathValue.Value);
     }
-
 
     public static long MathCalculation(this MathOption mathOption, long inValue, long myValue)
     {
@@ -61,8 +62,8 @@ public static class MathValueManager
             _ => inValue,
         };
     }
-
-
+    #endregion
+    #region Int
     public static void MathCalculation(this MathValueInt mathValue, ref int inValue)
     {
         inValue = mathValue.Math.MathCalculation(inValue, mathValue.Value);
@@ -72,7 +73,6 @@ public static class MathValueManager
     {
         return mathValue.Math.MathCalculation(inValue, mathValue.Value);
     }
-
 
     public static int MathCalculation(this MathOption mathOption, int inValue, int myValue)
     {
@@ -91,7 +91,8 @@ public static class MathValueManager
             _ => inValue,
         };
     }
-
+    #endregion
+    #region Short
     public static void MathCalculation(this MathValueShort mathValue, ref short inValue)
     {
         inValue = mathValue.Math.MathCalculation(inValue, mathValue.Value);
@@ -101,7 +102,6 @@ public static class MathValueManager
     {
         return mathValue.Math.MathCalculation(inValue, mathValue.Value);
     }
-
 
     public static short MathCalculation(this MathOption mathOption, short inValue, short myValue)
     {
@@ -120,7 +120,8 @@ public static class MathValueManager
             _ => inValue,
         };
     }
-
+    #endregion
+    #region Byte
     public static void MathCalculation(this MathValueByte mathValue, ref byte inValue)
     {
         inValue = mathValue.Math.MathCalculation(inValue, mathValue.Value);
@@ -130,7 +131,6 @@ public static class MathValueManager
     {
         return mathValue.Math.MathCalculation(inValue, mathValue.Value);
     }
-
 
     public static byte MathCalculation(this MathOption mathOption, byte inValue, byte myValue)
     {
@@ -148,4 +148,5 @@ public static class MathValueManager
             _ => inValue,
         };
     }
+    #endregion
 }
