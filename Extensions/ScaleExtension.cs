@@ -1,5 +1,6 @@
 ﻿using Mirror;
 using UnityEngine;
+using PlayerRoles.FirstPersonControl;
 
 namespace LabApiExtensions.Extensions;
 
