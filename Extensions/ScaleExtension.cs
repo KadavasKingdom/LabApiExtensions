@@ -3,33 +3,28 @@ using UnityEngine;
 
 namespace LabApiExtensions.Extensions;
 
-/// <summary>
-/// All code from here is ported from Exiled & Edited to current version.
-/// License: Creative Commons Attribution-ShareAlike 3.0 Unported
-/// </summary>
 public static class ScaleHelper
 {
-    [Obsolete("This will likely be removed when NW fixes the size set issue. (Player set too big or small doesnt move into position where it should be)")]
-    public static void SetScale(this Player player, Vector3 value, bool IsFake = false, bool force = false)
+    public static void SetScale(this Player player, Vector3 value, bool IsFake = false)
     {
-        Vector3 original = player.ReferenceHub.transform.localScale;
-        if (value == original && !force)
+        Vector3 original = player.Scale;
+        if (value == original && !IsFake)
             return;
 
-        try
+        if (IsFake)
         {
-            player.ReferenceHub.transform.localScale = value;
-
-            foreach (Player target in Player.ReadyList)
-                NetworkServer.SendSpawnMessage(player.ReferenceHub.networkIdentity, target.Connection);
-
-            if (IsFake)
-                player.ReferenceHub.transform.localScale = original;
+            PlayerFakeExtension.SetFakeScale(player, Player.ReadyList, value);
+            return;
         }
-        catch (Exception exception)
-        {
-            CL.Error($"{nameof(SetScale)} error: {exception}");
-        }
+
+        player.Scale = value;
+        if (value == Vector3.one)
+            return;
+        if (player.ReferenceHub.roleManager.CurrentRole is not IFpcRole fpcRole)
+            return;
+        float halfHeight = fpcRole.FpcModule.CharController.height / 2;
+        float tpY = value.y - halfHeight;
+        player.Position += new Vector3(0f, tpY, 0f);
     }
 
     public static void SetScale(this NetworkBehaviour behaviour, Vector3 value)
