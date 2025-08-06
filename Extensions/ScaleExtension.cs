@@ -14,7 +14,7 @@ public static class ScaleHelper
 
         if (IsFake)
         {
-            PlayerFakeExtension.SetFakeScale(player, Player.ReadyList, value);
+            PlayerFakeExtension.SetFakeScale(player, Player.ReadyList.ToList(), value);
             return;
         }
 
