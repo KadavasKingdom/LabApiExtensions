@@ -24,7 +24,7 @@ public static class ScaleHelper
         if (player.ReferenceHub.roleManager.CurrentRole is not IFpcRole fpcRole)
             return;
         float halfHeight = fpcRole.FpcModule.CharController.height / 2;
-        float tpY = value.y < -0.1f ? +value.y : value.y - halfHeight;
+        float tpY = value.y < -0.1f ? value.y * -1f : value.y - halfHeight;
         player.Position += new Vector3(0f, tpY, 0f);
     }
 
