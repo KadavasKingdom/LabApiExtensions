@@ -1,12 +1,12 @@
 # LabApiExtensions
+This is just a dependency and not a Plugin!
 
 ### Features
-- Appearance Sync
 - Fake Mirror SyncObject
 - Fake Mirror SyncVar 
 - Scale (from Exiled)
 - Dummy Extension
-- CustomDataStore with type.
+- CustomDataStore with Type.
 - Effect Helpers
 - Damage Helpers
 
