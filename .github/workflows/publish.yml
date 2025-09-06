@@ -1,14 +1,8 @@
-name: Build LabApiExtensions
-
+name: Publish
 on:
   push:
-    paths-ignore:
-      - '**/*.md'
-  pull_request:
-    paths-ignore:
-      - '**/*.md'
-  workflow_dispatch:
-    # allows manual trigger
+    tags:
+      - "release-*"
 
 env:
   ProjName: LabApiExtensions
@@ -16,15 +10,16 @@ env:
   REFERENCES_PATH: ${{ github.workspace }}/References
 
 jobs:
-  build:
+  publish:
     runs-on: windows-latest
-      
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+    permissions:
+      contents: write
 
-      - name: Setup Dotnet
-        uses: actions/setup-dotnet@v4.0.1
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 9.0.x
 
@@ -37,18 +32,20 @@ jobs:
       - name: Rename Assembly-CSharp-Publicized to Assembly-CSharp
         shell: pwsh
         run: |
-            Rename-Item -Path "${{ env.REFERENCES_PATH }}\Assembly-CSharp-Publicized.dll" -NewName "Assembly-CSharp.dll"
-            
+            Rename-Item -Path "${{ env.REFERENCES_PATH }}\Assembly-CSharp-Publicized.dll" -NewName "Assembly-CSharp.dll"       
+
       - name: Build
         env:
           SL_REFERENCES: ${{ env.REFERENCES_PATH }}
-        shell: pwsh
-        run: |
-          dotnet build ${{ env.ProjName }}/${{ env.ProjName }}.csproj -c Release -o:Out
+        run: dotnet build ${{ env.ProjName }}/${{ env.ProjName }}.csproj -o Out
 
-      - name: Upload
-        uses: actions/upload-artifact@v4
+      - name : Upload
+        uses: actions/upload-artifact@v4.3.5
         with:
-          name: LabApiExtensions
+          name: ${{ env.ProjName }}
           path: Out
-          if-no-files-found: error
+
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: Out/**
