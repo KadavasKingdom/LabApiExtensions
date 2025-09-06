@@ -1,7 +1,8 @@
 ﻿using AdminToys;
+using LabApiExtensions.Extensions;
 using Mirror;
 
-namespace LabApiExtensions.Extensions;
+namespace LabApiExtensions.FakeExtension;
 
 public static class FakeSyncVarExtension
 {
@@ -22,7 +23,19 @@ public static class FakeSyncVarExtension
     }
 
     // Easier syncVar
-    public static void SendFakeSyncVar<T>(this Player target, NetworkBehaviour networkBehaviour, ulong dirtyBit, T syncVar)
+    /// <summary>
+    /// Sending fale Sync Var to <paramref name="target"/>.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="target">The target to send to.</param>
+    /// <param name="networkBehaviour">The behaviour to change.</param>
+    /// <param name="dirtyBit">The dirtyBit value of the SyncVar.</param>
+    /// <param name="value"></param>
+    /// <remarks>
+    /// Dirty bit values can be read by decompiling. <br></br>
+    /// Check for <see cref="NetworkBehaviour.SerializeSyncVars"/> in the <paramref name="networkBehaviour"/>.
+    /// </remarks>
+    public static void SendFakeSyncVar<T>(this Player target, NetworkBehaviour networkBehaviour, ulong dirtyBit, T value)
     {
         Type networkType = networkBehaviour.GetType();
 
@@ -42,7 +55,7 @@ public static class FakeSyncVarExtension
                 isWritten = true;
             }
 
-            writer.Write(syncVar);
+            writer.Write(value);
 
             if (!isWritten)
                 writer.WriteULong(dirtyBit);
@@ -62,7 +75,7 @@ public static class FakeSyncVarExtension
         (writer) => writer.WriteULong(0), // Write No SyncData
         (writer) => // Write SyncVar
         {
-            ulong allDirtyBits = syncVars.Aggregate(0UL, (previous, tuple) => previous | tuple.DirtyBit);
+            ulong allDirtyBits = syncVars.Aggregate(0UL, (previous, tuple) => previous |= tuple.DirtyBit);
 
             // Write DrityBit always
             writer.WriteULong(allDirtyBits);

@@ -4,7 +4,7 @@ using PlayerRoles.FirstPersonControl;
 using PlayerRoles.FirstPersonControl.NetworkMessages;
 using UnityEngine;
 
-namespace LabApiExtensions.Extensions;
+namespace LabApiExtensions.FakeExtension;
 
 /// <summary>
 /// Collection of sending fake messages/packets.
@@ -20,7 +20,7 @@ public static class PlayerFakeExtension
     {
         foreach (Player target in targets)
         {
-            SetFakeGravity(player, target, gravity);
+            player.SetFakeGravity(target, gravity);
         }
     }
 
@@ -33,7 +33,7 @@ public static class PlayerFakeExtension
     {
         foreach (Player target in targets)
         {
-            SetFakeScale(player, target, scale);
+            player.SetFakeScale(target, scale);
         }
     }
 
@@ -46,30 +46,46 @@ public static class PlayerFakeExtension
 
     public static void SetFakeBadgeText(this Player player, Player target, string badgeText)
     {
-        FakeSyncVarExtension.SendFakeSyncVar(target, player.ReferenceHub.serverRoles, 1, badgeText);
+        target.SendFakeSyncVar(player.ReferenceHub.serverRoles, 1, badgeText);
     }
 
     public static void SetFakeBadgeColor(this Player player, Player target, string color)
     {
-        FakeSyncVarExtension.SendFakeSyncVar(target, player.ReferenceHub.serverRoles, 2, color);
+        target.SendFakeSyncVar(player.ReferenceHub.serverRoles, 2, color);
     }
+
+    public static void SetFakeViewRange(this Player player, Player target, float viewRange)
+    {
+        target.SendFakeSyncVar(player.ReferenceHub.nicknameSync, 1, viewRange);
+    }
+
+    public static void SetFakeCustomInfo(this Player player, Player target, string customInfo)
+    {
+        target.SendFakeSyncVar(player.ReferenceHub.nicknameSync, 2, customInfo);
+    }
+
+    public static void SetFakeInfoArea(this Player player, Player target, PlayerInfoArea playerInfoArea)
+    {
+        target.SendFakeSyncVar(player.ReferenceHub.nicknameSync, 4, playerInfoArea);
+    }
+
     public static void SetFakeNick(this Player player, Player target, string nick)
     {
-        FakeSyncVarExtension.SendFakeSyncVar(target, player.ReferenceHub.nicknameSync, 8, nick);
+        target.SendFakeSyncVar(player.ReferenceHub.nicknameSync, 8, nick);
     }
 
     public static void SetFakeDisplayName(this Player player, Player target, string displayName)
     {
-        FakeSyncVarExtension.SendFakeSyncVar(target, player.ReferenceHub.nicknameSync, 16, displayName);
+        target.SendFakeSyncVar(player.ReferenceHub.nicknameSync, 16, displayName);
     }
 
     public static void SetFakeMaxPlayers(this Player player, Player target, ushort maxPlayer)
     {
-        FakeSyncVarExtension.SendFakeSyncVar(target, player.ReferenceHub.characterClassManager, 2, maxPlayer);
+        target.SendFakeSyncVar(player.ReferenceHub.characterClassManager, 2, maxPlayer);
     }
 
     public static void SetFakeCurrentItem(this Player player, Player target, ItemIdentifier item)
     {
-        FakeSyncVarExtension.SendFakeSyncVar(target, player.ReferenceHub.inventory, 1, item);
+        target.SendFakeSyncVar(player.ReferenceHub.inventory, 1, item);
     }
 }

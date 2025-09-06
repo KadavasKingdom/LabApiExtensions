@@ -9,10 +9,8 @@ using PlayerRoles.PlayableScps.Scp1507;
 
 namespace LabApiExtensions.Extensions;
 
-/// <summary>
-/// All code from here is ported from Exiled & Edited to current version.
-/// License: Creative Commons Attribution-ShareAlike 3.0 Unported
-/// </summary>
+// All code from here is ported from Exiled & Edited to current version.
+// License: Creative Commons Attribution-ShareAlike 3.0 Unported
 public static class AppearanceExtension
 {
     public static void ChangeAppearance(this Player player, RoleTypeId type, bool skipJump = false, byte unitId = 0) =>
@@ -25,9 +23,9 @@ public static class AppearanceExtension
 
         PlayerRoleBase roleBase = RoleExtensions.GetRoleBase(type);
         if (roleBase == null) return;
-        bool isRisky = type.GetTeam() is Team.Dead || !player.IsAlive;
+        bool isRisky = roleBase.Team is Team.Dead || !player.IsAlive;
 
-        NetworkWriterPooled writer = NetworkWriterPool.Get();
+        using NetworkWriterPooled writer = NetworkWriterPool.Get();
         writer.WriteUShort(NetworkMessageId<RoleSyncInfo>.Id);
         writer.WriteUInt(player.ReferenceHub.netId);
         writer.WriteRoleType(type);
@@ -79,7 +77,7 @@ public static class AppearanceExtension
                 CL.Error($"Prevent Seld-Desync of {player.Nickname} with {type}");
         }
 
-        NetworkWriterPool.Return(writer);
+        writer.Dispose();
 
         // To counter a bug that makes the player invisible until they move after changing their appearance, we will teleport them upwards slightly to force a new position update for all clients.
         if (!skipJump)

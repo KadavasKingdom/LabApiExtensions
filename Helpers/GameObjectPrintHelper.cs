@@ -5,7 +5,7 @@ namespace LabApiExtensions.Helpers;
 /// <summary>
 /// Helper class to print Game Objects.
 /// </summary>
-public static class GameObjectPritnHelper
+public static class GameObjectPrintHelper
 {
     /// <summary>
     /// Print the <see cref="GameObject"/>'s <see cref="Component"/>.

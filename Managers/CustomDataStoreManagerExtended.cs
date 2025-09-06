@@ -1,7 +1,7 @@
 ﻿using LabApi.Features.Stores;
 using System.Reflection;
 
-namespace LabApiExtensions.Extensions;
+namespace LabApiExtensions.Managers;
 
 public static class CustomDataStoreManagerExtended
 {
