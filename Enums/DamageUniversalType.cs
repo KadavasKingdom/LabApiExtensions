@@ -1,8 +1,7 @@
 ﻿namespace LabApiExtensions.Enums;
 
-public enum DamageUniversalType
+public enum DamageUniversalType : byte
 {
-    None = -1,
     Recontained,
     Warhead,
     Scp049,
@@ -34,4 +33,5 @@ public enum DamageUniversalType
     Scp1344,
     Scp1507Peck,
     Scp127Bullets,
+    None = 255,
 }

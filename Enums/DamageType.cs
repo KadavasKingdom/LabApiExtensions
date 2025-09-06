@@ -2,6 +2,10 @@
 
 public enum DamageType
 {
+    /// <summary>
+    /// Not a real Damage type. Use for 3rd party damage related stuff.
+    /// </summary>
+    Any = -1,
     None = 0,
     Recontainment,
     Firearm,

@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace LabApiExtensions.Extensions;
 
@@ -48,8 +47,14 @@ public static class RNGExtension
         return enumerator.ToList().RandomItem();
     }
 
+    /// <summary>
+    /// Gets a random <see cref="Vector3"/>.
+    /// </summary>
+    /// <param name="min">Minimum value.</param>
+    /// <param name="max">Maximum value.</param>
+    /// <returns>A new <see cref="Vector3"/></returns>
     public static Vector3 GetVector3(float min, float max)
     {
-        return new Vector3(RandomGenerator.GetFloat(min, max), RandomGenerator.GetFloat(min, max), RandomGenerator.GetFloat(min, max));
+        return new(RandomGenerator.GetFloat(min, max), RandomGenerator.GetFloat(min, max), RandomGenerator.GetFloat(min, max));
     }
 }

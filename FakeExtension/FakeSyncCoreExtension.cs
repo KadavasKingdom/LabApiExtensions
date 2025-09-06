@@ -1,6 +1,6 @@
 ﻿using Mirror;
 
-namespace LabApiExtensions.Extensions;
+namespace LabApiExtensions.FakeExtension;
 
 internal static class FakeSyncCoreExtension
 {
@@ -12,9 +12,9 @@ internal static class FakeSyncCoreExtension
         using NetworkWriterPooled writer = NetworkWriterPool.Get();
         
         // gets the dirty mask based on the changed behavior's index
-        NetworkBehaviour[] behaviors = networkBehaviour.netIdentity.NetworkBehaviours;
-        int index = behaviors == null ? 0 : Array.IndexOf(behaviors, networkBehaviour);
-        Compression.CompressVarUInt(writer, 1UL << index);
+        ulong mask = 0;
+        mask |= 1UL << networkBehaviour.netIdentity.NetworkBehaviours.IndexOf(networkBehaviour);
+        Compression.CompressVarUInt(writer, mask);
 
         // placeholder length
         int headerPosition = writer.Position;
@@ -22,10 +22,16 @@ internal static class FakeSyncCoreExtension
         int contentPosition = writer.Position;
 
         // Serialize Object Sync Data.
-        writeSyncData.Invoke(writer);
+        if (writeSyncData != null)
+            writeSyncData.Invoke(writer);
+        else
+            writer.WriteULong(0);
 
         // Write Object Sync Vars
-        writeSyncVar.Invoke(writer);
+        if (writeSyncVar != null)
+            writeSyncVar.Invoke(writer);
+        else
+            writer.WriteULong(0);
 
         // end position safety write
         int endPosition = writer.Position;
@@ -34,10 +40,6 @@ internal static class FakeSyncCoreExtension
         byte safety = (byte)(size & 0xFF);
         writer.WriteByte(safety);
         writer.Position = endPosition;
-
-        // Copy owner to observer
-        if (networkBehaviour.syncMode != SyncMode.Observers)
-            CL.Warn("Well snyc mode is not observers, sucks to be you I guess.");
 
         target.Connection.Send(new EntityStateMessage
         {

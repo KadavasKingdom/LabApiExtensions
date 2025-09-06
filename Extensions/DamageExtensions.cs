@@ -8,6 +8,11 @@ namespace LabApiExtensions.Extensions;
 
 public static class DamageExtensions
 {
+    /// <summary>
+    /// Get the <see cref="DamageType"/> from the <paramref name="handlerBase"/>.
+    /// </summary>
+    /// <param name="handlerBase">The Handler.</param>
+    /// <returns>A <see cref="DamageType"/>.</returns>
     public static DamageType GetDamageType(this DamageHandlerBase handlerBase)
     {
         switch (handlerBase)
@@ -58,25 +63,40 @@ public static class DamageExtensions
         }
     }
 
+    /// <summary>
+    /// Get the <see cref="StandardDamageHandler.Damage"/> of <paramref name="handlerBase"/>.
+    /// </summary>
+    /// <param name="handlerBase">The Handler.</param>
+    /// <returns>-1 or the actual damage.</returns>
     public static float GetDamageValue(this DamageHandlerBase handlerBase)
     {
         if (handlerBase is StandardDamageHandler standardDamage)
-        {
             return standardDamage.Damage;
-        }
         return -1;
     }
 
+    /// <summary>
+    /// Set <see cref="StandardDamageHandler.Damage"/> with value of <paramref name="damage"/>.
+    /// </summary>
+    /// <param name="handlerBase">The Handler.</param>
+    /// <param name="damage">The damage amount.</param>
     public static void SetDamageValue(this DamageHandlerBase handlerBase, float damage)
     {
         if (handlerBase is StandardDamageHandler standardDamage)
-        {
             standardDamage.Damage = damage;
-        }
     }
 
+    /// <summary>
+    /// Gets the value of <see cref="DamageSubType"/> in the <paramref name="handlerBase"/>.
+    /// </summary>
+    /// <param name="handlerBase">The Handler.</param>
+    /// <param name="subType">The <see cref="DamageSubType"/> of the requested damage.</param>
+    /// <returns><see langword="null"/> or the <see cref="DamageSubType"/>'s value.</returns>
     public static object GetObjectBySubType(this DamageHandlerBase handlerBase, DamageSubType subType)
     {
+        if (subType == DamageSubType.Attacker_Role && handlerBase is AttackerDamageHandler attacker)
+            return attacker.Attacker.Role;
+
         switch (handlerBase)
         {
             case FirearmDamageHandler firearm:
@@ -87,16 +107,28 @@ public static class DamageExtensions
                         return firearm.WeaponType;
                 }
                 return null;
+            case Scp049DamageHandler scp049Damage:
+                {
+                    if (subType == DamageSubType.Scp049_AttackType)
+                        return scp049Damage.DamageSubType;
+                }
+                return null;
             case Scp096DamageHandler scp096Damage:
                 {
                     if (subType == DamageSubType.Scp069_AttackType)
                         return scp096Damage._attackType;
                 }
                 return null;
-            case Scp049DamageHandler scp049Damage:
+            case Scp939DamageHandler scp939Damage:
                 {
-                    if (subType == DamageSubType.Scp049_AttackType)
-                        return scp049Damage.DamageSubType;
+                    if (subType == DamageSubType.Scp939_AttackType)
+                        return scp939Damage.Scp939DamageType;
+                }
+                return null;
+            case Scp3114DamageHandler scp3114Damage:
+                {
+                    if (subType == DamageSubType.Scp3114_AttackType)
+                        return scp3114Damage.Subtype;
                 }
                 return null;
             case MicroHidDamageHandler microHidDamage:
@@ -117,22 +149,10 @@ public static class DamageExtensions
                         return disruptorDamage.FiringState;
                 }
                 return null;
-            case Scp939DamageHandler scp939Damage:
-                {
-                    if (subType == DamageSubType.Scp939_AttackType)
-                        return scp939Damage.Scp939DamageType;
-                }
-                return null;
-            case Scp3114DamageHandler scp3114Damage:
-                {
-                    if (subType == DamageSubType.Scp939_AttackType)
-                        return scp3114Damage.Subtype;
-                }
-                return null;
             case UniversalDamageHandler universalDamage:
                 {
                     if (subType == DamageSubType.UniversalSubType)
-                        return (DamageUniversalType)(int)universalDamage.TranslationId;
+                        return (DamageUniversalType)universalDamage.TranslationId;
                 }
                 return null;
             default:
