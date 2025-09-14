@@ -1,7 +1,5 @@
 ﻿using InventorySystem.Items;
-using PlayerRoles;
 using PlayerRoles.FirstPersonControl;
-using PlayerRoles.FirstPersonControl.NetworkMessages;
 using UnityEngine;
 
 namespace LabApiExtensions.FakeExtension;
@@ -35,13 +33,6 @@ public static class PlayerFakeExtension
         {
             player.SetFakeScale(target, scale);
         }
-    }
-
-    // This will highly not work since for some roles it will crash or just not work.
-    // NW likely fix it in new update. (Hopium, 14.1.4)
-    private static void SetFakeRole(this Player player, Player target, RoleTypeId targetRole)
-    {
-        FpcServerPositionDistributor.SendRole(target.ReferenceHub, player.ReferenceHub, targetRole);
     }
 
     public static void SetFakeBadgeText(this Player player, Player target, string badgeText)
