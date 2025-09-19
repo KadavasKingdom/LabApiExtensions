@@ -10,7 +10,7 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<DebugType>pdbonly</DebugType>
 		<Optimize>true</Optimize>
-		<Version>0.1.3</Version>
+		<Version>0.1.4</Version>
 		<FileVersion>$(Version)</FileVersion>
 		<RepositoryType>git</RepositoryType>
 		<RepositoryUrl>https://github.com/KadavasKingdom/LabApiExtensions</RepositoryUrl>
@@ -20,7 +20,7 @@
 	<!-- Nuget References -->
 	<ItemGroup>
 		<PackageReference Include="BepInEx.AssemblyPublicizer.MSBuild" Version="0.4.3" PrivateAssets="all" ExcludeAssets="runtime" ReferenceOutputAssembly="false" Private="true" />
-		<PackageReference Include="Northwood.LabAPI" Version="1.1.1" Publicize="true" PrivateAssets="all" ExcludeAssets="runtime" ReferenceOutputAssembly="false" Private="true" />
+		<PackageReference Include="Northwood.LabAPI" Version="1.1.2" Publicize="true" PrivateAssets="all" ExcludeAssets="runtime" ReferenceOutputAssembly="false" Private="true" />
 	</ItemGroup>
 	<!-- DLL References -->
 	<ItemGroup>

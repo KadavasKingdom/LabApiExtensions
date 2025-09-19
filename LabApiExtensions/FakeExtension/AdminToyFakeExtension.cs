@@ -44,6 +44,17 @@ public static class AdminToyFakeExtension
         target.SendFakeSyncVar(invisibleInteractableToy, 32, shape);
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="invisibleInteractableToy"></param>
+    /// <param name="target"></param>
+    /// <param name="interactionDuration"></param>
+    /// <remarks>
+    /// When player interactomg with <paramref name="invisibleInteractableToy"/> it will return the original <see cref="InvisibleInteractableToy.InteractionDuration"/>.
+    /// <br></br>
+    /// So this method is not really viable.
+    /// </remarks>
     public static void SetFakeInteractionDuration(this InvisibleInteractableToy invisibleInteractableToy, Player target, float interactionDuration)
     {
         target.SendFakeSyncVar(invisibleInteractableToy, 64, interactionDuration);
@@ -205,6 +216,11 @@ public static class AdminToyFakeExtension
     public static void SetFakePriority(this AdminToys.WaypointToy adminToy, Player target, float priority)
     {
         target.SendFakeSyncVar(adminToy, 64, priority);
+    }
+
+    public static void SetFakeBoundsSize(this AdminToys.WaypointToy adminToy, Player target, Vector3 boundsSize)
+    {
+        target.SendFakeSyncVar(adminToy, 128, boundsSize);
     }
     #endregion
 }
