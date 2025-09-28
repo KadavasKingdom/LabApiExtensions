@@ -10,7 +10,7 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<DebugType>pdbonly</DebugType>
 		<Optimize>true</Optimize>
-		<Version>0.1.4</Version>
+		<Version>0.1.5</Version>
 		<FileVersion>$(Version)</FileVersion>
 		<RepositoryType>git</RepositoryType>
 		<RepositoryUrl>https://github.com/KadavasKingdom/LabApiExtensions</RepositoryUrl>

@@ -14,7 +14,7 @@ public static class RNGExtension
     public static T GetRandomWeight<T>(this Dictionary<T, int> dic, T default_val = default)
     {
         var sum = dic.Values.Sum();
-        int chance = RandomGenerator.GetInt32(1, sum + 1);
+        int chance = URandom.Range(1, sum + 1);
         T return_t = default_val;
         foreach (var kv in dic)
         {
@@ -55,6 +55,6 @@ public static class RNGExtension
     /// <returns>A new <see cref="Vector3"/></returns>
     public static Vector3 GetVector3(float min, float max)
     {
-        return new(RandomGenerator.GetFloat(min, max), RandomGenerator.GetFloat(min, max), RandomGenerator.GetFloat(min, max));
+        return new(URandom.Range(min, max), RandomGenerator.GetFloat(min, max), RandomGenerator.GetFloat(min, max));
     }
 }
