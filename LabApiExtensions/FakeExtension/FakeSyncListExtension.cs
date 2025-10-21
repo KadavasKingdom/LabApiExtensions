@@ -103,7 +103,7 @@ public static class FakeSyncListExtension
     /// <param name="listIndex">The index of the list.</param>
     /// <param name="changer">Change related action.</param>
     /// <remarks>
-    /// The <paramref name="listIndex"/> stats at 1.
+    /// The <paramref name="listIndex"/> starts at 1.
     /// </remarks>
     public static void SendFakeSyncList<T>(this Player target, NetworkBehaviour networkBehaviour, ulong listIndex, ListChanger<T> changer)
     {
