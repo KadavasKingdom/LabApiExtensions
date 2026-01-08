@@ -15,7 +15,13 @@ namespace LabApiExtensions.Managers;
 
 public static class FakeRoleManager
 {
-    static readonly Dictionary<ReferenceHub, RoleTypeId> FakeRoles = [];
+    struct FakeRole
+    {
+        public RoleTypeId Role;
+        public Dictionary<ReferenceHub, RoleTypeId> RoleToViewer;
+    }
+
+    static readonly Dictionary<ReferenceHub, FakeRole> FakeRoles = [];
 
     static FakeRoleManager()
     {
@@ -25,6 +31,9 @@ public static class FakeRoleManager
 
     private static void PlayerEvents_ChangingRole(PlayerChangingRoleEventArgs ev)
     {
+        if (ev.Player is null)
+            return;
+
         if (ev.IsAllowed)
             RemoveFakeRole(ev.Player);
     }
@@ -33,8 +42,39 @@ public static class FakeRoleManager
     {
         if (roleType is RoleTypeId.None or RoleTypeId.Destroyed)
             return;
+
+        AddFakeRole(player, roleType, null);
+    }
+
+    public static void AddFakeRole(this Player player, RoleTypeId roleType, Player viewer)
+    {
+        if (roleType is RoleTypeId.None or RoleTypeId.Destroyed)
+            return;
+
         if (player.Connection != null || !player.IsReady)
-            FakeRoles[player.ReferenceHub] = roleType;
+        {
+            if (!FakeRoles.TryGetValue(player.ReferenceHub, out FakeRole value))
+            {
+                value = FakeRoles[player.ReferenceHub] = new()
+                { 
+                    Role = RoleTypeId.None,
+                    RoleToViewer = []
+                };
+            }
+
+            if (viewer != null)
+                value.RoleToViewer[viewer.ReferenceHub] = roleType;
+            else
+                value.Role = roleType;
+        }
+    }
+
+    public static void RemoveViewer(this Player player, Player viewer)
+    {
+        if (FakeRoles.TryGetValue(player.ReferenceHub, out FakeRole value))
+        {
+            value.RoleToViewer.Remove(viewer.ReferenceHub);
+        }
     }
 
     public static void RemoveFakeRole(this Player player)
@@ -44,19 +84,27 @@ public static class FakeRoleManager
 
     private static RoleTypeId FpcServerPositionDistributor_RoleSyncEvent(ReferenceHub hub, ReferenceHub receiver, RoleTypeId roleType, NetworkWriter writer)
     {
-        if (FakeRoles.TryGetValue(hub, out var value))
+        RoleTypeId returnRole = roleType;
+        if (FakeRoles.TryGetValue(hub, out FakeRole fakeRole))
         {
-            WriteExtraForRole(hub, value, writer);
-            return value;
+            if (fakeRole.RoleToViewer.TryGetValue(receiver, out RoleTypeId roleToViewer))
+                returnRole = roleToViewer;
+
+            if (returnRole == RoleTypeId.None)
+                returnRole = fakeRole.Role;
+
+            if (returnRole != roleType)
+                WriteExtraForRole(hub, returnRole, writer);
         }
-        return roleType;
+
+        return returnRole;
     }
 
     private static void WriteExtraForRole(ReferenceHub hub, RoleTypeId roleType, NetworkWriter writer)
     {
         PlayerRoleBase roleBase = roleType.GetRoleBase();
 
-        if (roleBase is HumanRole { UsesUnitNames: not false })
+        if (roleBase is HumanRole { UsesUnitNames: true })
         {
             // UnitNameId
             writer.WriteByte(0);
