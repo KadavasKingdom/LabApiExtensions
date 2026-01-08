@@ -63,17 +63,35 @@ public static class FakeRoleManager
             }
 
             if (viewer != null)
+            {
                 value.RoleToViewer[viewer.ReferenceHub] = roleType;
+#if DEBUG
+                CL.Debug($"{player} set fakerole: {roleType} for {viewer}");
+#endif
+            }
+
             else
+            {
                 value.Role = roleType;
+#if DEBUG
+                CL.Info($"{player} set fakerole: {roleType}");
+#endif
+            }
+
+            FakeRoles[player.ReferenceHub] = value;
         }
     }
 
-    public static void RemoveViewer(this Player player, Player viewer)
+    public static void RemoveFakeRoleViewer(this Player player, Player viewer)
     {
         if (FakeRoles.TryGetValue(player.ReferenceHub, out FakeRole value))
         {
             value.RoleToViewer.Remove(viewer.ReferenceHub);
+
+            FakeRoles[player.ReferenceHub] = value;
+#if DEBUG
+            CL.Info($"{player} removed viewer: {viewer}");
+#endif
         }
     }
 
@@ -87,11 +105,10 @@ public static class FakeRoleManager
         RoleTypeId returnRole = roleType;
         if (FakeRoles.TryGetValue(hub, out FakeRole fakeRole))
         {
+            returnRole = fakeRole.Role;
+
             if (fakeRole.RoleToViewer.TryGetValue(receiver, out RoleTypeId roleToViewer))
                 returnRole = roleToViewer;
-
-            if (returnRole == RoleTypeId.None)
-                returnRole = fakeRole.Role;
 
             if (returnRole != roleType)
                 WriteExtraForRole(hub, returnRole, writer);
