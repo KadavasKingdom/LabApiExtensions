@@ -57,7 +57,7 @@ public static class FakeRoleManager
             {
                 value = FakeRoles[player.ReferenceHub] = new()
                 { 
-                    Role = RoleTypeId.None,
+                    Role = player.Role,
                     RoleToViewer = []
                 };
             }
