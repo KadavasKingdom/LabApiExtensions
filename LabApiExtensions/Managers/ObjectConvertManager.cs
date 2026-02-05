@@ -2,6 +2,9 @@
 
 namespace LabApiExtensions.Managers;
 
+/// <summary>
+/// Object parser manager.
+/// </summary>
 public static class ObjectConvertManager
 {
     /// <summary>

@@ -4,6 +4,9 @@ using UnityEngine;
 
 namespace LabApiExtensions.FakeExtension;
 
+/// <summary>
+/// Extension for faking SyncVars for any <see cref="AdminToyBase"/>.
+/// </summary>
 public static class AdminToyFakeExtension
 {
     #region AdminToyBase

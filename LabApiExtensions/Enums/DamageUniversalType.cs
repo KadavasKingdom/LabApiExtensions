@@ -1,7 +1,11 @@
 ﻿namespace LabApiExtensions.Enums;
 
+/// <summary>
+/// Universal damage type.
+/// </summary>
 public enum DamageUniversalType : byte
 {
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     Recontained,
     Warhead,
     Scp049,
@@ -33,5 +37,7 @@ public enum DamageUniversalType : byte
     Scp1344,
     Scp1507Peck,
     Scp127Bullets,
+    Scp1509,
     None = 255,
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }

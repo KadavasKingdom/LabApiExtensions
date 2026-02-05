@@ -11,6 +11,7 @@ public static class GameObjectPrintHelper
     /// Print the <see cref="GameObject"/>'s <see cref="Component"/>.
     /// </summary>
     /// <param name="object">The current <see cref="GameObject"/>.</param>
+    /// <param name="maxLevel">Max depth level.</param>
     /// <returns>The <see cref="GameObject"/>'s <see cref="Component"/> tree to print.</returns>
     public static string PrintComponentTree(this GameObject @object, int maxLevel = -1)
     {

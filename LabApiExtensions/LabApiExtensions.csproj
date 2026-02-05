@@ -10,7 +10,7 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<DebugType>pdbonly</DebugType>
 		<Optimize>true</Optimize>
-		<Version>0.1.7</Version>
+		<Version>0.2</Version>
 		<FileVersion>$(Version)</FileVersion>
 		<RepositoryType>git</RepositoryType>
 		<RepositoryUrl>https://github.com/KadavasKingdom/LabApiExtensions</RepositoryUrl>
@@ -45,5 +45,6 @@
 	<Import Project="ReferencePaths.props.user" Condition="Exists('ReferencePaths.props.user')" />
 	<PropertyGroup>
 		<AssemblySearchPaths>$(AssemblySearchPaths);$(ReferencePath);$(SL_REFERENCES)</AssemblySearchPaths>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 	</PropertyGroup>
 </Project>

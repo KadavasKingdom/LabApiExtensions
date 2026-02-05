@@ -2,6 +2,9 @@
 
 namespace LabApiExtensions.Extensions;
 
+/// <summary>
+/// Extension for <see cref="Player"/>.
+/// </summary>
 public static class PlayerExtension
 {
     /// <summary>

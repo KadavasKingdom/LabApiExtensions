@@ -3,6 +3,9 @@ using CustomPlayerEffects;
 
 namespace LabApiExtensions.Extensions;
 
+/// <summary>
+/// Extension for player effects.
+/// </summary>
 public static class EffectExtension
 {
     /// <summary>

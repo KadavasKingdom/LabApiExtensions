@@ -3,6 +3,9 @@ using System.Reflection;
 
 namespace LabApiExtensions.Extensions;
 
+/// <summary>
+/// Extension for writing with mirror.
+/// </summary>
 public static class MirrorWriterExtension
 {
     /// <summary>

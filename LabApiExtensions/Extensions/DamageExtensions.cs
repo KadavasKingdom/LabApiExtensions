@@ -1,4 +1,5 @@
-﻿using LabApiExtensions.Enums;
+﻿using InventorySystem.Items.Scp1509;
+using LabApiExtensions.Enums;
 using PlayerRoles.PlayableScps.Scp1507;
 using PlayerRoles.PlayableScps.Scp3114;
 using PlayerRoles.PlayableScps.Scp939;
@@ -6,6 +7,9 @@ using PlayerStatsSystem;
 
 namespace LabApiExtensions.Extensions;
 
+/// <summary>
+/// Extension for <see cref="DamageHandlerBase"/>.
+/// </summary>
 public static class DamageExtensions
 {
     /// <summary>
@@ -58,7 +62,14 @@ public static class DamageExtensions
                 return DamageType.Scp956;
             case SnowballDamageHandler:
                 return DamageType.Snowball;
+            case SilentDamageHandler:
+                return DamageType.Silent;
+            case Scp1509DamageHandler:
+                return DamageType.Scp1509;
+            case GrayCandyDamageHandler:
+                return DamageType.GrayCandy;
             default:
+                CL.Warn($"Damage not found! Please report this! Handler: {handlerBase}");
                 return DamageType.None;
         }
     }

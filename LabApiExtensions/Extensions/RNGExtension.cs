@@ -2,6 +2,9 @@
 
 namespace LabApiExtensions.Extensions;
 
+/// <summary>
+/// Extension with <see cref="URandom"/>.
+/// </summary>
 public static class RNGExtension
 {
     /// <summary>
@@ -42,6 +45,12 @@ public static class RNGExtension
         return dic.Where(predicate).ToDictionary(x => x.Key, x => x.Value).GetRandomWeight(default_val);
     }
 
+    /// <summary>
+    /// Get random item from <paramref name="enumerator"/>.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="enumerator"></param>
+    /// <returns></returns>
     public static T GetRandom<T>(this IEnumerable<T> enumerator)
     {
         return enumerator.ToList().RandomItem();
