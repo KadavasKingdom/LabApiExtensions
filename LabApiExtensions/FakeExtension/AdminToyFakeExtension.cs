@@ -12,7 +12,7 @@ public static class AdminToyFakeExtension
         target.SendFakeSyncVar(adminToy, 1, positon);
     }
 
-    public static void SetFakeRotation<T>(this T adminToy, Player target, Vector3 rotation) where T : AdminToyBase
+    public static void SetFakeRotation<T>(this T adminToy, Player target, Quaternion rotation) where T : AdminToyBase
     {
         target.SendFakeSyncVar(adminToy, 2, rotation);
     }
