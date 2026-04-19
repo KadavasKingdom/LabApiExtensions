@@ -5,15 +5,11 @@ on:
     tags-ignore:
       - "release-*"
       - "latest"
-    paths-ignore:
-      - '.github/*'
-      - '*.md'
-      - "*.yml"
+    branches:
+      - "**"
   pull_request:
-    paths-ignore:
-      - '.github/*'
-      - '*.md'
-      - "*.yml"
+    branches:
+      - "**"
   workflow_dispatch:
     # allow manual trigger
 
