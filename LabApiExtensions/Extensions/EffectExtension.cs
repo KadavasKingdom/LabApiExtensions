@@ -49,6 +49,7 @@ public static class EffectExtension
         var effect = GetEffectFromName(player, name);
         if (effect == null)
             return false;
+
         player.EnableEffect(effect, intensity, duration, addDuration);
         return true;
     }
@@ -70,9 +71,30 @@ public static class EffectExtension
         var effect = GetEffectFromName(player, name);
         if (effect == null)
             return false;
+
         if (effect.IsEnabled)
             return false;
+
         player.EnableEffect(effect, intensity, duration, addDuration);
+        return true;
+    }
+
+    public static bool IncreaseEffect(this Player player, EffectConfig effectConfig, bool increaseIntensity = false, bool addDuration = false)
+    {
+        var effect = GetEffectFromName(player, effectConfig.EffectName);
+        if (effect == null)
+            return false;
+
+        if (!effect.IsEnabled)
+        {
+            player.EnableEffect(effectConfig, addDuration);
+            return true;
+        }
+
+        if (increaseIntensity)
+            effect.Intensity += effectConfig.Intensity;
+
+        effect.ServerChangeDuration(effectConfig.Duration, addDuration);
         return true;
     }
 

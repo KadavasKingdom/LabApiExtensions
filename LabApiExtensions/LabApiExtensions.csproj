@@ -12,6 +12,7 @@
 		<Optimize>true</Optimize>
 		<Version>0.2.0</Version>
 		<FileVersion>$(Version)</FileVersion>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 		<RepositoryType>git</RepositoryType>
 		<RepositoryUrl>https://github.com/KadavasKingdom/LabApiExtensions</RepositoryUrl>
 		<PackageProjectUrl>https://github.com/KadavasKingdom/LabApiExtensions</PackageProjectUrl>
@@ -45,6 +46,5 @@
 	<Import Project="ReferencePaths.props.user" Condition="Exists('ReferencePaths.props.user')" />
 	<PropertyGroup>
 		<AssemblySearchPaths>$(AssemblySearchPaths);$(ReferencePath);$(SL_REFERENCES)</AssemblySearchPaths>
-		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 	</PropertyGroup>
 </Project>
