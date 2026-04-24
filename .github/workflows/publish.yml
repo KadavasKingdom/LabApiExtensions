@@ -37,7 +37,7 @@ jobs:
       - name: Build
         env:
           SL_REFERENCES: ${{ env.REFERENCES_PATH }}
-        run: dotnet build ${{ env.ProjName }}/${{ env.ProjName }}.csproj -o Out
+        run: dotnet build ${{ env.ProjName }}/${{ env.ProjName }}.csproj .c:Release -o Out
 
       - name : Upload
         uses: actions/upload-artifact@v4.3.5
