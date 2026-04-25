@@ -3,6 +3,9 @@ using CustomPlayerEffects;
 
 namespace LabApiExtensions.Extensions;
 
+/// <summary>
+/// Extension for player effects.
+/// </summary>
 public static class EffectExtension
 {
     /// <summary>
@@ -46,6 +49,7 @@ public static class EffectExtension
         var effect = GetEffectFromName(player, name);
         if (effect == null)
             return false;
+
         player.EnableEffect(effect, intensity, duration, addDuration);
         return true;
     }
@@ -67,9 +71,42 @@ public static class EffectExtension
         var effect = GetEffectFromName(player, name);
         if (effect == null)
             return false;
+
         if (effect.IsEnabled)
             return false;
+
         player.EnableEffect(effect, intensity, duration, addDuration);
+        return true;
+    }
+
+    /// <summary>
+    /// Increase effect if exists.
+    /// </summary>
+    /// <param name="player">The player for the effect to apply.</param>
+    /// <param name="effectConfig">Effect related config.</param>
+    /// <param name="increaseIntensity">Should increase the intensity if effect exits.</param>
+    /// <param name="setIntensity">Sets the intensity from the <paramref name="effectConfig"/>.</param>
+    /// <param name="addDuration">Add to previous duration</param>
+    /// <returns><see langword="true"/> on increasing or enabling the effect, otherwise <see langword="false"/>.</returns>
+    public static bool IncreaseEffect(this Player player, EffectConfig effectConfig, bool increaseIntensity = false, bool setIntensity = false, bool addDuration = false)
+    {
+        var effect = GetEffectFromName(player, effectConfig.EffectName);
+        if (effect == null)
+            return false;
+
+        if (!effect.IsEnabled)
+        {
+            player.EnableEffect(effectConfig, addDuration);
+            return true;
+        }
+
+        if (increaseIntensity)
+            effect.Intensity += effectConfig.Intensity;
+
+        if (setIntensity)
+            effect.Intensity = effectConfig.Intensity;
+
+        effect.ServerChangeDuration(effectConfig.Duration, addDuration);
         return true;
     }
 

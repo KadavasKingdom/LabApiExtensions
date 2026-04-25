@@ -4,6 +4,9 @@ using Mirror;
 
 namespace LabApiExtensions.FakeExtension;
 
+/// <summary>
+/// Extension for sending fake SyncVar with <see cref="Player"/>.
+/// </summary>
 public static class FakeSyncVarExtension
 {
     private static readonly Dictionary<Type, ulong> SubWriteClassToMinULong = new()
@@ -40,8 +43,7 @@ public static class FakeSyncVarExtension
         Type networkType = networkBehaviour.GetType();
 
         target.SendFakeCore(networkBehaviour,
-        (writer) => writer.WriteULong(0), // Write No SyncData
-        (writer) => // Write SyncVar
+        null, (writer) => // Write SyncVar
         {
             // Write DrityBit always
             writer.WriteULong(dirtyBit);
@@ -64,7 +66,7 @@ public static class FakeSyncVarExtension
     }
 
     // Sending mulitple Sync Vars to the player. (Not Tested)
-    public static void SendFakeSyncVars(this Player target, NetworkBehaviour networkBehaviour, params (ulong DirtyBit, object SyncVar)[] syncVars)
+    private static void SendFakeSyncVars(this Player target, NetworkBehaviour networkBehaviour, params (ulong DirtyBit, object SyncVar)[] syncVars)
     {
         if (syncVars.Length == 0)
             return;

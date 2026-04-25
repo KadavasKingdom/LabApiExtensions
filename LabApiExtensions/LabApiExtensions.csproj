@@ -10,8 +10,9 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<DebugType>pdbonly</DebugType>
 		<Optimize>true</Optimize>
-		<Version>0.2.0</Version>
+		<Version>0.2.1</Version>
 		<FileVersion>$(Version)</FileVersion>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 		<RepositoryType>git</RepositoryType>
 		<RepositoryUrl>https://github.com/KadavasKingdom/LabApiExtensions</RepositoryUrl>
 		<PackageProjectUrl>https://github.com/KadavasKingdom/LabApiExtensions</PackageProjectUrl>
@@ -20,11 +21,11 @@
 	<!-- Nuget References -->
 	<ItemGroup>
 		<PackageReference Include="BepInEx.AssemblyPublicizer.MSBuild" Version="0.4.3" PrivateAssets="all" ExcludeAssets="runtime" ReferenceOutputAssembly="false" Private="true" />
+		<PackageReference Include="Northwood.LabAPI" Version="1.1.6.1" Publicize="true" PrivateAssets="all" ExcludeAssets="runtime" ReferenceOutputAssembly="false"  Private="true" />
 	</ItemGroup>
 	<!-- DLL References -->
 	<ItemGroup>
 		<Reference Include="Assembly-CSharp" Publicize="true" Private="false" />
-		<Reference Include="LabApi" Publicize="true" Private="false" />
 		<Reference Include="Mirror" Publicize="true" Private="false" />
 		<Reference Include="Pooling" Private="false" />
 		<Reference Include="UnityEngine.CoreModule" Private="false" />

@@ -3,6 +3,9 @@ using Mirror;
 
 namespace LabApiExtensions.FakeExtension;
 
+/// <summary>
+/// Extension for sending fake SyncList with <see cref="Player"/>.
+/// </summary>
 public static class FakeSyncListExtension
 {
     /// <summary>
@@ -11,9 +14,18 @@ public static class FakeSyncListExtension
     /// <typeparam name="T"></typeparam>
     public class ListChanger<T>
     {
-        public T value;
-        public int index;
-        public ListOperation operation;
+        /// <summary>
+        /// The value to use.
+        /// </summary>
+        public T Value;
+        /// <summary>
+        /// The index to use.
+        /// </summary>
+        public int Index;
+        /// <summary>
+        /// The list operation.
+        /// </summary>
+        public ListOperation Operation;
     }
 
     /// <summary>
@@ -27,8 +39,8 @@ public static class FakeSyncListExtension
     public static void SendFakeSyncListAdd<T>(this Player target, NetworkBehaviour networkBehaviour, ulong listIndex, T value)
         => target.SendFakeSyncList<T>(networkBehaviour, listIndex, new()
         {
-            operation = ListOperation.Add,
-            value = value
+            Operation = ListOperation.Add,
+            Value = value
         });
 
     /// <summary>
@@ -41,7 +53,7 @@ public static class FakeSyncListExtension
     public static void SendFakeSyncListClear<T>(this Player target, NetworkBehaviour networkBehaviour, ulong listIndex)
         => target.SendFakeSyncList<T>(networkBehaviour, listIndex, new()
         {
-            operation = ListOperation.Clear,
+            Operation = ListOperation.Clear,
         });
 
     /// <summary>
@@ -55,8 +67,8 @@ public static class FakeSyncListExtension
     public static void SendFakeSyncListRemoveAt<T>(this Player target, NetworkBehaviour networkBehaviour, ulong listIndex, int index)
         => target.SendFakeSyncList<T>(networkBehaviour, listIndex, new()
         {
-            operation = ListOperation.RemoveAt,
-            index = index
+            Operation = ListOperation.RemoveAt,
+            Index = index
         });
 
     /// <summary>
@@ -71,9 +83,9 @@ public static class FakeSyncListExtension
     public static void SendFakeSyncListInsert<T>(this Player target, NetworkBehaviour networkBehaviour, ulong listIndex, int index, T value)
         => target.SendFakeSyncList<T>(networkBehaviour, listIndex, new()
         {
-            operation = ListOperation.Insert,
-            index = index,
-            value = value
+            Operation = ListOperation.Insert,
+            Index = index,
+            Value = value
         });
 
     /// <summary>
@@ -88,9 +100,9 @@ public static class FakeSyncListExtension
     public static void SendFakeSyncListSet<T>(this Player target, NetworkBehaviour networkBehaviour, ulong listIndex, int index, T value)
         => target.SendFakeSyncList<T>(networkBehaviour, listIndex, new()
         {
-            operation = ListOperation.Set,
-            index = index,
-            value = value
+            Operation = ListOperation.Set,
+            Index = index,
+            Value = value
         });
 
 
@@ -115,23 +127,21 @@ public static class FakeSyncListExtension
 
             // Copy from OnSerializeDelta
             writer.WriteUInt(1);
-            writer.WriteByte((byte)changer.operation);
-            switch (changer.operation)
+            writer.WriteByte((byte)changer.Operation);
+            switch (changer.Operation)
             {
                 case ListOperation.Add:
-                    writer.Write(changer.value);
+                    writer.Write(changer.Value);
                     break;
                 case ListOperation.Insert:
                 case ListOperation.Set:
-                    writer.WriteUInt((uint)changer.index);
-                    writer.Write(changer.value);
+                    writer.WriteUInt((uint)changer.Index);
+                    writer.Write(changer.Value);
                     break;
                 case ListOperation.RemoveAt:
-                    writer.WriteUInt((uint)changer.index);
+                    writer.WriteUInt((uint)changer.Index);
                     break;
             }
-        },
-        (writer) => writer.WriteULong(0) // Write No SyncData
-        );
+        }, null);
     }
 }

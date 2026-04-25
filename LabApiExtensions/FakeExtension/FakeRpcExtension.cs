@@ -4,6 +4,9 @@ using System.Reflection;
 
 namespace LabApiExtensions.FakeExtension;
 
+/// <summary>
+/// Extension for sending fake RPC with <see cref="Player"/>.
+/// </summary>
 public static class FakeRpcExtension
 {
     /// <summary>
@@ -12,7 +15,7 @@ public static class FakeRpcExtension
     /// <param name="player">The target player to send to.</param>
     /// <param name="networkBehaviour">The networking component.</param>
     /// <param name="functionHash">The RPC function hash.</param>
-    /// <param name="objects">Parameters for the <paramref name="functionName"/>.</param>
+    /// <param name="objects">Parameters for the <paramref name="functionHash"/>.</param>
     public static void SendFakeRPC(this Player player, NetworkBehaviour networkBehaviour, int functionHash, params object[] objects)
     {
         using NetworkWriterPooled networkWriterPooled = NetworkWriterPool.Get();

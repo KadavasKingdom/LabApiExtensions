@@ -4,8 +4,14 @@ using PlayerStatsSystem;
 
 namespace LabApiExtensions.Enums;
 
+/// <summary>
+/// Represent a subtype of Damages.
+/// </summary>
 public enum DamageSubType
 {
+    /// <summary>
+    /// No damage subtype.
+    /// </summary>
     None = 0,
     /// <summary>
     /// Check <see cref="DamageUniversalType"/>.

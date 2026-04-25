@@ -5,7 +5,10 @@ using LabApiExtensions.FakeExtension;
 
 namespace LabApiExtensions.Extensions;
 
-public static class ScaleHelper
+/// <summary>
+/// 
+/// </summary>
+public static class ScaleExtension
 {
     /// <summary>
     /// Setting the scale of <paramref name="player"/> with value of <paramref name="value"/>.

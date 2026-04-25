@@ -13,6 +13,9 @@ using UnityEngine;
 
 namespace LabApiExtensions.Managers;
 
+/// <summary>
+/// Manages fake roles.
+/// </summary>
 public static class FakeRoleManager
 {
     struct FakeRole
@@ -38,6 +41,11 @@ public static class FakeRoleManager
             RemoveFakeRole(ev.Player);
     }
 
+    /// <summary>
+    /// Add player to fake roles.
+    /// </summary>
+    /// <param name="player">The player to set the fake role.</param>
+    /// <param name="roleType">The role to fake.</param>
     public static void AddFakeRole(this Player player, RoleTypeId roleType)
     {
         if (roleType is RoleTypeId.None or RoleTypeId.Destroyed)
@@ -46,6 +54,12 @@ public static class FakeRoleManager
         AddFakeRole(player, roleType, null);
     }
 
+    /// <summary>
+    /// Add player to fake roles.
+    /// </summary>
+    /// <param name="player">The player to set the fake role.</param>
+    /// <param name="roleType">The role to fake.</param>
+    /// <param name="viewer">The player to fake the role to.</param>
     public static void AddFakeRole(this Player player, RoleTypeId roleType, Player viewer)
     {
         if (roleType is RoleTypeId.None or RoleTypeId.Destroyed)
@@ -82,6 +96,11 @@ public static class FakeRoleManager
         }
     }
 
+    /// <summary>
+    /// Remove <paramref name="viewer"/> from seeing <paramref name="player"/> as faked role.
+    /// </summary>
+    /// <param name="player">The player who has fake role.</param>
+    /// <param name="viewer">The viewer player to remove.</param>
     public static void RemoveFakeRoleViewer(this Player player, Player viewer)
     {
         if (FakeRoles.TryGetValue(player.ReferenceHub, out FakeRole value))
@@ -95,9 +114,23 @@ public static class FakeRoleManager
         }
     }
 
+    /// <summary>
+    /// Removes player fake role.
+    /// </summary>
+    /// <param name="player">The player to remove.</param>
     public static void RemoveFakeRole(this Player player)
     {
         FakeRoles.Remove(player.ReferenceHub);
+    }
+
+    /// <summary>
+    /// Checks if the <paramref name="player"/> has a fake role.
+    /// </summary>
+    /// <param name="player">The player to check.</param>
+    /// <returns><see langword="true"/> if <paramref name="player"/> found otherwise <see langword="false"/>.</returns>
+    public static bool HasFakeRole(this Player player)
+    {
+        return FakeRoles.ContainsKey(player.ReferenceHub);
     }
 
     private static RoleTypeId FpcServerPositionDistributor_RoleSyncEvent(ReferenceHub hub, ReferenceHub receiver, RoleTypeId roleType, NetworkWriter writer)

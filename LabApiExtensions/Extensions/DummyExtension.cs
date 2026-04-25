@@ -3,6 +3,9 @@ using PlayerRoles.Subroutines;
 
 namespace LabApiExtensions.Extensions;
 
+/// <summary>
+/// Extension for using items/subroutines for dummies.
+/// </summary>
 public static class DummyExtension
 {
     /// <summary>
@@ -13,7 +16,7 @@ public static class DummyExtension
     /// <param name="actionName">The <see cref="ActionName"/>.</param>
     /// <param name="isClick">Is click action.</param>
     /// <returns><see langword="true"/> on success otherwise <see langword="false"/></returns>
-    public static bool TryRunItemAction<T>(T item, ActionName actionName, bool isClick) where T : AutosyncItem
+    public static bool TryRunItemAction<T>(this T item, ActionName actionName, bool isClick) where T : AutosyncItem
     {
         if (item == null)
             return false;
@@ -30,7 +33,7 @@ public static class DummyExtension
     /// <param name="item">Item to stop action to.</param>
     /// <param name="actionName">The <see cref="ActionName"/>.</param>
     /// <returns><see langword="true"/> on success otherwise <see langword="false"/></returns>
-    public static bool TryStopItemAction<T>(T item, ActionName actionName) where T : AutosyncItem
+    public static bool TryStopItemAction<T>(this T item, ActionName actionName) where T : AutosyncItem
     {
         if (item == null)
             return false;
@@ -48,7 +51,7 @@ public static class DummyExtension
     /// <param name="actionName">The <see cref="ActionName"/>.</param>
     /// <param name="isClick">Is click action.</param>
     /// <returns><see langword="true"/> on success otherwise <see langword="false"/></returns>
-    public static bool TryRunRoleAction<T>(T subroutine, ActionName actionName, bool isClick) where T : SubroutineBase
+    public static bool TryRunRoleAction<T>(this T subroutine, ActionName actionName, bool isClick) where T : SubroutineBase
     {
         if (subroutine == null)
             return false;
@@ -65,7 +68,7 @@ public static class DummyExtension
     /// <param name="subroutine">The subroutine to stop action to.</param>
     /// <param name="actionName">The <see cref="ActionName"/>.</param>
     /// <returns><see langword="true"/> on success otherwise <see langword="false"/></returns>
-    public static bool TryStopRoleAction<T>(T subroutine, ActionName actionName) where T : SubroutineBase
+    public static bool TryStopRoleAction<T>(this T subroutine, ActionName actionName) where T : SubroutineBase
     {
         if (subroutine == null)
             return false;
