@@ -33,6 +33,7 @@ public static class DamageExtensions
                 {
                     if (scpDamage.Attacker.IsSet && scpDamage.Attacker.Role == PlayerRoles.RoleTypeId.Scp173)
                         return DamageType.Scp173;
+
                     return scpDamage switch
                     {
                         Scp096DamageHandler => DamageType.Scp096,

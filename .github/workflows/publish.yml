@@ -36,7 +36,7 @@ jobs:
 #
       - name: Build
         env:
-          SL_REFERENCES: ${{ env.REFERENCES_PATH }}
+          ReferencePath: ${{ env.REFERENCES_PATH }}
         run: dotnet build ${{ env.ProjName }}/${{ env.ProjName }}.csproj .c:Release -o Out
 
       - name : Upload

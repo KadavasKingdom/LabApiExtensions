@@ -1,64 +1,12 @@
 ﻿using InventorySystem.Items;
-using PlayerRoles.FirstPersonControl;
-using UnityEngine;
 
 namespace LabApiExtensions.FakeExtension;
 
 /// <summary>
-/// Collection of sending fake messages/packets.
+/// Collection of sending fake sync vars.
 /// </summary>
-public static class PlayerFakeExtension
+public static class PlayerFakeSyncVarExtension
 {
-    /// <summary>
-    /// Sends a fake gravity message to <paramref name="target"/>.
-    /// </summary>
-    /// <param name="player">The player whos receives it.</param>
-    /// <param name="target">The player whos gravity changes.</param>
-    /// <param name="gravity">The new gravity value.</param>
-    public static void SetFakeGravity(this Player player, Player target, Vector3 gravity)
-    {
-        player.Connection.Send<SyncedGravityMessages.GravityMessage>(new(gravity, target.ReferenceHub));
-    }
-
-    /// <summary>
-    /// Sends a fake gravity message to <paramref name="targets"/>.
-    /// </summary>
-    /// <param name="player">The player whos receives it.</param>
-    /// <param name="targets">The players whos gravity changes.</param>
-    /// <param name="gravity">The new gravity value.</param>
-    public static void SetFakeGravity(this Player player, IEnumerable<Player> targets, Vector3 gravity)
-    {
-        foreach (Player target in targets)
-        {
-            player.SetFakeGravity(target, gravity);
-        }
-    }
-
-    /// <summary>
-    /// Sends a fake scale message to <paramref name="target"/>.
-    /// </summary>
-    /// <param name="player">The player whos receives it.</param>
-    /// <param name="target">The players whos gravity changes.</param>
-    /// <param name="scale">The new gravity value.</param>
-    public static void SetFakeScale(this Player player, Player target, Vector3 scale)
-    {
-        player.Connection.Send<SyncedScaleMessages.ScaleMessage>(new(scale, target.ReferenceHub));
-    }
-
-    /// <summary>
-    /// Sends a fake scale message to <paramref name="targets"/>.
-    /// </summary>
-    /// <param name="player">The player whos receives it.</param>
-    /// <param name="targets">The players whos scale changes.</param>
-    /// <param name="scale">The new scale value.</param>
-    public static void SetFakeScale(this Player player, IEnumerable<Player> targets, Vector3 scale)
-    {
-        foreach (Player target in targets)
-        {
-            player.SetFakeScale(target, scale);
-        }
-    }
-
     /// <summary>
     /// Sets a fake <paramref name="badgeText"/> of <paramref name="target"/>.
     /// </summary>
@@ -68,6 +16,15 @@ public static class PlayerFakeExtension
     public static void SetFakeBadgeText(this Player player, Player target, string badgeText)
     {
         target.SendFakeSyncVar(player.ReferenceHub.serverRoles, 1, badgeText);
+    }
+
+    /// <summary>
+    /// Resyncs <paramref name="player"/> badge text from the server.
+    /// </summary>
+    /// <param name="player">The player to resync.</param>
+    public static void ResyncFakeBadgeText(this Player player)
+    {
+        player.ReferenceHub.serverRoles.SetSyncVarDirtyBit(1);
     }
 
     /// <summary>
@@ -82,6 +39,15 @@ public static class PlayerFakeExtension
     }
 
     /// <summary>
+    /// Resyncs <paramref name="player"/> badge color from the server.
+    /// </summary>
+    /// <param name="player">The player to resync.</param>
+    public static void ResyncFakeBadgeColor(this Player player)
+    {
+        player.ReferenceHub.serverRoles.SetSyncVarDirtyBit(2);
+    }
+
+    /// <summary>
     /// Sets a fake <paramref name="viewRange"/> of <paramref name="target"/>.
     /// </summary>
     /// <param name="player">The player whos receives it.</param>
@@ -90,6 +56,15 @@ public static class PlayerFakeExtension
     public static void SetFakeViewRange(this Player player, Player target, float viewRange)
     {
         target.SendFakeSyncVar(player.ReferenceHub.nicknameSync, 1, viewRange);
+    }
+
+    /// <summary>
+    /// Resyncs <paramref name="player"/> view range from the server.
+    /// </summary>
+    /// <param name="player">The player to resync.</param>
+    public static void ResyncFakeViewRange(this Player player)
+    {
+        player.ReferenceHub.nicknameSync.SetSyncVarDirtyBit(1);
     }
 
     /// <summary>
@@ -104,6 +79,15 @@ public static class PlayerFakeExtension
     }
 
     /// <summary>
+    /// Resyncs <paramref name="player"/> custom info from the server.
+    /// </summary>
+    /// <param name="player">The player to resync.</param>
+    public static void ResyncFakeCustomInfo(this Player player)
+    {
+        player.ReferenceHub.nicknameSync.SetSyncVarDirtyBit(2);
+    }
+
+    /// <summary>
     /// Sets a fake <paramref name="playerInfoArea"/> of <paramref name="target"/>.
     /// </summary>
     /// <param name="player">The player whos receives it.</param>
@@ -112,6 +96,15 @@ public static class PlayerFakeExtension
     public static void SetFakeInfoArea(this Player player, Player target, PlayerInfoArea playerInfoArea)
     {
         target.SendFakeSyncVar(player.ReferenceHub.nicknameSync, 4, playerInfoArea);
+    }
+
+    /// <summary>
+    /// Resyncs <paramref name="player"/> info area from the server.
+    /// </summary>
+    /// <param name="player">The player to resync.</param>
+    public static void ResyncFakeInfoArea(this Player player)
+    {
+        player.ReferenceHub.nicknameSync.SetSyncVarDirtyBit(4);
     }
 
     /// <summary>
@@ -126,6 +119,15 @@ public static class PlayerFakeExtension
     }
 
     /// <summary>
+    /// Resyncs <paramref name="player"/> nickname from the server.
+    /// </summary>
+    /// <param name="player">The player to resync.</param>
+    public static void ResyncFakeNick(this Player player)
+    {
+        player.ReferenceHub.nicknameSync.SetSyncVarDirtyBit(8);
+    }
+
+    /// <summary>
     /// Sets a fake <paramref name="displayName"/> of <paramref name="target"/>.
     /// </summary>
     /// <param name="player">The player whos receives it.</param>
@@ -134,6 +136,15 @@ public static class PlayerFakeExtension
     public static void SetFakeDisplayName(this Player player, Player target, string displayName)
     {
         target.SendFakeSyncVar(player.ReferenceHub.nicknameSync, 16, displayName);
+    }
+
+    /// <summary>
+    /// Resyncs <paramref name="player"/> display name from the server.
+    /// </summary>
+    /// <param name="player">The player to resync.</param>
+    public static void ResyncFakeDisplayName(this Player player)
+    {
+        player.ReferenceHub.nicknameSync.SetSyncVarDirtyBit(16);
     }
 
     /// <summary>
@@ -148,6 +159,15 @@ public static class PlayerFakeExtension
     }
 
     /// <summary>
+    /// Resyncs <paramref name="player"/> max player from the server.
+    /// </summary>
+    /// <param name="player">The player to resync.</param>
+    public static void ResyncFakeMaxPlayers(this Player player)
+    {
+        player.ReferenceHub.characterClassManager.SetSyncVarDirtyBit(2);
+    }
+
+    /// <summary>
     /// Sets a fake <paramref name="item"/> of <paramref name="target"/>.
     /// </summary>
     /// <param name="player">The player whos receives it.</param>
@@ -157,4 +177,14 @@ public static class PlayerFakeExtension
     {
         target.SendFakeSyncVar(player.ReferenceHub.inventory, 1, item);
     }
+
+    /// <summary>
+    /// Resyncs <paramref name="player"/> current item from the server.
+    /// </summary>
+    /// <param name="player">The player to resync.</param>
+    public static void ResyncFakeCurrentItem(this Player player)
+    {
+        player.ReferenceHub.characterClassManager.SetSyncVarDirtyBit(1);
+    }
+
 }

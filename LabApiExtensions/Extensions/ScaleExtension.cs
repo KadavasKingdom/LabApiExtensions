@@ -27,7 +27,7 @@ public static class ScaleExtension
 
         if (IsFake)
         {
-            PlayerFakeExtension.SetFakeScale(player, Player.ReadyList.Where(x => x != player), value);
+            player.SetFakeScale(Player.ReadyList.Where(x => x != player), value);
             return;
         }
 

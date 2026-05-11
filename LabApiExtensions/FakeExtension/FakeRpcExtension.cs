@@ -9,6 +9,28 @@ namespace LabApiExtensions.FakeExtension;
 /// </summary>
 public static class FakeRpcExtension
 {
+
+    internal static RpcMessage WriteRpcMessage(NetworkBehaviour networkBehaviour, int functionHash, params object[] objects)
+    {
+        using NetworkWriterPooled networkWriterPooled = NetworkWriterPool.Get();
+        foreach (object obj in objects)
+        {
+            if (!MirrorWriterExtension.Write(obj.GetType(), obj, networkWriterPooled))
+            {
+                CL.Error($"Not found NetworkWriter for type {obj.GetType()}");
+                return default;
+            }
+        }
+
+        return new()
+        {
+            netId = networkBehaviour.netId,
+            componentIndex = networkBehaviour.ComponentIndex,
+            functionHash = (ushort)functionHash,
+            payload = networkWriterPooled.ToArraySegment()
+        };
+    }
+
     /// <summary>
     /// Send a fake RPC to <paramref name="player"/>.
     /// </summary>
@@ -18,22 +40,12 @@ public static class FakeRpcExtension
     /// <param name="objects">Parameters for the <paramref name="functionHash"/>.</param>
     public static void SendFakeRPC(this Player player, NetworkBehaviour networkBehaviour, int functionHash, params object[] objects)
     {
-        using NetworkWriterPooled networkWriterPooled = NetworkWriterPool.Get();
-        foreach (object obj in objects)
-        {
-            if (!MirrorWriterExtension.Write(obj.GetType(), obj, networkWriterPooled))
-            {
-                CL.Error($"Not found NetworkWriter for type {obj.GetType()}");
-                return;
-            }
-        }
-        player.Connection.Send(new RpcMessage()
-        {
-            netId = networkBehaviour.netId,
-            componentIndex = networkBehaviour.ComponentIndex,
-            functionHash = (ushort)functionHash,
-            payload = networkWriterPooled.ToArraySegment()
-        });
+        RpcMessage message = WriteRpcMessage(networkBehaviour, functionHash, objects);
+
+        if (message.netId != networkBehaviour.netId)
+            return;
+
+        player.Connection.Send(message);
     }
 
     /// <summary>

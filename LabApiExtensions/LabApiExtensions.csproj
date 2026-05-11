@@ -3,14 +3,13 @@
 	<PropertyGroup>
 		<OutputType>Library</OutputType>
 		<LangVersion>12</LangVersion>
-		<IsPackable>false</IsPackable>
 		<TargetFramework>net48</TargetFramework>
 		<PlatformTarget>x64</PlatformTarget>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<DebugType>pdbonly</DebugType>
 		<Optimize>true</Optimize>
-		<Version>0.2.1</Version>
+		<Version>0.2.2</Version>
 		<FileVersion>$(Version)</FileVersion>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 		<RepositoryType>git</RepositoryType>
@@ -45,6 +44,6 @@
 
 	<Import Project="ReferencePaths.props.user" Condition="Exists('ReferencePaths.props.user')" />
 	<PropertyGroup>
-		<AssemblySearchPaths>$(AssemblySearchPaths);$(ReferencePath);$(SL_REFERENCES)</AssemblySearchPaths>
+		<AssemblySearchPaths>$(AssemblySearchPaths);$(ReferencePath)</AssemblySearchPaths>
 	</PropertyGroup>
 </Project>

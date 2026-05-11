@@ -64,6 +64,6 @@ public static class RNGExtension
     /// <returns>A new <see cref="Vector3"/></returns>
     public static Vector3 GetVector3(float min, float max)
     {
-        return new(URandom.Range(min, max), RandomGenerator.GetFloat(min, max), RandomGenerator.GetFloat(min, max));
+        return new(URandom.Range(min, max), URandom.Range(min, max), URandom.Range(min, max));
     }
 }
