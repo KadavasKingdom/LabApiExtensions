@@ -21,7 +21,9 @@
 	<!-- Nuget References -->
 	<ItemGroup>
 		<PackageReference Include="BepInEx.AssemblyPublicizer.MSBuild" Version="0.4.3" PrivateAssets="all" ExcludeAssets="runtime" ReferenceOutputAssembly="false" Private="true" />
-		<PackageReference Include="Northwood.LabAPI" Version="1.1.6.1" Publicize="true" PrivateAssets="all" ExcludeAssets="runtime" ReferenceOutputAssembly="false"  Private="true" />
+		<PackageReference Include="Northwood.LabAPI" Version="1.1.7" Publicize="true" PrivateAssets="all" ExcludeAssets="runtime" ReferenceOutputAssembly="false" Private="true">
+		  <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
 	</ItemGroup>
 	<!-- DLL References -->
 	<ItemGroup>
