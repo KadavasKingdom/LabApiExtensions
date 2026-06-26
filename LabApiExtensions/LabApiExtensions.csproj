@@ -10,7 +10,7 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<DebugType>pdbonly</DebugType>
 		<Optimize>true</Optimize>
-		<Version>0.2.1</Version>
+		<Version>0.3.0</Version>
 		<FileVersion>$(Version)</FileVersion>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 		<RepositoryType>git</RepositoryType>

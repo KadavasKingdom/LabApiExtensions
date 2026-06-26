@@ -27,6 +27,7 @@ public static class FakeRpcExtension
                 return;
             }
         }
+
         player.Connection.Send(new RpcMessage()
         {
             netId = networkBehaviour.netId,

@@ -133,6 +133,20 @@ public static class FakeRoleManager
         return FakeRoles.ContainsKey(player.ReferenceHub);
     }
 
+    /// <summary>
+    /// Checks if the <paramref name="player"/> has a fake role that only <paramref name="viewer"/> see.
+    /// </summary>
+    /// <param name="player">The player who has fake role.</param>
+    /// <param name="viewer">The viewer player to check.</param>
+    /// <returns><see langword="true"/> if <paramref name="player"/> found otherwise <see langword="false"/>.</returns>
+    public static bool HasFakeRoleViewer(this Player player, Player viewer)
+    {
+        if (!FakeRoles.ContainsKey(player.ReferenceHub))
+            return false;
+
+        return FakeRoles[player.ReferenceHub].RoleToViewer.ContainsKey(viewer.ReferenceHub);
+    }
+
     private static RoleTypeId FpcServerPositionDistributor_RoleSyncEvent(ReferenceHub hub, ReferenceHub receiver, RoleTypeId roleType, NetworkWriter writer)
     {
         RoleTypeId returnRole = roleType;
