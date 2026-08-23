@@ -3,7 +3,8 @@
 /// <summary>
 /// Extensions for <see cref="KeyValuePair{TKey, TValue}"/>.
 /// </summary>
-public static class KeyValuePairExtensions {
+public static class KeyValuePairExtensions
+{
     /// <summary>
     /// Deconstructs <paramref name="kvp"/> into <paramref name="key"/> and <paramref name="value"/>.
     /// </summary>
