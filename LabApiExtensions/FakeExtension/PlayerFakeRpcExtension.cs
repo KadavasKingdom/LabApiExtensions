@@ -42,7 +42,7 @@ public static class PlayerFakeRpcExtension
         if (!RoundSummary._singletonSet || RoundSummary.singleton == null)
             return;
 
-        player.SendFakeRPC(RoundSummary.singleton, nameof(RoundSummary.singleton.RpcHideRoundSummary), [listStart, listFinish, leadingTeam, eDS, eSc, scpKills, roundCd, seconds]);
+        player.SendFakeRPC(RoundSummary.singleton, nameof(RoundSummary.singleton.RpcShowRoundSummary), [listStart, listFinish, leadingTeam, eDS, eSc, scpKills, roundCd, seconds]);
     }
     #endregion
     #region Scp914
