@@ -16,6 +16,12 @@ public static class AdminToyBaseFakeExtension
         target.SendFakeSyncVar(adminToy, 1, positon);
     }
 
+    /// <inheritdoc cref="AdminToy.Position" />
+    public static void SetFakePosition<T>(this T adminToy, IEnumerable<Player> targets, Vector3 positon) where T : AdminToyBase
+    {
+        targets.SendFakeSyncVar(adminToy, 1, positon);
+    }
+
     /// <inheritdoc cref="AdminToy.Rotation" />
     public static void SetFakeRotation<T>(this T adminToy, Player target, Quaternion rotation) where T : AdminToyBase
     {

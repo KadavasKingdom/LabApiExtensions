@@ -144,4 +144,120 @@ public static class FakeSyncListExtension
             }
         }, null);
     }
+
+    /// <summary>
+    /// Sending fake add to the list.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="targets">The targets to send to.</param>
+    /// <param name="networkBehaviour">The behaviour to change.</param>
+    /// <param name="listIndex">The index of the list.</param>
+    /// <param name="value"></param>
+    public static void SendFakeSyncListAdd<T>(this IEnumerable<Player> targets, NetworkBehaviour networkBehaviour, ulong listIndex, T value)
+        => targets.SendFakeSyncList<T>(networkBehaviour, listIndex, new()
+        {
+            Operation = ListOperation.Add,
+            Value = value
+        });
+
+    /// <summary>
+    /// Sending fake clear to the list.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="targets">The targets to send to.</param>
+    /// <param name="networkBehaviour">The behaviour to change.</param>
+    /// <param name="listIndex">The index of the list.</param>
+    public static void SendFakeSyncListClear<T>(this IEnumerable<Player> targets, NetworkBehaviour networkBehaviour, ulong listIndex)
+        => targets.SendFakeSyncList<T>(networkBehaviour, listIndex, new()
+        {
+            Operation = ListOperation.Clear,
+        });
+
+    /// <summary>
+    /// Sending fake remove at to the list.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="targets">The targets to send to.</param>
+    /// <param name="networkBehaviour">The behaviour to change.</param>
+    /// <param name="listIndex">The index of the list.</param>
+    /// <param name="index">The index to remove.</param>
+    public static void SendFakeSyncListRemoveAt<T>(this IEnumerable<Player> targets, NetworkBehaviour networkBehaviour, ulong listIndex, int index)
+        => targets.SendFakeSyncList<T>(networkBehaviour, listIndex, new()
+        {
+            Operation = ListOperation.RemoveAt,
+            Index = index
+        });
+
+    /// <summary>
+    /// Sending fake insert to the list.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="targets">The targets to send to.</param>
+    /// <param name="networkBehaviour">The behaviour to change.</param>
+    /// <param name="listIndex">The index of the list.</param>
+    /// <param name="index">The index to insert.</param>
+    /// <param name="value">The value to insert.</param>
+    public static void SendFakeSyncListInsert<T>(this IEnumerable<Player> targets, NetworkBehaviour networkBehaviour, ulong listIndex, int index, T value)
+        => targets.SendFakeSyncList<T>(networkBehaviour, listIndex, new()
+        {
+            Operation = ListOperation.Insert,
+            Index = index,
+            Value = value
+        });
+
+    /// <summary>
+    /// Sending fake set to the list.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="targets">The targets to send to.</param>
+    /// <param name="networkBehaviour">The behaviour to change.</param>
+    /// <param name="listIndex">The index of the list.</param>
+    /// <param name="index">The index to set.</param>
+    /// <param name="value">The value to set.</param>
+    public static void SendFakeSyncListSet<T>(this IEnumerable<Player> targets, NetworkBehaviour networkBehaviour, ulong listIndex, int index, T value)
+        => targets.SendFakeSyncList<T>(networkBehaviour, listIndex, new()
+        {
+            Operation = ListOperation.Set,
+            Index = index,
+            Value = value
+        });
+
+    /// <summary>
+    /// Sending fake sync for list.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="targets">The targets to send to.</param>
+    /// <param name="networkBehaviour">The behaviour to change.</param>
+    /// <param name="listIndex">The index of the list.</param>
+    /// <param name="changer">Change related action.</param>
+    /// <remarks>
+    /// The <paramref name="listIndex"/> starts at 1.
+    /// </remarks>
+    public static void SendFakeSyncList<T>(this IEnumerable<Player> targets, NetworkBehaviour networkBehaviour, ulong listIndex, ListChanger<T> changer)
+    {
+        targets.SendFakeCore(networkBehaviour,
+        (writer) =>
+        {
+            // Serialize Object Sync Data.
+            writer.WriteULong(listIndex);
+
+            // Copy from OnSerializeDelta
+            writer.WriteUInt(1);
+            writer.WriteByte((byte)changer.Operation);
+            switch (changer.Operation)
+            {
+                case ListOperation.Add:
+                    writer.Write(changer.Value);
+                    break;
+                case ListOperation.Insert:
+                case ListOperation.Set:
+                    writer.WriteUInt((uint)changer.Index);
+                    writer.Write(changer.Value);
+                    break;
+                case ListOperation.RemoveAt:
+                    writer.WriteUInt((uint)changer.Index);
+                    break;
+            }
+        }, null);
+    }
 }
