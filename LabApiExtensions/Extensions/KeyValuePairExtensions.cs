@@ -15,7 +15,7 @@ public static class KeyValuePairExtensions
     /// <param name="value">The deconstructed value.</param>
     public static void Deconstruct<TKey, TValue>(this KeyValuePair<TKey, TValue> kvp, out TKey key, out TValue value)
     {
-          key = kvp.Key;
-          value = kvp.Value;
+        key = kvp.Key;
+        value = kvp.Value;
     }
 }
