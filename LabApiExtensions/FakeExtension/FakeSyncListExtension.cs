@@ -9,44 +9,24 @@ namespace LabApiExtensions.FakeExtension;
 public static class FakeSyncListExtension
 {
     /// <summary>
-    /// Public representation of <see cref="SyncList{T}.Change"/>
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    public class ListChanger<T>
-    {
-        /// <summary>
-        /// The value to use.
-        /// </summary>
-        public T Value;
-        /// <summary>
-        /// The index to use.
-        /// </summary>
-        public int Index;
-        /// <summary>
-        /// The list operation.
-        /// </summary>
-        public ListOperation Operation;
-    }
-
-    /// <summary>
     /// Sending fake add to the list.
     /// </summary>
-    /// <typeparam name="T"></typeparam>
+    /// <typeparam name="T">Any type.</typeparam>
     /// <param name="target">The target to send to.</param>
     /// <param name="networkBehaviour">The behaviour to change.</param>
     /// <param name="listIndex">The index of the list.</param>
-    /// <param name="value"></param>
+    /// <param name="value">The value to add.</param>
     public static void SendFakeSyncListAdd<T>(this Player target, NetworkBehaviour networkBehaviour, ulong listIndex, T value)
         => target.SendFakeSyncList<T>(networkBehaviour, listIndex, new()
         {
             Operation = ListOperation.Add,
-            Value = value
+            Value = value,
         });
 
     /// <summary>
     /// Sending fake clear to the list.
     /// </summary>
-    /// <typeparam name="T"></typeparam>
+    /// <typeparam name="T">Any type.</typeparam>
     /// <param name="target">The target to send to.</param>
     /// <param name="networkBehaviour">The behaviour to change.</param>
     /// <param name="listIndex">The index of the list.</param>
@@ -59,7 +39,7 @@ public static class FakeSyncListExtension
     /// <summary>
     /// Sending fake remove at to the list.
     /// </summary>
-    /// <typeparam name="T"></typeparam>
+    /// <typeparam name="T">Any type.</typeparam>
     /// <param name="target">The target to send to.</param>
     /// <param name="networkBehaviour">The behaviour to change.</param>
     /// <param name="listIndex">The index of the list.</param>
@@ -68,13 +48,13 @@ public static class FakeSyncListExtension
         => target.SendFakeSyncList<T>(networkBehaviour, listIndex, new()
         {
             Operation = ListOperation.RemoveAt,
-            Index = index
+            Index = index,
         });
 
     /// <summary>
     /// Sending fake insert to the list.
     /// </summary>
-    /// <typeparam name="T"></typeparam>
+    /// <typeparam name="T">Any type.</typeparam>
     /// <param name="target">The target to send to.</param>
     /// <param name="networkBehaviour">The behaviour to change.</param>
     /// <param name="listIndex">The index of the list.</param>
@@ -85,13 +65,13 @@ public static class FakeSyncListExtension
         {
             Operation = ListOperation.Insert,
             Index = index,
-            Value = value
+            Value = value,
         });
 
     /// <summary>
     /// Sending fake set to the list.
     /// </summary>
-    /// <typeparam name="T"></typeparam>
+    /// <typeparam name="T">Any type.</typeparam>
     /// <param name="target">The target to send to.</param>
     /// <param name="networkBehaviour">The behaviour to change.</param>
     /// <param name="listIndex">The index of the list.</param>
@@ -102,14 +82,13 @@ public static class FakeSyncListExtension
         {
             Operation = ListOperation.Set,
             Index = index,
-            Value = value
+            Value = value,
         });
-
 
     /// <summary>
     /// Sending fake sync for list.
     /// </summary>
-    /// <typeparam name="T"></typeparam>
+    /// <typeparam name="T">Any type.</typeparam>
     /// <param name="target">The target to send to.</param>
     /// <param name="networkBehaviour">The behaviour to change.</param>
     /// <param name="listIndex">The index of the list.</param>
@@ -119,51 +98,58 @@ public static class FakeSyncListExtension
     /// </remarks>
     public static void SendFakeSyncList<T>(this Player target, NetworkBehaviour networkBehaviour, ulong listIndex, ListChanger<T> changer)
     {
-        target.SendFakeCore(networkBehaviour,
-        (writer) => 
+        if (target == null)
         {
-            // Serialize Object Sync Data.
-            writer.WriteULong(listIndex);
+            throw new ArgumentNullException(nameof(target));
+        }
 
-            // Copy from OnSerializeDelta
-            writer.WriteUInt(1);
-            writer.WriteByte((byte)changer.Operation);
-            switch (changer.Operation)
+        target.SendFakeCore(
+            networkBehaviour,
+            (writer) =>
             {
-                case ListOperation.Add:
-                    writer.Write(changer.Value);
-                    break;
-                case ListOperation.Insert:
-                case ListOperation.Set:
-                    writer.WriteUInt((uint)changer.Index);
-                    writer.Write(changer.Value);
-                    break;
-                case ListOperation.RemoveAt:
-                    writer.WriteUInt((uint)changer.Index);
-                    break;
-            }
-        }, null);
+                // Serialize Object Sync Data.
+                writer.WriteULong(listIndex);
+
+                // Copy from OnSerializeDelta
+                writer.WriteUInt(1);
+                writer.WriteByte((byte)changer.Operation);
+                switch (changer.Operation)
+                {
+                    case ListOperation.Add:
+                        writer.Write(changer.Value);
+                        break;
+                    case ListOperation.Insert:
+                    case ListOperation.Set:
+                        writer.WriteUInt((uint)changer.Index);
+                        writer.Write(changer.Value);
+                        break;
+                    case ListOperation.RemoveAt:
+                        writer.WriteUInt((uint)changer.Index);
+                        break;
+                }
+            },
+            null);
     }
 
     /// <summary>
     /// Sending fake add to the list.
     /// </summary>
-    /// <typeparam name="T"></typeparam>
+    /// <typeparam name="T">Any type.</typeparam>
     /// <param name="targets">The targets to send to.</param>
     /// <param name="networkBehaviour">The behaviour to change.</param>
     /// <param name="listIndex">The index of the list.</param>
-    /// <param name="value"></param>
+    /// <param name="value">The value to add.</param>
     public static void SendFakeSyncListAdd<T>(this IEnumerable<Player> targets, NetworkBehaviour networkBehaviour, ulong listIndex, T value)
         => targets.SendFakeSyncList<T>(networkBehaviour, listIndex, new()
         {
             Operation = ListOperation.Add,
-            Value = value
+            Value = value,
         });
 
     /// <summary>
     /// Sending fake clear to the list.
     /// </summary>
-    /// <typeparam name="T"></typeparam>
+    /// <typeparam name="T">Any type.</typeparam>
     /// <param name="targets">The targets to send to.</param>
     /// <param name="networkBehaviour">The behaviour to change.</param>
     /// <param name="listIndex">The index of the list.</param>
@@ -176,7 +162,7 @@ public static class FakeSyncListExtension
     /// <summary>
     /// Sending fake remove at to the list.
     /// </summary>
-    /// <typeparam name="T"></typeparam>
+    /// <typeparam name="T">Any type.</typeparam>
     /// <param name="targets">The targets to send to.</param>
     /// <param name="networkBehaviour">The behaviour to change.</param>
     /// <param name="listIndex">The index of the list.</param>
@@ -185,13 +171,13 @@ public static class FakeSyncListExtension
         => targets.SendFakeSyncList<T>(networkBehaviour, listIndex, new()
         {
             Operation = ListOperation.RemoveAt,
-            Index = index
+            Index = index,
         });
 
     /// <summary>
     /// Sending fake insert to the list.
     /// </summary>
-    /// <typeparam name="T"></typeparam>
+    /// <typeparam name="T">Any type.</typeparam>
     /// <param name="targets">The targets to send to.</param>
     /// <param name="networkBehaviour">The behaviour to change.</param>
     /// <param name="listIndex">The index of the list.</param>
@@ -202,13 +188,13 @@ public static class FakeSyncListExtension
         {
             Operation = ListOperation.Insert,
             Index = index,
-            Value = value
+            Value = value,
         });
 
     /// <summary>
     /// Sending fake set to the list.
     /// </summary>
-    /// <typeparam name="T"></typeparam>
+    /// <typeparam name="T">Any type.</typeparam>
     /// <param name="targets">The targets to send to.</param>
     /// <param name="networkBehaviour">The behaviour to change.</param>
     /// <param name="listIndex">The index of the list.</param>
@@ -219,13 +205,13 @@ public static class FakeSyncListExtension
         {
             Operation = ListOperation.Set,
             Index = index,
-            Value = value
+            Value = value,
         });
 
     /// <summary>
     /// Sending fake sync for list.
     /// </summary>
-    /// <typeparam name="T"></typeparam>
+    /// <typeparam name="T">Any type.</typeparam>
     /// <param name="targets">The targets to send to.</param>
     /// <param name="networkBehaviour">The behaviour to change.</param>
     /// <param name="listIndex">The index of the list.</param>
@@ -235,29 +221,31 @@ public static class FakeSyncListExtension
     /// </remarks>
     public static void SendFakeSyncList<T>(this IEnumerable<Player> targets, NetworkBehaviour networkBehaviour, ulong listIndex, ListChanger<T> changer)
     {
-        targets.SendFakeCore(networkBehaviour,
-        (writer) =>
-        {
-            // Serialize Object Sync Data.
-            writer.WriteULong(listIndex);
-
-            // Copy from OnSerializeDelta
-            writer.WriteUInt(1);
-            writer.WriteByte((byte)changer.Operation);
-            switch (changer.Operation)
+        targets.SendFakeCore(
+            networkBehaviour,
+            (writer) =>
             {
-                case ListOperation.Add:
-                    writer.Write(changer.Value);
-                    break;
-                case ListOperation.Insert:
-                case ListOperation.Set:
-                    writer.WriteUInt((uint)changer.Index);
-                    writer.Write(changer.Value);
-                    break;
-                case ListOperation.RemoveAt:
-                    writer.WriteUInt((uint)changer.Index);
-                    break;
-            }
-        }, null);
+                // Serialize Object Sync Data.
+                writer.WriteULong(listIndex);
+
+                // Copy from OnSerializeDelta
+                writer.WriteUInt(1);
+                writer.WriteByte((byte)changer.Operation);
+                switch (changer.Operation)
+                {
+                    case ListOperation.Add:
+                        writer.Write(changer.Value);
+                        break;
+                    case ListOperation.Insert:
+                    case ListOperation.Set:
+                        writer.WriteUInt((uint)changer.Index);
+                        writer.Write(changer.Value);
+                        break;
+                    case ListOperation.RemoveAt:
+                        writer.WriteUInt((uint)changer.Index);
+                        break;
+                }
+            },
+            null);
     }
 }

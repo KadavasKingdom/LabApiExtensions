@@ -8,14 +8,39 @@
 /// Create a new <see cref="TypeWrapper{T}"/> with <see cref="DefaultValue"/> as <paramref name="value"/>.
 /// </remarks>
 /// <param name="value">The initial value.</param>
-public class TypeWrapper<T>(T value) where T : notnull
+public class TypeWrapper<T>(T value)
+    where T : notnull
 {
     /// <summary>
-    /// The default value.
+    /// Converts the <paramref name="wrapper"/> to <typeparamref name="T"/>.
     /// </summary>
-    public readonly T DefaultValue = value;
+    /// <param name="wrapper">The wrapper.</param>
+    public static implicit operator T(TypeWrapper<T> wrapper)
+    {
+        if (wrapper == null)
+        {
+            return default!;
+        }
+
+        return wrapper.Value;
+    }
+
     /// <summary>
-    /// The Value of the Type.
+    /// Converts the <paramref name="value"/> to <typeparamref name="T"/> wrapper.
+    /// </summary>
+    /// <param name="value">The value.</param>
+    public static implicit operator TypeWrapper<T>(T value)
+    {
+        return new(value);
+    }
+
+    /// <summary>
+    /// Gets the default value.
+    /// </summary>
+    public T DefaultValue { get; } = value;
+
+    /// <summary>
+    /// Gets or sets the Value of the Type.
     /// </summary>
     public T Value { get; set; } = value;
 
@@ -25,15 +50,21 @@ public class TypeWrapper<T>(T value) where T : notnull
         return Value.ToString();
     }
 
-    /// <inheritdoc/>
-    public static implicit operator T(TypeWrapper<T> wrapper)
+    /// <summary>
+    /// Parse to a new type wrapper.
+    /// </summary>
+    /// <returns>The new <see cref="TypeWrapper{T}"/>.</returns>
+    public TypeWrapper<T> ToTypeWrapper()
     {
-        return wrapper.Value;
+        return new(Value);
     }
 
-    /// <inheritdoc/>
-    public static implicit operator TypeWrapper<T>(T value)
+    /// <summary>
+    /// Parse to a <typeparamref name="T"/> value.
+    /// </summary>
+    /// <returns>The <see cref="Value"/>.</returns>
+    public T ToT()
     {
-        return new(value);
+        return Value;
     }
 }

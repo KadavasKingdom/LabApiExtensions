@@ -12,7 +12,8 @@ public static class CustomDataStoreManagerExtended
     /// Ensures the <typeparamref name="TStore"/> exists.
     /// </summary>
     /// <typeparam name="TStore">Any <see cref="CustomDataStore"/>.</typeparam>
-    public static void EnsureExists<TStore>() where TStore : CustomDataStore
+    public static void EnsureExists<TStore>()
+        where TStore : CustomDataStore
     {
         if (!CustomDataStoreManager.IsRegistered<TStore>())
         {
@@ -33,26 +34,28 @@ public static class CustomDataStoreManagerExtended
     }
 
     /// <summary>
-    /// Ensures if the <paramref name="type"/> is came from <see cref="CustomDataStore"/>.
+    /// Checks if the <paramref name="type"/> is came from <see cref="CustomDataStore"/>.
     /// </summary>
     /// <param name="type">The type to check.</param>
-    /// <returns></returns>
-    public static bool EnsureRightType(Type type)
+    /// <returns><see langword="true"/> is the type is valid <see cref="CustomDataStore"/>; otherwise <see langword="false"/>.</returns>
+    public static bool IsRightType(Type type)
     {
         return typeof(CustomDataStore).IsAssignableFrom(type);
     }
 
     /// <summary>
-    /// Tries to register <paramref name="typeFromHandle"/>.
+    /// Tries to register <paramref name="dataStoreType"/>.
     /// </summary>
-    /// <param name="typeFromHandle">The type to register.</param>
-    /// <returns></returns>
-    public static bool RegisterStore(Type typeFromHandle)
+    /// <param name="dataStoreType">The data store type to register.</param>
+    /// <returns><see langword="true"/> is the type is registered; otherwise <see langword="false"/>.</returns>
+    public static bool RegisterStore(Type dataStoreType)
     {
-        if (!EnsureRightType(typeFromHandle))
+        if (!IsRightType(dataStoreType))
+        {
             return false;
+        }
 
-        if (CustomDataStoreManager.RegisteredStores.Contains(typeFromHandle))
+        if (CustomDataStoreManager.RegisteredStores.Contains(dataStoreType))
         {
             return false;
         }
@@ -63,126 +66,134 @@ public static class CustomDataStoreManagerExtended
             return false;
         }
 
-        method = method.MakeGenericMethod(typeFromHandle);
-        CustomDataStoreManager.GetOrAddMethods.Add(typeFromHandle, method);
+        method = method.MakeGenericMethod(dataStoreType);
+        CustomDataStoreManager.GetOrAddMethods.Add(dataStoreType, method);
         MethodInfo method2 = typeof(CustomDataStore).GetMethod(nameof(CustomDataStore.Destroy), BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
         if (method2 == null)
         {
             return false;
         }
 
-        method2 = method2.MakeGenericMethod(typeFromHandle);
-        CustomDataStoreManager.DestroyMethods.Add(typeFromHandle, method2);
+        method2 = method2.MakeGenericMethod(dataStoreType);
+        CustomDataStoreManager.DestroyMethods.Add(dataStoreType, method2);
         MethodInfo method3 = typeof(CustomDataStore).GetMethod(nameof(CustomDataStore.DestroyAll), BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
         if (method3 == null)
         {
             return false;
         }
 
-        method3 = method3.MakeGenericMethod(typeFromHandle);
-        CustomDataStoreManager.DestroyAllMethods.Add(typeFromHandle, method3);
-        CustomDataStoreManager.RegisteredStores.Add(typeFromHandle);
+        method3 = method3.MakeGenericMethod(dataStoreType);
+        CustomDataStoreManager.DestroyAllMethods.Add(dataStoreType, method3);
+        CustomDataStoreManager.RegisteredStores.Add(dataStoreType);
         return true;
     }
 
     /// <summary>
     /// Get all players of the <typeparamref name="TStore"/>.
     /// </summary>
-    /// <typeparam name="TStore"></typeparam>
-    /// <returns></returns>
-    public static IReadOnlyCollection<Player> GetPlayers<TStore>() where TStore : CustomDataStore
+    /// <typeparam name="TStore">Any <see cref="CustomDataStore"/>.</typeparam>
+    /// <returns>The <see cref="Player"/>'s this data store has.</returns>
+    public static IReadOnlyCollection<Player> GetPlayers<TStore>()
+        where TStore : CustomDataStore
     {
         Type typeFromHandle = typeof(TStore);
         return GetPlayers(typeFromHandle);
     }
 
     /// <summary>
-    /// Get all players from the type <paramref name="typeFromHandle"/>.
+    /// Get all players from the type <paramref name="dataStoreType"/>.
     /// </summary>
-    /// <param name="typeFromHandle"></param>
-    /// <returns></returns>
-    public static IReadOnlyCollection<Player> GetPlayers(Type typeFromHandle)
+    /// <param name="dataStoreType">The data store type.</param>
+    /// <returns>The <see cref="Player"/>'s this data store has.</returns>
+    public static IReadOnlyCollection<Player> GetPlayers(Type dataStoreType)
     {
-        if (!EnsureRightType(typeFromHandle))
-            return [];
-
-        if (!CustomDataStoreManager.IsRegistered(typeFromHandle))
+        if (!IsRightType(dataStoreType))
         {
             return [];
         }
 
-        if (!CustomDataStore.StoreInstances.ContainsKey(typeFromHandle))
+        if (!CustomDataStoreManager.IsRegistered(dataStoreType))
         {
             return [];
         }
 
-        return CustomDataStore.StoreInstances[typeFromHandle].Keys;
+        if (!CustomDataStore.StoreInstances.TryGetValue(dataStoreType, out Dictionary<Player, CustomDataStore>? value))
+        {
+            return [];
+        }
+
+        return value.Keys;
     }
 
     /// <summary>
     /// Get all instance of <typeparamref name="TStore"/>.
     /// </summary>
-    /// <typeparam name="TStore"></typeparam>
-    /// <returns></returns>
-    public static Dictionary<Player, CustomDataStore> GetAll<TStore>() where TStore : CustomDataStore
+    /// <typeparam name="TStore">Any <see cref="CustomDataStore"/>.</typeparam>
+    /// <returns>The instances of the <typeparamref name="TStore"/> type.</returns>
+    public static Dictionary<Player, CustomDataStore> GetAll<TStore>()
+        where TStore : CustomDataStore
     {
-        Type typeFromHandle = typeof(TStore);
+        Type dataStoreType = typeof(TStore);
         if (!CustomDataStoreManager.IsRegistered<TStore>())
         {
             return [];
         }
 
-        if (!CustomDataStore.StoreInstances.ContainsKey(typeFromHandle))
-        {            
-            return [];
-        }
-
-        return CustomDataStore.StoreInstances[typeFromHandle];
-    }
-
-    /// <summary>
-    /// Get all instance of type <paramref name="typeFromHandle"/>.
-    /// </summary>
-    /// <param name="typeFromHandle"></param>
-    /// <returns></returns>
-    public static Dictionary<Player, CustomDataStore> GetAll(Type typeFromHandle) 
-    {
-        if (!EnsureRightType(typeFromHandle))
-            return [];
-
-        if (!CustomDataStoreManager.IsRegistered(typeFromHandle))
+        if (!CustomDataStore.StoreInstances.TryGetValue(dataStoreType, out Dictionary<Player, CustomDataStore>? value))
         {
             return [];
         }
 
-        if (!CustomDataStore.StoreInstances.ContainsKey(typeFromHandle))
+        return value;
+    }
+
+    /// <summary>
+    /// Get all instance of type <paramref name="dataStoreType"/>.
+    /// </summary>
+    /// <param name="dataStoreType">The data store type.</param>
+    /// <returns>The instances of the <paramref name="dataStoreType"/> type.</returns>
+    public static Dictionary<Player, CustomDataStore> GetAll(Type dataStoreType)
+    {
+        if (!IsRightType(dataStoreType))
         {
             return [];
         }
 
-        return CustomDataStore.StoreInstances[typeFromHandle];
+        if (!CustomDataStoreManager.IsRegistered(dataStoreType))
+        {
+            return [];
+        }
+
+        if (!CustomDataStore.StoreInstances.TryGetValue(dataStoreType, out Dictionary<Player, CustomDataStore>? value))
+        {
+            return [];
+        }
+
+        return value;
     }
 
     /// <summary>
-    /// Gets or add <paramref name="typeFromHandle"/> for <paramref name="player"/>.
+    /// Gets or add <paramref name="dataStoreType"/> for <paramref name="player"/>.
     /// </summary>
-    /// <param name="player"></param>
-    /// <param name="typeFromHandle"></param>
-    /// <returns></returns>
-    public static CustomDataStore GetOrAdd(Player player, Type typeFromHandle)
+    /// <param name="player">The player to get or add the data store to.</param>
+    /// <param name="dataStoreType">The data store type.</param>
+    /// <returns>The data store or <see langword="null"/>.</returns>
+    public static CustomDataStore? GetOrAdd(Player player, Type dataStoreType)
     {
-        if (!EnsureRightType(typeFromHandle))
+        if (!IsRightType(dataStoreType))
+        {
             return null;
-
-        if (!CustomDataStoreManager.IsRegistered(typeFromHandle))
-        {
-            RegisterStore(typeFromHandle);
         }
 
-        if (!CustomDataStore.StoreInstances.TryGetValue(typeFromHandle, out Dictionary<Player, CustomDataStore> value))
+        if (!CustomDataStoreManager.IsRegistered(dataStoreType))
+        {
+            RegisterStore(dataStoreType);
+        }
+
+        if (!CustomDataStore.StoreInstances.TryGetValue(dataStoreType, out Dictionary<Player, CustomDataStore> value))
         {
             value = [];
-            CustomDataStore.StoreInstances[typeFromHandle] = value;
+            CustomDataStore.StoreInstances[dataStoreType] = value;
         }
 
         if (value.TryGetValue(player, out CustomDataStore value2))
@@ -190,43 +201,49 @@ public static class CustomDataStoreManagerExtended
             return value2;
         }
 
-        value2 = value[player] = (CustomDataStore)Activator.CreateInstance(typeFromHandle, [player]);
+        value2 = value[player] = (CustomDataStore)Activator.CreateInstance(dataStoreType, [player]);
         return value2;
     }
 
     /// <summary>
-    /// Checks if <paramref name="typeFromHandle"/> exists on <paramref name="player"/>.
+    /// Checks if <paramref name="dataStoreType"/> exists on <paramref name="player"/>.
     /// </summary>
     /// <param name="player">The player to check.</param>
-    /// <param name="typeFromHandle"></param>
-    /// <returns></returns>
-    public static bool Exists(Player player, Type typeFromHandle)
+    /// <param name="dataStoreType">The data store type.</param>
+    /// <returns><see langword="true"/> is the type is registered and contains a player; otherwise <see langword="false"/>.</returns>
+    public static bool Exists(Player player, Type dataStoreType)
     {
-        if (!EnsureRightType(typeFromHandle))
-            return false;
-
-        if (!CustomDataStoreManager.IsRegistered(typeFromHandle))
+        if (!IsRightType(dataStoreType))
         {
-            RegisterStore(typeFromHandle);
+            return false;
         }
 
-        if (!CustomDataStore.StoreInstances.TryGetValue(typeFromHandle, out Dictionary<Player, CustomDataStore> value))
+        if (!CustomDataStoreManager.IsRegistered(dataStoreType))
+        {
+            RegisterStore(dataStoreType);
+        }
+
+        if (!CustomDataStore.StoreInstances.TryGetValue(dataStoreType, out Dictionary<Player, CustomDataStore> value))
+        {
             return false;
+        }
 
         return value.ContainsKey(player);
     }
 
     /// <summary>
-    /// Destroys <paramref name="player"/>'s <paramref name="typeFromHandle"/>.
+    /// Destroys <paramref name="player"/>'s <paramref name="dataStoreType"/>.
     /// </summary>
     /// <param name="player">The player to remove the type of.</param>
-    /// <param name="typeFromHandle"></param>
-    public static void Destroy(Player player, Type typeFromHandle)
+    /// <param name="dataStoreType">The data store type.</param>
+    public static void Destroy(Player player, Type dataStoreType)
     {
-        if (!EnsureRightType(typeFromHandle))
+        if (!IsRightType(dataStoreType))
+        {
             return;
+        }
 
-        if (CustomDataStore.StoreInstances.TryGetValue(typeFromHandle, out Dictionary<Player, CustomDataStore> value) && value.TryGetValue(player, out CustomDataStore value2))
+        if (CustomDataStore.StoreInstances.TryGetValue(dataStoreType, out Dictionary<Player, CustomDataStore> value) && value.TryGetValue(player, out CustomDataStore value2))
         {
             value2.Destroy();
         }

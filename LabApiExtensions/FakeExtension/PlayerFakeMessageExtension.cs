@@ -16,6 +16,16 @@ public static class PlayerFakeMessageExtension
     /// <param name="gravity">The new gravity value.</param>
     public static void SetFakeGravity(this Player player, Player target, Vector3 gravity)
     {
+        if (player == null)
+        {
+            throw new ArgumentNullException(nameof(player));
+        }
+
+        if (target == null)
+        {
+            throw new ArgumentNullException(nameof(target));
+        }
+
         player.Connection.Send<SyncedGravityMessages.GravityMessage>(new(gravity, target.ReferenceHub));
     }
 
@@ -27,6 +37,11 @@ public static class PlayerFakeMessageExtension
     /// <param name="gravity">The new gravity value.</param>
     public static void SetFakeGravity(this Player player, IEnumerable<Player> targets, Vector3 gravity)
     {
+        if (targets == null)
+        {
+            throw new ArgumentNullException(nameof(player));
+        }
+
         foreach (Player target in targets)
         {
             player.SetFakeGravity(target, gravity);
@@ -41,6 +56,16 @@ public static class PlayerFakeMessageExtension
     /// <param name="scale">The new gravity value.</param>
     public static void SetFakeScale(this Player player, Player target, Vector3 scale)
     {
+        if (player == null)
+        {
+            throw new ArgumentNullException(nameof(player));
+        }
+
+        if (target == null)
+        {
+            throw new ArgumentNullException(nameof(target));
+        }
+
         player.Connection.Send<SyncedScaleMessages.ScaleMessage>(new(scale, target.ReferenceHub));
     }
 
@@ -52,6 +77,11 @@ public static class PlayerFakeMessageExtension
     /// <param name="scale">The new scale value.</param>
     public static void SetFakeScale(this Player player, IEnumerable<Player> targets, Vector3 scale)
     {
+        if (targets == null)
+        {
+            throw new ArgumentNullException(nameof(player));
+        }
+
         foreach (Player target in targets)
         {
             player.SetFakeScale(target, scale);

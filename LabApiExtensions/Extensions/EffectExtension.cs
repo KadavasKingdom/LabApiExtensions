@@ -1,5 +1,5 @@
-﻿using LabApiExtensions.Configs;
-using CustomPlayerEffects;
+﻿using CustomPlayerEffects;
+using LabApiExtensions.Configs;
 
 namespace LabApiExtensions.Extensions;
 
@@ -13,10 +13,15 @@ public static class EffectExtension
     /// </summary>
     /// <param name="player">The Player.</param>
     /// <param name="name">Name of the effect.</param>
-    /// <returns>Existing <see cref="StatusEffectBase"/> or <see langword="null"/></returns>
-    public static StatusEffectBase GetEffectFromName(this Player player, string name)
+    /// <returns>Existing <see cref="StatusEffectBase"/> or <see langword="null"/>.</returns>
+    public static StatusEffectBase? GetEffectFromName(this Player player, string name)
     {
-        player.TryGetEffect(name, out StatusEffectBase statusEffect);
+        if (player == null)
+        {
+            throw new ArgumentNullException(nameof(player));
+        }
+
+        player.TryGetEffect(name, out StatusEffectBase? statusEffect);
         return statusEffect;
     }
 
@@ -26,9 +31,19 @@ public static class EffectExtension
     /// <param name="player">The Player.</param>
     /// <param name="effectConfig">Effect related config.</param>
     /// <param name="addDuration">Add to previous duration.</param>
-    /// <returns><see langword="true"/> on success otherwise <see langword="false"/></returns>
+    /// <returns><see langword="true"/> on success otherwise <see langword="false"/>.</returns>
     public static bool EnableEffect(this Player player, EffectConfig effectConfig, bool addDuration = false)
     {
+        if (player == null)
+        {
+            throw new ArgumentNullException(nameof(player));
+        }
+
+        if (effectConfig == null)
+        {
+            throw new ArgumentNullException(nameof(player));
+        }
+
         return player.EnableEffect(effectConfig.EffectName, effectConfig.Intensity, effectConfig.Duration, addDuration);
     }
 
@@ -40,7 +55,7 @@ public static class EffectExtension
     /// <param name="intensity">Intensity of the effect.</param>
     /// <param name="duration">Duration of the effect.</param>
     /// <param name="addDuration">Add to previous duration.</param>
-    /// <returns><see langword="true"/> on success otherwise <see langword="false"/></returns>
+    /// <returns><see langword="true"/> on success otherwise <see langword="false"/>.</returns>
     /// <remarks>
     /// A <paramref name="duration"/> of 0 means that it will not expire.
     /// </remarks>
@@ -48,7 +63,9 @@ public static class EffectExtension
     {
         var effect = GetEffectFromName(player, name);
         if (effect == null)
+        {
             return false;
+        }
 
         player.EnableEffect(effect, intensity, duration, addDuration);
         return true;
@@ -62,7 +79,7 @@ public static class EffectExtension
     /// <param name="intensity">Intensity of the effect.</param>
     /// <param name="duration">Duration of the effect.</param>
     /// <param name="addDuration">Add to previous duration.</param>
-    /// <returns><see langword="true"/> on success and effect has not been enabled otherwise <see langword="false"/></returns>
+    /// <returns><see langword="true"/> on success and effect has not been enabled otherwise <see langword="false"/>.</returns>
     /// <remarks>
     /// A <paramref name="duration"/> of 0 means that it will not expire.
     /// </remarks>
@@ -70,10 +87,14 @@ public static class EffectExtension
     {
         var effect = GetEffectFromName(player, name);
         if (effect == null)
+        {
             return false;
+        }
 
         if (effect.IsEnabled)
+        {
             return false;
+        }
 
         player.EnableEffect(effect, intensity, duration, addDuration);
         return true;
@@ -86,13 +107,25 @@ public static class EffectExtension
     /// <param name="effectConfig">Effect related config.</param>
     /// <param name="increaseIntensity">Should increase the intensity if effect exits.</param>
     /// <param name="setIntensity">Sets the intensity from the <paramref name="effectConfig"/>.</param>
-    /// <param name="addDuration">Add to previous duration</param>
+    /// <param name="addDuration">Add to previous duration.</param>
     /// <returns><see langword="true"/> on increasing or enabling the effect, otherwise <see langword="false"/>.</returns>
     public static bool IncreaseEffect(this Player player, EffectConfig effectConfig, bool increaseIntensity = false, bool setIntensity = false, bool addDuration = false)
     {
+        if (player == null)
+        {
+            throw new ArgumentNullException(nameof(player));
+        }
+
+        if (effectConfig == null)
+        {
+            throw new ArgumentNullException(nameof(effectConfig));
+        }
+
         var effect = GetEffectFromName(player, effectConfig.EffectName);
         if (effect == null)
+        {
             return false;
+        }
 
         if (!effect.IsEnabled)
         {
@@ -101,10 +134,14 @@ public static class EffectExtension
         }
 
         if (increaseIntensity)
+        {
             effect.Intensity += effectConfig.Intensity;
+        }
 
         if (setIntensity)
+        {
             effect.Intensity = effectConfig.Intensity;
+        }
 
         effect.ServerChangeDuration(effectConfig.Duration, addDuration);
         return true;
@@ -115,12 +152,15 @@ public static class EffectExtension
     /// </summary>
     /// <param name="player">The Player.</param>
     /// <param name="name">Name of the effect.</param>
-    /// <returns><see langword="true"/> on success and effect has not been enabled otherwise <see langword="false"/></returns>
+    /// <returns><see langword="true"/> on success and effect has not been enabled otherwise <see langword="false"/>.</returns>
     public static bool DisableEffect(this Player player, string name)
     {
         var effect = GetEffectFromName(player, name);
         if (effect == null)
+        {
             return false;
+        }
+
         player.DisableEffect(effect);
         return true;
     }

@@ -18,27 +18,12 @@ namespace LabApiExtensions.Managers;
 /// </summary>
 public static class FakeRoleManager
 {
-    struct FakeRole
-    {
-        public RoleTypeId Role;
-        public Dictionary<ReferenceHub, RoleTypeId> RoleToViewer;
-    }
-
-    static readonly Dictionary<ReferenceHub, FakeRole> FakeRoles = [];
+    private static readonly Dictionary<ReferenceHub, FakeRole> FakeRoles = [];
 
     static FakeRoleManager()
     {
         PlayerEvents.ChangingRole += PlayerEvents_ChangingRole;
         FpcServerPositionDistributor.RoleSyncEvent += FpcServerPositionDistributor_RoleSyncEvent;
-    }
-
-    private static void PlayerEvents_ChangingRole(PlayerChangingRoleEventArgs ev)
-    {
-        if (ev.Player is null)
-            return;
-
-        if (ev.IsAllowed)
-            RemoveFakeRole(ev.Player);
     }
 
     /// <summary>
@@ -49,7 +34,9 @@ public static class FakeRoleManager
     public static void AddFakeRole(this Player player, RoleTypeId roleType)
     {
         if (roleType is RoleTypeId.None or RoleTypeId.Destroyed)
+        {
             return;
+        }
 
         AddFakeRole(player, roleType, null);
     }
@@ -60,19 +47,26 @@ public static class FakeRoleManager
     /// <param name="player">The player to set the fake role.</param>
     /// <param name="roleType">The role to fake.</param>
     /// <param name="viewer">The player to fake the role to.</param>
-    public static void AddFakeRole(this Player player, RoleTypeId roleType, Player viewer)
+    public static void AddFakeRole(this Player player, RoleTypeId roleType, Player? viewer)
     {
+        if (player == null)
+        {
+            throw new ArgumentNullException(nameof(player));
+        }
+
         if (roleType is RoleTypeId.None or RoleTypeId.Destroyed)
+        {
             return;
+        }
 
         if (player.Connection != null || !player.IsReady)
         {
             if (!FakeRoles.TryGetValue(player.ReferenceHub, out FakeRole value))
             {
                 value = FakeRoles[player.ReferenceHub] = new()
-                { 
+                {
                     Role = player.Role,
-                    RoleToViewer = []
+                    RoleToViewer = [],
                 };
             }
 
@@ -83,7 +77,6 @@ public static class FakeRoleManager
                 CL.Debug($"{player} set fakerole: {roleType} for {viewer}");
 #endif
             }
-
             else
             {
                 value.Role = roleType;
@@ -103,6 +96,16 @@ public static class FakeRoleManager
     /// <param name="viewer">The viewer player to remove.</param>
     public static void RemoveFakeRoleViewer(this Player player, Player viewer)
     {
+        if (player == null)
+        {
+            throw new ArgumentNullException(nameof(player));
+        }
+
+        if (viewer == null)
+        {
+            throw new ArgumentNullException(nameof(viewer));
+        }
+
         if (FakeRoles.TryGetValue(player.ReferenceHub, out FakeRole value))
         {
             value.RoleToViewer.Remove(viewer.ReferenceHub);
@@ -120,6 +123,11 @@ public static class FakeRoleManager
     /// <param name="player">The player to remove.</param>
     public static void RemoveFakeRole(this Player player)
     {
+        if (player == null)
+        {
+            throw new ArgumentNullException(nameof(player));
+        }
+
         FakeRoles.Remove(player.ReferenceHub);
     }
 
@@ -130,6 +138,11 @@ public static class FakeRoleManager
     /// <returns><see langword="true"/> if <paramref name="player"/> found otherwise <see langword="false"/>.</returns>
     public static bool HasFakeRole(this Player player)
     {
+        if (player == null)
+        {
+            throw new ArgumentNullException(nameof(player));
+        }
+
         return FakeRoles.ContainsKey(player.ReferenceHub);
     }
 
@@ -141,10 +154,35 @@ public static class FakeRoleManager
     /// <returns><see langword="true"/> if <paramref name="player"/> found otherwise <see langword="false"/>.</returns>
     public static bool HasFakeRoleViewer(this Player player, Player viewer)
     {
-        if (!FakeRoles.ContainsKey(player.ReferenceHub))
-            return false;
+        if (player == null)
+        {
+            throw new ArgumentNullException(nameof(player));
+        }
 
-        return FakeRoles[player.ReferenceHub].RoleToViewer.ContainsKey(viewer.ReferenceHub);
+        if (viewer == null)
+        {
+            throw new ArgumentNullException(nameof(viewer));
+        }
+
+        if (!FakeRoles.TryGetValue(player.ReferenceHub, out FakeRole value))
+        {
+            return false;
+        }
+
+        return value.RoleToViewer.ContainsKey(viewer.ReferenceHub);
+    }
+
+    private static void PlayerEvents_ChangingRole(PlayerChangingRoleEventArgs ev)
+    {
+        if (ev.Player is null)
+        {
+            return;
+        }
+
+        if (ev.IsAllowed)
+        {
+            RemoveFakeRole(ev.Player);
+        }
     }
 
     private static RoleTypeId FpcServerPositionDistributor_RoleSyncEvent(ReferenceHub hub, ReferenceHub receiver, RoleTypeId roleType, NetworkWriter writer)
@@ -155,10 +193,14 @@ public static class FakeRoleManager
             returnRole = fakeRole.Role;
 
             if (fakeRole.RoleToViewer.TryGetValue(receiver, out RoleTypeId roleToViewer))
+            {
                 returnRole = roleToViewer;
+            }
 
             if (returnRole != roleType)
+            {
                 WriteExtraForRole(hub, returnRole, writer);
+            }
         }
 
         return returnRole;
@@ -178,6 +220,7 @@ public static class FakeRoleManager
         {
             // _syncMaxHealth
             writer.WriteUShort((ushort)Mathf.Clamp(Mathf.CeilToInt(hub.playerStats.GetModule<HealthStat>().MaxValue), 0, 65535));
+
             // _showConfirmationBox
             writer.WriteBool(true);
         }
@@ -188,7 +231,7 @@ public static class FakeRoleManager
             writer.WriteByte((byte)hub.roleManager.CurrentRole.ServerSpawnReason);
         }
 
-        FpcStandardRoleBase fpcStandardRoleBase = roleBase as FpcStandardRoleBase;
+        FpcStandardRoleBase? fpcStandardRoleBase = roleBase as FpcStandardRoleBase;
         if (fpcStandardRoleBase != null)
         {
             if (hub.roleManager.CurrentRole is FpcStandardRoleBase fpcStandardRoleBase2)
@@ -196,12 +239,19 @@ public static class FakeRoleManager
                 fpcStandardRoleBase = fpcStandardRoleBase2;
             }
 
-            ushort syncH = 0;
-            fpcStandardRoleBase?.FpcModule.MouseLook.GetSyncValues(0, out syncH, out var _);
+            fpcStandardRoleBase.FpcModule.MouseLook.GetSyncValues(0, out ushort syncH, out var _);
+
             // RelativePosition
             writer.WriteRelativePosition(new(hub));
+
             // syncH
             writer.WriteUShort(syncH);
         }
+    }
+
+    private struct FakeRole
+    {
+        public RoleTypeId Role;
+        public Dictionary<ReferenceHub, RoleTypeId> RoleToViewer;
     }
 }

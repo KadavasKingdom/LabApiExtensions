@@ -32,7 +32,9 @@ public static class DamageExtensions
             case ScpDamageHandler scpDamage:
                 {
                     if (scpDamage.Attacker.IsSet && scpDamage.Attacker.Role == PlayerRoles.RoleTypeId.Scp173)
+                    {
                         return DamageType.Scp173;
+                    }
 
                     return scpDamage switch
                     {
@@ -41,6 +43,7 @@ public static class DamageExtensions
                         _ => DamageType.Scp,
                     };
                 }
+
             case MicroHidDamageHandler:
                 return DamageType.MicroHid;
             case CustomReasonDamageHandler:
@@ -83,7 +86,10 @@ public static class DamageExtensions
     public static float GetDamageValue(this DamageHandlerBase handlerBase)
     {
         if (handlerBase is StandardDamageHandler standardDamage)
+        {
             return standardDamage.Damage;
+        }
+
         return -1;
     }
 
@@ -95,7 +101,9 @@ public static class DamageExtensions
     public static void SetDamageValue(this DamageHandlerBase handlerBase, float damage)
     {
         if (handlerBase is StandardDamageHandler standardDamage)
+        {
             standardDamage.Damage = damage;
+        }
     }
 
     /// <summary>
@@ -104,72 +112,104 @@ public static class DamageExtensions
     /// <param name="handlerBase">The Handler.</param>
     /// <param name="subType">The <see cref="DamageSubType"/> of the requested damage.</param>
     /// <returns><see langword="null"/> or the <see cref="DamageSubType"/>'s value.</returns>
-    public static object GetObjectBySubType(this DamageHandlerBase handlerBase, DamageSubType subType)
+    public static object? GetObjectBySubType(this DamageHandlerBase handlerBase, DamageSubType subType)
     {
-        if (subType == DamageSubType.Attacker_Role && handlerBase is AttackerDamageHandler attacker)
+        if (subType == DamageSubType.AttackerRole && handlerBase is AttackerDamageHandler attacker)
+        {
             return attacker.Attacker.Role;
+        }
 
         switch (handlerBase)
         {
             case FirearmDamageHandler firearm:
                 {
                     if (subType == DamageSubType.AmmoType)
+                    {
                         return firearm.AmmoType;
+                    }
+
                     if (subType == DamageSubType.WeaponType)
+                    {
                         return firearm.WeaponType;
+                    }
                 }
+
                 return null;
+
             case Scp049DamageHandler scp049Damage:
                 {
-                    if (subType == DamageSubType.Scp049_AttackType)
+                    if (subType == DamageSubType.Scp049AttackType)
+                    {
                         return scp049Damage.DamageSubType;
+                    }
                 }
+
                 return null;
             case Scp096DamageHandler scp096Damage:
                 {
-                    if (subType == DamageSubType.Scp069_AttackType)
+                    if (subType == DamageSubType.Scp069AttackType)
+                    {
                         return scp096Damage._attackType;
+                    }
                 }
+
                 return null;
             case Scp939DamageHandler scp939Damage:
                 {
-                    if (subType == DamageSubType.Scp939_AttackType)
+                    if (subType == DamageSubType.Scp939AttackType)
+                    {
                         return scp939Damage.Scp939DamageType;
+                    }
                 }
+
                 return null;
             case Scp3114DamageHandler scp3114Damage:
                 {
-                    if (subType == DamageSubType.Scp3114_AttackType)
+                    if (subType == DamageSubType.Scp3114AttackType)
+                    {
                         return scp3114Damage.Subtype;
+                    }
                 }
+
                 return null;
             case MicroHidDamageHandler microHidDamage:
                 {
                     if (subType == DamageSubType.MicroHidFiringMode)
+                    {
                         return microHidDamage.FiringMode;
+                    }
                 }
+
                 return null;
             case ExplosionDamageHandler explosionDamage:
                 {
                     if (subType == DamageSubType.ExplosionType)
+                    {
                         return explosionDamage.ExplosionType;
+                    }
                 }
+
                 return null;
             case DisruptorDamageHandler disruptorDamage:
                 {
-                    if (subType == DamageSubType.Disruptor_FiringState)
+                    if (subType == DamageSubType.DisruptorFiringState)
+                    {
                         return disruptorDamage.FiringState;
+                    }
                 }
+
                 return null;
             case UniversalDamageHandler universalDamage:
                 {
                     if (subType == DamageSubType.UniversalSubType)
+                    {
                         return (DamageUniversalType)universalDamage.TranslationId;
+                    }
                 }
+
                 return null;
             default:
                 return null;
         }
     }
-
 }

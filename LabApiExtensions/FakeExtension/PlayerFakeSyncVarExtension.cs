@@ -15,7 +15,17 @@ public static class PlayerFakeSyncVarExtension
     /// <param name="badgeText">The new badge text value.</param>
     public static void SetFakeBadgeText(this Player player, Player target, string badgeText)
     {
-        target.SendFakeSyncVar(player.ReferenceHub.serverRoles, 1, badgeText);
+        if (player == null)
+        {
+            throw new ArgumentNullException(nameof(player));
+        }
+
+        if (target == null)
+        {
+            throw new ArgumentNullException(nameof(target));
+        }
+
+        player.SendFakeSyncVar(target.ReferenceHub.serverRoles, 1, badgeText);
     }
 
     /// <summary>
@@ -24,6 +34,11 @@ public static class PlayerFakeSyncVarExtension
     /// <param name="player">The player to resync.</param>
     public static void ResyncFakeBadgeText(this Player player)
     {
+        if (player == null)
+        {
+            throw new ArgumentNullException(nameof(player));
+        }
+
         player.ReferenceHub.serverRoles.SetSyncVarDirtyBit(1);
     }
 
@@ -35,7 +50,17 @@ public static class PlayerFakeSyncVarExtension
     /// <param name="color">The new badge color value.</param>
     public static void SetFakeBadgeColor(this Player player, Player target, string color)
     {
-        target.SendFakeSyncVar(player.ReferenceHub.serverRoles, 2, color);
+        if (player == null)
+        {
+            throw new ArgumentNullException(nameof(player));
+        }
+
+        if (target == null)
+        {
+            throw new ArgumentNullException(nameof(target));
+        }
+
+        player.SendFakeSyncVar(target.ReferenceHub.serverRoles, 2, color);
     }
 
     /// <summary>
@@ -44,6 +69,11 @@ public static class PlayerFakeSyncVarExtension
     /// <param name="player">The player to resync.</param>
     public static void ResyncFakeBadgeColor(this Player player)
     {
+        if (player == null)
+        {
+            throw new ArgumentNullException(nameof(player));
+        }
+
         player.ReferenceHub.serverRoles.SetSyncVarDirtyBit(2);
     }
 
@@ -55,7 +85,17 @@ public static class PlayerFakeSyncVarExtension
     /// <param name="viewRange">The new view range value.</param>
     public static void SetFakeViewRange(this Player player, Player target, float viewRange)
     {
-        target.SendFakeSyncVar(player.ReferenceHub.nicknameSync, 1, viewRange);
+        if (player == null)
+        {
+            throw new ArgumentNullException(nameof(player));
+        }
+
+        if (target == null)
+        {
+            throw new ArgumentNullException(nameof(target));
+        }
+
+        player.SendFakeSyncVar(target.ReferenceHub.nicknameSync, 1, viewRange);
     }
 
     /// <summary>
@@ -64,6 +104,11 @@ public static class PlayerFakeSyncVarExtension
     /// <param name="player">The player to resync.</param>
     public static void ResyncFakeViewRange(this Player player)
     {
+        if (player == null)
+        {
+            throw new ArgumentNullException(nameof(player));
+        }
+
         player.ReferenceHub.nicknameSync.SetSyncVarDirtyBit(1);
     }
 
@@ -75,7 +120,17 @@ public static class PlayerFakeSyncVarExtension
     /// <param name="customInfo">The new custom info value.</param>
     public static void SetFakeCustomInfo(this Player player, Player target, string customInfo)
     {
-        target.SendFakeSyncVar(player.ReferenceHub.nicknameSync, 2, customInfo);
+        if (player == null)
+        {
+            throw new ArgumentNullException(nameof(player));
+        }
+
+        if (target == null)
+        {
+            throw new ArgumentNullException(nameof(target));
+        }
+
+        player.SendFakeSyncVar(target.ReferenceHub.nicknameSync, 2, customInfo);
     }
 
     /// <summary>
@@ -84,6 +139,11 @@ public static class PlayerFakeSyncVarExtension
     /// <param name="player">The player to resync.</param>
     public static void ResyncFakeCustomInfo(this Player player)
     {
+        if (player == null)
+        {
+            throw new ArgumentNullException(nameof(player));
+        }
+
         player.ReferenceHub.nicknameSync.SetSyncVarDirtyBit(2);
     }
 
@@ -95,7 +155,17 @@ public static class PlayerFakeSyncVarExtension
     /// <param name="playerInfoArea">The new info area value.</param>
     public static void SetFakeInfoArea(this Player player, Player target, PlayerInfoArea playerInfoArea)
     {
-        target.SendFakeSyncVar(player.ReferenceHub.nicknameSync, 4, playerInfoArea);
+        if (player == null)
+        {
+            throw new ArgumentNullException(nameof(player));
+        }
+
+        if (target == null)
+        {
+            throw new ArgumentNullException(nameof(target));
+        }
+
+        player.SendFakeSyncVar(target.ReferenceHub.nicknameSync, 4, playerInfoArea);
     }
 
     /// <summary>
@@ -104,6 +174,11 @@ public static class PlayerFakeSyncVarExtension
     /// <param name="player">The player to resync.</param>
     public static void ResyncFakeInfoArea(this Player player)
     {
+        if (player == null)
+        {
+            throw new ArgumentNullException(nameof(player));
+        }
+
         player.ReferenceHub.nicknameSync.SetSyncVarDirtyBit(4);
     }
 
@@ -115,7 +190,17 @@ public static class PlayerFakeSyncVarExtension
     /// <param name="nick">The new nickname value.</param>
     public static void SetFakeNick(this Player player, Player target, string nick)
     {
-        target.SendFakeSyncVar(player.ReferenceHub.nicknameSync, 8, nick);
+        if (player == null)
+        {
+            throw new ArgumentNullException(nameof(player));
+        }
+
+        if (target == null)
+        {
+            throw new ArgumentNullException(nameof(target));
+        }
+
+        player.SendFakeSyncVar(target.ReferenceHub.nicknameSync, 8, nick);
     }
 
     /// <summary>
@@ -124,6 +209,11 @@ public static class PlayerFakeSyncVarExtension
     /// <param name="player">The player to resync.</param>
     public static void ResyncFakeNick(this Player player)
     {
+        if (player == null)
+        {
+            throw new ArgumentNullException(nameof(player));
+        }
+
         player.ReferenceHub.nicknameSync.SetSyncVarDirtyBit(8);
     }
 
@@ -135,7 +225,17 @@ public static class PlayerFakeSyncVarExtension
     /// <param name="displayName">The new display name value.</param>
     public static void SetFakeDisplayName(this Player player, Player target, string displayName)
     {
-        target.SendFakeSyncVar(player.ReferenceHub.nicknameSync, 16, displayName);
+        if (player == null)
+        {
+            throw new ArgumentNullException(nameof(player));
+        }
+
+        if (target == null)
+        {
+            throw new ArgumentNullException(nameof(target));
+        }
+
+        player.SendFakeSyncVar(target.ReferenceHub.nicknameSync, 16, displayName);
     }
 
     /// <summary>
@@ -144,6 +244,11 @@ public static class PlayerFakeSyncVarExtension
     /// <param name="player">The player to resync.</param>
     public static void ResyncFakeDisplayName(this Player player)
     {
+        if (player == null)
+        {
+            throw new ArgumentNullException(nameof(player));
+        }
+
         player.ReferenceHub.nicknameSync.SetSyncVarDirtyBit(16);
     }
 
@@ -155,7 +260,17 @@ public static class PlayerFakeSyncVarExtension
     /// <param name="maxPlayer">The new max player value.</param>
     public static void SetFakeMaxPlayers(this Player player, Player target, ushort maxPlayer)
     {
-        target.SendFakeSyncVar(player.ReferenceHub.characterClassManager, 2, maxPlayer);
+        if (player == null)
+        {
+            throw new ArgumentNullException(nameof(player));
+        }
+
+        if (target == null)
+        {
+            throw new ArgumentNullException(nameof(target));
+        }
+
+        player.SendFakeSyncVar(target.ReferenceHub.characterClassManager, 2, maxPlayer);
     }
 
     /// <summary>
@@ -164,6 +279,11 @@ public static class PlayerFakeSyncVarExtension
     /// <param name="player">The player to resync.</param>
     public static void ResyncFakeMaxPlayers(this Player player)
     {
+        if (player == null)
+        {
+            throw new ArgumentNullException(nameof(player));
+        }
+
         player.ReferenceHub.characterClassManager.SetSyncVarDirtyBit(2);
     }
 
@@ -175,7 +295,17 @@ public static class PlayerFakeSyncVarExtension
     /// <param name="item">The new current item value.</param>
     public static void SetFakeCurrentItem(this Player player, Player target, ItemIdentifier item)
     {
-        target.SendFakeSyncVar(player.ReferenceHub.inventory, 1, item);
+        if (player == null)
+        {
+            throw new ArgumentNullException(nameof(player));
+        }
+
+        if (target == null)
+        {
+            throw new ArgumentNullException(nameof(target));
+        }
+
+        player.SendFakeSyncVar(target.ReferenceHub.inventory, 1, item);
     }
 
     /// <summary>
@@ -184,7 +314,11 @@ public static class PlayerFakeSyncVarExtension
     /// <param name="player">The player to resync.</param>
     public static void ResyncFakeCurrentItem(this Player player)
     {
+        if (player == null)
+        {
+            throw new ArgumentNullException(nameof(player));
+        }
+
         player.ReferenceHub.characterClassManager.SetSyncVarDirtyBit(1);
     }
-
 }

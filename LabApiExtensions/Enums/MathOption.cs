@@ -9,40 +9,49 @@ public enum MathOption
     /// No Math Option, returns with InValue.
     /// </summary>
     None,
+
     /// <summary>
     /// Returns with MyValue.
     /// </summary>
     Set,
+
     /// <summary>
     /// Add InValue and MyValue together.
     /// </summary>
     Add,
+
     /// <summary>
     /// Subtract InValue with MyValue.
     /// </summary>
     Subtract,
+
     /// <summary>
-    /// Subtract InValue with MyValue. (InValue - MyValue)
+    /// Subtract InValue with MyValue. (InValue - MyValue).
     /// </summary>
     Multiply,
+
     /// <summary>
-    /// Divide InValue with MyValue. (InValue / MyValue)
+    /// Divide InValue with MyValue. (InValue / MyValue).
     /// </summary>
     Divide,
+
     /// <summary>
-    /// Modulus InValue with MyValue. (InValue % MyValue)
+    /// Modulus InValue with MyValue. (InValue % MyValue).
     /// </summary>
     Modulus,
+
     /// <summary>
-    /// Subtract MyValue with InValue. (MyValue - InValue)
+    /// Subtract MyValue with InValue. (MyValue - InValue).
     /// </summary>
-    Subtract_MyWithIn,
+    SubtractMyWithIn,
+
     /// <summary>
-    /// Divide MyValue with InValue. (MyValue / InValue)
+    /// Divide MyValue with InValue. (MyValue / InValue).
     /// </summary>
-    Divide_MyWithIn,
+    DivideMyWithIn,
+
     /// <summary>
-    /// Modulus MyValue with InValue. (MyValue % InValue)
+    /// Modulus MyValue with InValue. (MyValue % InValue).
     /// </summary>
-    Modulus_MyWithIn,
+    ModulusMyWithIn,
 }

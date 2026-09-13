@@ -9,51 +9,54 @@ namespace LabApiExtensions.FakeExtension;
 /// </summary>
 public static class AdminToyBaseFakeExtension
 {
-    #region AdminToyBase
     /// <inheritdoc cref="AdminToy.Position" />
-    public static void SetFakePosition<T>(this T adminToy, Player target, Vector3 positon) where T : AdminToyBase
+    public static void SetFakePosition<T>(this T adminToy, Player target, Vector3 positon)
+        where T : AdminToyBase
     {
         target.SendFakeSyncVar(adminToy, 1, positon);
     }
 
     /// <inheritdoc cref="AdminToy.Position" />
-    public static void SetFakePosition<T>(this T adminToy, IEnumerable<Player> targets, Vector3 positon) where T : AdminToyBase
+    public static void SetFakePosition<T>(this T adminToy, IEnumerable<Player> targets, Vector3 positon)
+        where T : AdminToyBase
     {
         targets.SendFakeSyncVar(adminToy, 1, positon);
     }
 
     /// <inheritdoc cref="AdminToy.Rotation" />
-    public static void SetFakeRotation<T>(this T adminToy, Player target, Quaternion rotation) where T : AdminToyBase
+    public static void SetFakeRotation<T>(this T adminToy, Player target, Quaternion rotation)
+        where T : AdminToyBase
     {
         target.SendFakeSyncVar(adminToy, 2, rotation);
     }
 
     /// <inheritdoc cref="AdminToy.Scale" />
-    public static void SetFakeScale<T>(this T adminToy, Player target, Vector3 scale) where T : AdminToyBase
+    public static void SetFakeScale<T>(this T adminToy, Player target, Vector3 scale)
+        where T : AdminToyBase
     {
         target.SendFakeSyncVar(adminToy, 4, scale);
     }
 
     /// <inheritdoc cref="AdminToy.MovementSmoothing" />
-    public static void SetFakeMovementSmoothing<T>(this T adminToy, Player target, byte movementSmoothing) where T : AdminToyBase
+    public static void SetFakeMovementSmoothing<T>(this T adminToy, Player target, byte movementSmoothing)
+        where T : AdminToyBase
     {
         target.SendFakeSyncVar(adminToy, 8, movementSmoothing);
     }
 
     /// <inheritdoc cref="AdminToy.IsStatic" />
-    public static void SetFakeIsStatic<T>(this T adminToy, Player target, bool isStatic) where T : AdminToyBase
+    public static void SetFakeIsStatic<T>(this T adminToy, Player target, bool isStatic)
+        where T : AdminToyBase
     {
         target.SendFakeSyncVar(adminToy, 16, isStatic);
     }
-    #endregion
-    #region CapybaraToy
+
     /// <inheritdoc cref="LabApi.Features.Wrappers.CapybaraToy.CollidersEnabled" />
     public static void SetFakeCollisionsEnabled(this AdminToys.CapybaraToy capybaraToy, Player target, bool collisionsEnabled)
     {
         target.SendFakeSyncVar(capybaraToy, 32, collisionsEnabled);
     }
-    #endregion
-    #region InvisibleInteractableToy
+
     /// <inheritdoc cref="InteractableToy.Shape" />
     public static void SetFakeShape(this InvisibleInteractableToy invisibleInteractableToy, Player target, InvisibleInteractableToy.ColliderShape shape)
     {
@@ -71,8 +74,7 @@ public static class AdminToyBaseFakeExtension
     {
         target.SendFakeSyncVar(invisibleInteractableToy, 128, isLocked);
     }
-    #endregion
-    #region LightSourceToy
+
     /// <inheritdoc cref="LabApi.Features.Wrappers.LightSourceToy.Intensity" />
     public static void SetFakeLightIntensity(this AdminToys.LightSourceToy lightSourceToy, Player target, float lightIntensity)
     {
@@ -127,8 +129,7 @@ public static class AdminToyBaseFakeExtension
     {
         target.SendFakeSyncVar(lightSourceToy, 8192L, innerSpotAngle);
     }
-    #endregion
-    #region PrimitiveObjectToy
+
     /// <inheritdoc cref="LabApi.Features.Wrappers.PrimitiveObjectToy.Type" />
     public static void SetFakePrimitiveType(this AdminToys.PrimitiveObjectToy primitiveObjectToy, Player target, PrimitiveType primitiveType)
     {
@@ -146,8 +147,7 @@ public static class AdminToyBaseFakeExtension
     {
         target.SendFakeSyncVar(primitiveObjectToy, 128, primitiveFlags);
     }
-    #endregion
-    #region Scp079CameraToy
+
     /// <inheritdoc cref="CameraToy.Label" />
     public static void SetFakeLabel(this Scp079CameraToy adminToy, Player target, string label)
     {
@@ -177,15 +177,13 @@ public static class AdminToyBaseFakeExtension
     {
         target.SendFakeSyncVar(adminToy, 512, zoomConstraint);
     }
-    #endregion
-    #region ShootingTarget
+
     /// <inheritdoc cref="ShootingTargetToy.IsGlobal" />
     public static void SetFakeSyncMode(this ShootingTarget adminToy, Player target, bool syncMode)
     {
         target.SendFakeSyncVar(adminToy, 32, syncMode);
     }
-    #endregion
-    #region SpawnableCullingParent
+
     /// <inheritdoc cref="LabApi.Features.Wrappers.SpawnableCullingParent.Position" />
     public static void SetFakeBoundsPosition(this AdminToys.SpawnableCullingParent spawnableCullingParent, Player target, Vector3 boundsPosition)
     {
@@ -197,8 +195,7 @@ public static class AdminToyBaseFakeExtension
     {
         target.SendFakeSyncVar(spawnableCullingParent, 2, boundsSize);
     }
-    #endregion
-    #region SpeakerToy
+
     /// <inheritdoc cref="LabApi.Features.Wrappers.SpeakerToy.ControllerId" />
     public static void SetFakeControllerId(this AdminToys.SpeakerToy adminToy, Player target, byte controllerId)
     {
@@ -228,8 +225,7 @@ public static class AdminToyBaseFakeExtension
     {
         target.SendFakeSyncVar(adminToy, 512, maxDistance);
     }
-    #endregion
-    #region TextToy
+
     /// <inheritdoc cref="LabApi.Features.Wrappers.TextToy.DisplaySize" />
     public static void SetFakeDisplaySize(this AdminToys.TextToy adminToy, Player target, Vector2 displaySize)
     {
@@ -241,8 +237,7 @@ public static class AdminToyBaseFakeExtension
     {
         target.SendFakeSyncVar(adminToy, 64, textFormat);
     }
-    #endregion
-    #region WaypointToy
+
     /// <inheritdoc cref="LabApi.Features.Wrappers.WaypointToy.VisualizeBounds" />
     public static void SetFakeVisualizeBounds(this AdminToys.WaypointToy adminToy, Player target, bool visualizeBounds)
     {
@@ -260,5 +255,4 @@ public static class AdminToyBaseFakeExtension
     {
         target.SendFakeSyncVar(adminToy, 128, boundsSize);
     }
-    #endregion
 }
