@@ -1,4 +1,11 @@
 ﻿[*.cs]
+# General
+charset=utf-8
+indent_style=tab
+indent_size=tab
+trim_trailing_whitespace=true
+end_of_line=crlf
+insert_final_newline=true
 
 # SA1633: File should have header
 dotnet_diagnostic.SA1633.severity = none

@@ -1,57 +1,57 @@
-﻿namespace LabApiExtensions.Enums;
+namespace LabApiExtensions.Enums;
 
 /// <summary>
 /// Options for changing the base value with Math.
 /// </summary>
 public enum MathOption
 {
-    /// <summary>
-    /// No Math Option, returns with InValue.
-    /// </summary>
-    None,
+	/// <summary>
+	/// No Math Option, returns with InValue.
+	/// </summary>
+	None,
 
-    /// <summary>
-    /// Returns with MyValue.
-    /// </summary>
-    Set,
+	/// <summary>
+	/// Returns with MyValue.
+	/// </summary>
+	Set,
 
-    /// <summary>
-    /// Add InValue and MyValue together.
-    /// </summary>
-    Add,
+	/// <summary>
+	/// Add InValue and MyValue together.
+	/// </summary>
+	Add,
 
-    /// <summary>
-    /// Subtract InValue with MyValue.
-    /// </summary>
-    Subtract,
+	/// <summary>
+	/// Subtract InValue with MyValue.
+	/// </summary>
+	Subtract,
 
-    /// <summary>
-    /// Subtract InValue with MyValue. (InValue - MyValue).
-    /// </summary>
-    Multiply,
+	/// <summary>
+	/// Subtract InValue with MyValue. (InValue - MyValue).
+	/// </summary>
+	Multiply,
 
-    /// <summary>
-    /// Divide InValue with MyValue. (InValue / MyValue).
-    /// </summary>
-    Divide,
+	/// <summary>
+	/// Divide InValue with MyValue. (InValue / MyValue).
+	/// </summary>
+	Divide,
 
-    /// <summary>
-    /// Modulus InValue with MyValue. (InValue % MyValue).
-    /// </summary>
-    Modulus,
+	/// <summary>
+	/// Modulus InValue with MyValue. (InValue % MyValue).
+	/// </summary>
+	Modulus,
 
-    /// <summary>
-    /// Subtract MyValue with InValue. (MyValue - InValue).
-    /// </summary>
-    SubtractMyWithIn,
+	/// <summary>
+	/// Subtract MyValue with InValue. (MyValue - InValue).
+	/// </summary>
+	SubtractMyWithIn,
 
-    /// <summary>
-    /// Divide MyValue with InValue. (MyValue / InValue).
-    /// </summary>
-    DivideMyWithIn,
+	/// <summary>
+	/// Divide MyValue with InValue. (MyValue / InValue).
+	/// </summary>
+	DivideMyWithIn,
 
-    /// <summary>
-    /// Modulus MyValue with InValue. (MyValue % InValue).
-    /// </summary>
-    ModulusMyWithIn,
+	/// <summary>
+	/// Modulus MyValue with InValue. (MyValue % InValue).
+	/// </summary>
+	ModulusMyWithIn,
 }

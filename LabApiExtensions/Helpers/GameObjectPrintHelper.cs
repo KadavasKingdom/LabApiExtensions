@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 namespace LabApiExtensions.Helpers;
 
@@ -7,42 +7,42 @@ namespace LabApiExtensions.Helpers;
 /// </summary>
 public static class GameObjectPrintHelper
 {
-    /// <summary>
-    /// Print the <see cref="GameObject"/>'s <see cref="Component"/>.
-    /// </summary>
-    /// <param name="gameObject">The current <see cref="GameObject"/>.</param>
-    /// <param name="maxLevel">Max depth level.</param>
-    /// <returns>The <see cref="GameObject"/>'s <see cref="Component"/> tree to print.</returns>
-    public static string PrintComponentTree(this GameObject gameObject, int maxLevel = -1)
-    {
-        if (gameObject == null)
-        {
-            throw new ArgumentNullException(nameof(gameObject));
-        }
+	/// <summary>
+	/// Print the <see cref="GameObject"/>'s <see cref="Component"/>.
+	/// </summary>
+	/// <param name="gameObject">The current <see cref="GameObject"/>.</param>
+	/// <param name="maxLevel">Max depth level.</param>
+	/// <returns>The <see cref="GameObject"/>'s <see cref="Component"/> tree to print.</returns>
+	public static string PrintComponentTree(this GameObject gameObject, int maxLevel = -1)
+	{
+		if (gameObject == null)
+		{
+			throw new ArgumentNullException(nameof(gameObject));
+		}
 
-        return "\n" + gameObject.DeepLayersPrint(0, maxLevel);
-    }
+		return "\n" + gameObject.DeepLayersPrint(0, maxLevel);
+	}
 
-    private static string DeepLayersPrint(this GameObject @object, int level, int maxLevel)
-    {
-        if (level == maxLevel)
-        {
-            return string.Empty;
-        }
+	private static string DeepLayersPrint(this GameObject @object, int level, int maxLevel)
+	{
+		if (level == maxLevel)
+		{
+			return string.Empty;
+		}
 
-        string log = string.Empty;
-        foreach (var item in @object.GetComponents<Component>())
-        {
-            log += $"{string.Join(" ", Enumerable.Repeat("\t", level))}{item}\n";
-        }
+		string log = string.Empty;
+		foreach (var item in @object.GetComponents<Component>())
+		{
+			log += $"{string.Join(" ", Enumerable.Repeat("\t", level))}{item}\n";
+		}
 
-        for (int i = 0; i < @object.transform.childCount; i++)
-        {
-            var child = @object.transform.GetChild(i);
-            log += $"{string.Join(" ", Enumerable.Repeat("\t", level))}{child}\n";
-            log += child.gameObject.DeepLayersPrint(level + 1, maxLevel);
-        }
+		for (int i = 0; i < @object.transform.childCount; i++)
+		{
+			var child = @object.transform.GetChild(i);
+			log += $"{string.Join(" ", Enumerable.Repeat("\t", level))}{child}\n";
+			log += child.gameObject.DeepLayersPrint(level + 1, maxLevel);
+		}
 
-        return log;
-    }
+		return log;
+	}
 }
