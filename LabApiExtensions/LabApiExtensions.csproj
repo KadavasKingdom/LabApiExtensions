@@ -26,7 +26,7 @@
 		<Version>0.4.0</Version>
 		<FileVersion>$(Version)</FileVersion>
 		<PackageId>KadavasKingdom.LabApiExtensions</PackageId>
-		<PackageTags>scpsl;labapi</PackageTags>
+		<PackageTags>scpsl;labapi;labapi-dependency</PackageTags>
 	</PropertyGroup>
 	
 	<!-- Nuget References -->
