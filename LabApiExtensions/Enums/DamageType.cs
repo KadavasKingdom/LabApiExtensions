@@ -127,4 +127,9 @@ public enum DamageType
 	/// Damage done by a gray candy.
 	/// </summary>
 	GrayCandy,
+
+	/// <summary>
+	/// Damage done by marshmallow man.
+	/// </summary>
+	Marshmallow,
 }

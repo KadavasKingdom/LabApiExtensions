@@ -72,6 +72,8 @@ public static class DamageExtensions
 				return DamageType.Scp1509;
 			case GrayCandyDamageHandler:
 				return DamageType.GrayCandy;
+			case MarshmallowDamageHandler:
+				return DamageType.Marshmallow;
 			default:
 				CL.Warn($"Damage not found! Please report this! Handler: {handlerBase}");
 				return DamageType.None;
