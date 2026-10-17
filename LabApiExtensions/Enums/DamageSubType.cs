@@ -1,4 +1,4 @@
-﻿using PlayerRoles.PlayableScps.Scp3114;
+using PlayerRoles.PlayableScps.Scp3114;
 using PlayerRoles.PlayableScps.Scp939;
 using PlayerStatsSystem;
 
@@ -9,52 +9,63 @@ namespace LabApiExtensions.Enums;
 /// </summary>
 public enum DamageSubType
 {
-    /// <summary>
-    /// No damage subtype.
-    /// </summary>
-    None = 0,
-    /// <summary>
-    /// Check <see cref="DamageUniversalType"/>.
-    /// </summary>
-    UniversalSubType,
-    /// <summary>
-    /// Weapons inside the <see cref="ItemType"/>.
-    /// </summary>
-    WeaponType,
-    /// <summary>
-    /// Ammos inside the <see cref="ItemType"/>.
-    /// </summary>
-    AmmoType,
-    /// <summary>
-    /// Check <see cref="Scp096DamageHandler.AttackType"/>.
-    /// </summary>
-    Scp069_AttackType,
-    /// <summary>
-    /// Check <see cref="Scp049DamageHandler.AttackType"/>.
-    /// </summary>
-    Scp049_AttackType,
-    /// <summary>
-    /// Check <see cref="InventorySystem.Items.MicroHID.Modules.MicroHidFiringMode"/>.
-    /// </summary>
-    MicroHidFiringMode,
-    /// <summary>
-    /// Check <see cref="global::ExplosionType"/>.
-    /// </summary>
-    ExplosionType,
-    /// <summary>
-    /// Check <see cref="InventorySystem.Items.Firearms.Modules.DisruptorActionModule.FiringState"/>.
-    /// </summary>
-    Disruptor_FiringState,
-    /// <summary>
-    /// Check <see cref="Scp939DamageType"/>.
-    /// </summary>
-    Scp939_AttackType,
-    /// <summary>
-    /// Check <see cref="Scp3114DamageHandler.HandlerType"/>.
-    /// </summary>
-    Scp3114_AttackType,
-    /// <summary>
-    /// <see cref="PlayerRoles.RoleTypeId"/> of the <see cref="AttackerDamageHandler.Attacker"/>.
-    /// </summary>
-    Attacker_Role,
+	/// <summary>
+	/// No damage subtype.
+	/// </summary>
+	None = 0,
+
+	/// <summary>
+	/// Check <see cref="DamageUniversalType"/>.
+	/// </summary>
+	UniversalSubType,
+
+	/// <summary>
+	/// Weapons inside the <see cref="ItemType"/>.
+	/// </summary>
+	WeaponType,
+
+	/// <summary>
+	/// Ammos inside the <see cref="ItemType"/>.
+	/// </summary>
+	AmmoType,
+
+	/// <summary>
+	/// Check <see cref="Scp096DamageHandler.AttackType"/>.
+	/// </summary>
+	Scp069AttackType,
+
+	/// <summary>
+	/// Check <see cref="Scp049DamageHandler.AttackType"/>.
+	/// </summary>
+	Scp049AttackType,
+
+	/// <summary>
+	/// Check <see cref="InventorySystem.Items.MicroHID.Modules.MicroHidFiringMode"/>.
+	/// </summary>
+	MicroHidFiringMode,
+
+	/// <summary>
+	/// Check <see cref="global::ExplosionType"/>.
+	/// </summary>
+	ExplosionType,
+
+	/// <summary>
+	/// Check <see cref="InventorySystem.Items.Firearms.Modules.DisruptorActionModule.FiringState"/>.
+	/// </summary>
+	DisruptorFiringState,
+
+	/// <summary>
+	/// Check <see cref="Scp939DamageType"/>.
+	/// </summary>
+	Scp939AttackType,
+
+	/// <summary>
+	/// Check <see cref="Scp3114DamageHandler.HandlerType"/>.
+	/// </summary>
+	Scp3114AttackType,
+
+	/// <summary>
+	/// <see cref="PlayerRoles.RoleTypeId"/> of the <see cref="AttackerDamageHandler.Attacker"/>.
+	/// </summary>
+	AttackerRole,
 }

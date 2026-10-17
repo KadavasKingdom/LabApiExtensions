@@ -1,5 +1,3 @@
-﻿using AdminToys;
-using LabApiExtensions.Extensions;
 using Mirror;
 
 namespace LabApiExtensions.FakeExtension;
@@ -9,99 +7,106 @@ namespace LabApiExtensions.FakeExtension;
 /// </summary>
 public static class FakeSyncVarExtension
 {
-    private static readonly Dictionary<Type, ulong> SubWriteClassToMinULong = new()
-    {
-        [typeof(AdminToyBase)] = 32,
-    };
+	/// <summary>
+	/// Sending fale Sync Var to <paramref name="target"/>.
+	/// </summary>
+	/// <typeparam name="T">Any type.</typeparam>
+	/// <param name="target">The target to send to.</param>
+	/// <param name="networkBehaviour">The behaviour to change.</param>
+	/// <param name="dirtyBit">The dirtyBit value of the SyncVar.</param>
+	/// <param name="value">The value to write.</param>
+	/// <remarks>
+	/// Dirty bit values can be read by decompiling. <br></br>
+	/// Check for <see cref="NetworkBehaviour.SerializeSyncVars"/> in the <paramref name="networkBehaviour"/>.
+	/// </remarks>
+	public static void SendFakeSyncVar<T>(this Player target, NetworkBehaviour networkBehaviour, ulong dirtyBit, T value)
+	{
+		if (target == null)
+		{
+			throw new ArgumentNullException(nameof(target));
+		}
 
-    private static ulong GetSubclassMinDirtyBit(Type type)
-    {
-        foreach (KeyValuePair<Type, ulong> kvp in SubWriteClassToMinULong)
-        {
-            if (type.IsSubclassOf(kvp.Key))
-                return kvp.Value;
-        }
+		if (networkBehaviour == null)
+		{
+			throw new ArgumentNullException(nameof(networkBehaviour));
+		}
 
-        return ulong.MaxValue;
-    }
+		Type networkType = networkBehaviour.GetType();
 
-    // Easier syncVar
-    /// <summary>
-    /// Sending fale Sync Var to <paramref name="target"/>.
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="target">The target to send to.</param>
-    /// <param name="networkBehaviour">The behaviour to change.</param>
-    /// <param name="dirtyBit">The dirtyBit value of the SyncVar.</param>
-    /// <param name="value"></param>
-    /// <remarks>
-    /// Dirty bit values can be read by decompiling. <br></br>
-    /// Check for <see cref="NetworkBehaviour.SerializeSyncVars"/> in the <paramref name="networkBehaviour"/>.
-    /// </remarks>
-    public static void SendFakeSyncVar<T>(this Player target, NetworkBehaviour networkBehaviour, ulong dirtyBit, T value)
-    {
-        Type networkType = networkBehaviour.GetType();
+		target.SendFakeCore(
+			networkBehaviour,
+			null,
+			(writer) =>
 
-        target.SendFakeCore(networkBehaviour,
-        null, (writer) => // Write SyncVar
-        {
-            // Write DrityBit always
-            writer.WriteULong(dirtyBit);
+			// Write SyncVar
+			{
+				// Write DrityBit always
+				writer.WriteULong(dirtyBit);
 
-            ulong minDirtyBit = GetSubclassMinDirtyBit(networkType);
-            bool isWritten = false;
+				FakeSyncCoreExtension.SubWriteInfo subWriteInfo = FakeSyncCoreExtension.GetSubWriteInfo(networkType);
+				bool isWritten = false;
 
-            if (dirtyBit >= minDirtyBit)
-            {
-                writer.WriteULong(dirtyBit);
-                isWritten = true;
-            }
+				if (dirtyBit > subWriteInfo.MaxDirtyBit)
+				{
+					FakeSyncCoreExtension.WriteExtraDirtyBit(subWriteInfo, writer, dirtyBit);
+					isWritten = true;
+				}
 
-            writer.Write(value);
+				writer.Write(value);
 
-            if (!isWritten)
-                writer.WriteULong(dirtyBit);
+				if (!isWritten)
+				{
+					FakeSyncCoreExtension.WriteExtraDirtyBit(subWriteInfo, writer, dirtyBit);
+				}
+			});
+	}
 
-        });
-    }
+	/// <summary>
+	/// Sending fale Sync Var to <paramref name="targets"/>.
+	/// </summary>
+	/// <typeparam name="T">Any type.</typeparam>
+	/// <param name="targets">The targets to send to.</param>
+	/// <param name="networkBehaviour">The behaviour to change.</param>
+	/// <param name="dirtyBit">The dirtyBit value of the SyncVar.</param>
+	/// <param name="value">The value to write.</param>
+	/// <remarks>
+	/// Dirty bit values can be read by decompiling. <br></br>
+	/// Check for <see cref="NetworkBehaviour.SerializeSyncVars"/> in the <paramref name="networkBehaviour"/>.
+	/// </remarks>
+	public static void SendFakeSyncVar<T>(this IEnumerable<Player> targets, NetworkBehaviour networkBehaviour, ulong dirtyBit, T value)
+	{
+		if (networkBehaviour == null)
+		{
+			throw new ArgumentNullException(nameof(networkBehaviour));
+		}
 
-    // Sending mulitple Sync Vars to the player. (Not Tested)
-    private static void SendFakeSyncVars(this Player target, NetworkBehaviour networkBehaviour, params (ulong DirtyBit, object SyncVar)[] syncVars)
-    {
-        if (syncVars.Length == 0)
-            return;
+		Type networkType = networkBehaviour.GetType();
 
-        Type networkType = networkBehaviour.GetType();
+		targets.SendFakeCore(
+			networkBehaviour,
+			null,
+			(writer) =>
 
-        target.SendFakeCore(networkBehaviour,
-        (writer) => writer.WriteULong(0), // Write No SyncData
-        (writer) => // Write SyncVar
-        {
-            ulong allDirtyBits = syncVars.Aggregate(0UL, (previous, tuple) => previous |= tuple.DirtyBit);
+			// Write SyncVar
+			{
+				// Write DrityBit always
+				writer.WriteULong(dirtyBit);
 
-            // Write DrityBit always
-            writer.WriteULong(allDirtyBits);
+				FakeSyncCoreExtension.SubWriteInfo subWriteInfo = FakeSyncCoreExtension.GetSubWriteInfo(networkType);
+				bool isWritten = false;
 
-            ulong minDirtyBit = GetSubclassMinDirtyBit(networkType);
-            bool isWritten = false;
+				if (dirtyBit > subWriteInfo.MaxDirtyBit)
+				{
+					FakeSyncCoreExtension.WriteExtraDirtyBit(subWriteInfo, writer, dirtyBit);
+					isWritten = true;
+				}
 
-            foreach ((ulong dirtyBit, object syncVar) in syncVars.OrderBy(x => x.DirtyBit))
-            {
-                if (dirtyBit >= minDirtyBit && !isWritten)
-                {
-                    writer.WriteULong(allDirtyBits);
-                    isWritten = true;
-                }
+				writer.Write(value);
 
-                if (!MirrorWriterExtension.Write(syncVar.GetType(), syncVar, writer))
-                {
-                    CL.Error($"No NetworkWriter found for type {syncVar.GetType()}");
-                    return;
-                }
-            }
-
-            if (!isWritten)
-                writer.WriteULong(allDirtyBits);
-        });
-    }
+				if (!isWritten)
+				{
+					FakeSyncCoreExtension.WriteExtraDirtyBit(subWriteInfo, writer, dirtyBit);
+				}
+			});
+	}
 }
