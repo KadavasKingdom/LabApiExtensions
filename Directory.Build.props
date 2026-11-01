@@ -1,0 +1,69 @@
+<Project>
+	<!-- Main Properties -->
+	<PropertyGroup Label="Main Properties">
+		<TargetFrameworks>net48</TargetFrameworks>
+		<PlatformTarget>x64</PlatformTarget>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<LangVersion>latest</LangVersion>
+
+		<!-- Package related -->
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+
+		<!-- Analyzers -->
+		<EnableNETAnalyzers>true</EnableNETAnalyzers>
+		<EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
+
+		<!-- Configurations -->
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+		<AnalysisLevel>latest-all</AnalysisLevel>
+		<AnalysisMode>Recommended</AnalysisMode>
+		<WarningLevel>4</WarningLevel>
+		<DebugType>embedded</DebugType>
+	</PropertyGroup>
+
+	<ItemGroup Label="Package related">
+		<None Include="..\LICENSE.txt" Pack="true" PackagePath="\" />
+		<None Include="..\README.md" Pack="true" PackagePath="\" />
+	</ItemGroup>
+
+	<Target Name="SetSourceRevisionId" BeforeTargets="InitializeSourceControlInformation" Label="GIT commit id">
+		<Exec Command="git describe --long --always --exclude=* --abbrev=8" ConsoleToMSBuild="True" IgnoreExitCode="False">
+			<Output PropertyName="SourceRevisionId" TaskParameter="ConsoleOutput" />
+		</Exec>
+	</Target>
+
+	<!-- Nuget References -->
+	<ItemGroup>
+		<PackageReference Include="BepInEx.AssemblyPublicizer.MSBuild" Version="0.4.3" PrivateAssets="all" ExcludeAssets="runtime" ReferenceOutputAssembly="false" Private="true" />
+	</ItemGroup>
+	
+	<!-- DLL References -->
+	<ItemGroup>
+		<Reference Include="LabApi" Publicize="true" Private="false" />
+		<Reference Include="UnityEngine.CoreModule" Private="false" />
+	</ItemGroup>
+	
+	<!-- Usings globals -->
+	<ItemGroup>
+		<Using Include="UnityEngine.Random" Alias="URandom" />
+		<Using Include="LabApi.Features.Wrappers" />
+		<Using Include="LabApi.Features.Console.Logger" Alias="CL" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="PolySharp" Version="1.16.0">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="StyleCop.Analyzers.Unstable" Version="1.2.0.556">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<None Remove="..\stylecop.json" />
+		<AdditionalFiles Include="..\stylecop.json" />
+	</ItemGroup>
+</Project>

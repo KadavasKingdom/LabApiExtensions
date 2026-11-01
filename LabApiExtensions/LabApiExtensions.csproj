@@ -1,22 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-	<!-- Main -->
-	<PropertyGroup>
-		<OutputType>Library</OutputType>
-		<LangVersion>latest</LangVersion>
-		<TargetFramework>net48</TargetFramework>
-		<PlatformTarget>x64</PlatformTarget>
-		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-		<ImplicitUsings>enable</ImplicitUsings>
-		<Nullable>enable</Nullable>
-		<DebugType>embedded</DebugType>
-		<Optimize>true</Optimize>
-		<GenerateDocumentationFile>True</GenerateDocumentationFile>
-		<EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
-		<EnableNETAnalyzers>True</EnableNETAnalyzers>
-		<AnalysisLevel>latest-all</AnalysisLevel>		
-	</PropertyGroup>
-
 	<!-- Settable (Version, etc) -->
 	<PropertyGroup>
 		<RepositoryUrl>https://github.com/KadavasKingdom/LabApiExtensions</RepositoryUrl>
@@ -24,48 +7,19 @@
 		<Authors>$(AssemblyName);KadavasKingdom;SlejmUr</Authors>
 		<Copyright>(c) 2025-2026 KadavasKingdom</Copyright>
 		<Version>0.4.0</Version>
-		<FileVersion>$(Version)</FileVersion>
+		<FileVersion>$(Verion)</FileVersion>
+		<PackageVersion>$(Version).$([System.DateTime]::UtcNow.ToString("yyMMddHH"))</PackageVersion>
 		<PackageId>KadavasKingdom.LabApiExtensions</PackageId>
 		<PackageTags>scpsl;labapi;labapi-dependency</PackageTags>
 	</PropertyGroup>
 	
-	<!-- Nuget References -->
-	<ItemGroup>
-		<PackageReference Include="BepInEx.AssemblyPublicizer.MSBuild" Version="0.4.3" PrivateAssets="all" ExcludeAssets="runtime" ReferenceOutputAssembly="false" Private="true" />
-		<PackageReference Include="Northwood.LabAPI" Version="1.1.7" Publicize="true" PrivateAssets="all" ExcludeAssets="runtime" ReferenceOutputAssembly="false" Private="true">
-		  <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>
-	</ItemGroup>
 	
 	<!-- DLL References -->
 	<ItemGroup>
 		<Reference Include="Assembly-CSharp" Publicize="true" Private="false" />
 		<Reference Include="Mirror" Publicize="true" Private="false" />
 		<Reference Include="Pooling" Private="false" />
-		<Reference Include="UnityEngine.CoreModule" Private="false" />
 		<Reference Include="UnityEngine.PhysicsModule" Private="false" />
 	</ItemGroup>
-	
-	<!-- Usings globals -->
-	<ItemGroup>
-		<Using Include="UnityEngine.Random" Alias="URandom" />
-		<Using Include="LabApi.Features.Wrappers" />
-		<Using Include="LabApi.Features.Console.Logger" Alias="CL" />
-	</ItemGroup>
 
-	<!-- DLL Search -->
-	<Import Project="ReferencePaths.props.user" Condition="Exists('ReferencePaths.props.user')" />
-	<PropertyGroup>
-		<AssemblySearchPaths>$(AssemblySearchPaths);$(ReferencePath)</AssemblySearchPaths>
-	</PropertyGroup>
-
-	<!-- StyleCop -->
-	<ItemGroup>
-		<PackageReference Include="StyleCop.Analyzers.Unstable" Version="1.2.0.556">
-			<PrivateAssets>all</PrivateAssets>
-			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>
-		<None Remove="stylecop.json" />
-		<AdditionalFiles Include="stylecop.json" />
-	</ItemGroup>
 </Project>
