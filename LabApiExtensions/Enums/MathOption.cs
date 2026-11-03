@@ -16,17 +16,17 @@ public enum MathOption
 	Set,
 
 	/// <summary>
-	/// Add InValue and MyValue together.
+	/// Add InValue and MyValue together (InValue + MyValue).
 	/// </summary>
 	Add,
 
 	/// <summary>
-	/// Subtract InValue with MyValue.
+	/// Subtract InValue with MyValue (InValue - MyValue).
 	/// </summary>
 	Subtract,
 
 	/// <summary>
-	/// Subtract InValue with MyValue. (InValue - MyValue).
+	/// Multiply InValue with MyValue. (InValue * MyValue).
 	/// </summary>
 	Multiply,
 

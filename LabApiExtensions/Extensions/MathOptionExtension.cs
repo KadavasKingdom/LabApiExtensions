@@ -1,44 +1,12 @@
-using LabApiExtensions.Configs;
 using LabApiExtensions.Enums;
 
-namespace LabApiExtensions.Managers;
+namespace LabApiExtensions.Extensions;
 
 /// <summary>
-/// Calculation manager for Math Values.
+/// Provides an extensions for <see cref="MathOption"/>.
 /// </summary>
-public static class MathValueManager
+public static class MathOptionExtension
 {
-	/// <summary>
-	/// Calculate math with a given input.
-	/// </summary>
-	/// <param name="mathValue">The math value to calculate.</param>
-	/// <param name="inValue">The input value.</param>
-	/// <returns>The new value.</returns>
-	public static float MathCalculation(this MathValueFloat mathValue, float inValue)
-	{
-		if (mathValue == null)
-		{
-			return default;
-		}
-
-		return mathValue.Math.MathCalculation(inValue, mathValue.Value);
-	}
-
-	/// <summary>
-	/// Calculate math with a given input.
-	/// </summary>
-	/// <param name="mathValue">The math value to calculate.</param>
-	/// <param name="inValue">The reference for value to change with.</param>
-	public static void MathCalculation(this MathValueFloat mathValue, ref float inValue)
-	{
-		if (mathValue == null)
-		{
-			return;
-		}
-
-		inValue = mathValue.Math.MathCalculation(inValue, mathValue.Value);
-	}
-
 	/// <summary>
 	/// Calculate math with a given input.
 	/// </summary>
@@ -46,6 +14,25 @@ public static class MathValueManager
 	/// <param name="inValue">The input value to use.</param>
 	/// <param name="myValue">The value to calculate.</param>
 	/// <returns>The new value.</returns>
+	public static double MathCalculation(this MathOption mathOption, double inValue, double myValue)
+	{
+		return mathOption switch
+		{
+			MathOption.None => inValue,
+			MathOption.Set => myValue,
+			MathOption.Add => inValue + myValue,
+			MathOption.Subtract => inValue - myValue,
+			MathOption.Multiply => inValue * myValue,
+			MathOption.Divide => inValue / myValue,
+			MathOption.Modulus => inValue % myValue,
+			MathOption.SubtractMyWithIn => myValue - inValue,
+			MathOption.DivideMyWithIn => myValue / inValue,
+			MathOption.ModulusMyWithIn => myValue % inValue,
+			_ => inValue,
+		};
+	}
+
+	/// <inheritdoc cref="MathCalculation(MathOption, double, double)"/>
 	public static float MathCalculation(this MathOption mathOption, float inValue, float myValue)
 	{
 		return mathOption switch
@@ -64,26 +51,23 @@ public static class MathValueManager
 		};
 	}
 
-	/// <inheritdoc cref="MathCalculation(MathValueFloat, ref float)"/>
-	public static void MathCalculation(this MathValueLong mathValue, ref long inValue)
+	/// <inheritdoc cref="MathCalculation(MathOption, float, float)"/>
+	public static ulong MathCalculation(this MathOption mathOption, ulong inValue, ulong myValue)
 	{
-		if (mathValue == null)
+		return mathOption switch
 		{
-			return;
-		}
-
-		inValue = mathValue.Math.MathCalculation(inValue, mathValue.Value);
-	}
-
-	/// <inheritdoc cref="MathCalculation(MathValueFloat, float)"/>
-	public static long MathCalculation(this MathValueLong mathValue, long inValue)
-	{
-		if (mathValue == null)
-		{
-			return default;
-		}
-
-		return mathValue.Math.MathCalculation(inValue, mathValue.Value);
+			MathOption.None => inValue,
+			MathOption.Set => myValue,
+			MathOption.Add => inValue + myValue,
+			MathOption.Subtract => inValue - myValue,
+			MathOption.Multiply => inValue * myValue,
+			MathOption.Divide => inValue / myValue,
+			MathOption.Modulus => inValue % myValue,
+			MathOption.SubtractMyWithIn => myValue - inValue,
+			MathOption.DivideMyWithIn => myValue / inValue,
+			MathOption.ModulusMyWithIn => myValue % inValue,
+			_ => inValue,
+		};
 	}
 
 	/// <inheritdoc cref="MathCalculation(MathOption, float, float)"/>
@@ -105,26 +89,23 @@ public static class MathValueManager
 		};
 	}
 
-	/// <inheritdoc cref="MathCalculation(MathValueFloat, ref float)"/>
-	public static void MathCalculation(this MathValueInt mathValue, ref int inValue)
+	/// <inheritdoc cref="MathCalculation(MathOption, float, float)"/>
+	public static uint MathCalculation(this MathOption mathOption, uint inValue, uint myValue)
 	{
-		if (mathValue == null)
+		return mathOption switch
 		{
-			return;
-		}
-
-		inValue = mathValue.Math.MathCalculation(inValue, mathValue.Value);
-	}
-
-	/// <inheritdoc cref="MathCalculation(MathValueFloat, float)"/>
-	public static int MathCalculation(this MathValueInt mathValue, int inValue)
-	{
-		if (mathValue == null)
-		{
-			return default;
-		}
-
-		return mathValue.Math.MathCalculation(inValue, mathValue.Value);
+			MathOption.None => inValue,
+			MathOption.Set => myValue,
+			MathOption.Add => inValue + myValue,
+			MathOption.Subtract => inValue - myValue,
+			MathOption.Multiply => inValue * myValue,
+			MathOption.Divide => inValue / myValue,
+			MathOption.Modulus => inValue % myValue,
+			MathOption.SubtractMyWithIn => myValue - inValue,
+			MathOption.DivideMyWithIn => myValue / inValue,
+			MathOption.ModulusMyWithIn => myValue % inValue,
+			_ => inValue,
+		};
 	}
 
 	/// <inheritdoc cref="MathCalculation(MathOption, float, float)"/>
@@ -146,28 +127,6 @@ public static class MathValueManager
 		};
 	}
 
-	/// <inheritdoc cref="MathCalculation(MathValueFloat, ref float)"/>
-	public static void MathCalculation(this MathValueShort mathValue, ref short inValue)
-	{
-		if (mathValue == null)
-		{
-			return;
-		}
-
-		inValue = mathValue.Math.MathCalculation(inValue, mathValue.Value);
-	}
-
-	/// <inheritdoc cref="MathCalculation(MathValueFloat, float)"/>
-	public static short MathCalculation(this MathValueShort mathValue, short inValue)
-	{
-		if (mathValue == null)
-		{
-			return default;
-		}
-
-		return mathValue.Math.MathCalculation(inValue, mathValue.Value);
-	}
-
 	/// <inheritdoc cref="MathCalculation(MathOption, float, float)"/>
 	public static short MathCalculation(this MathOption mathOption, short inValue, short myValue)
 	{
@@ -187,26 +146,23 @@ public static class MathValueManager
 		};
 	}
 
-	/// <inheritdoc cref="MathCalculation(MathValueFloat, ref float)"/>
-	public static void MathCalculation(this MathValueByte mathValue, ref byte inValue)
+	/// <inheritdoc cref="MathCalculation(MathOption, float, float)"/>
+	public static ushort MathCalculation(this MathOption mathOption, ushort inValue, ushort myValue)
 	{
-		if (mathValue == null)
+		return mathOption switch
 		{
-			return;
-		}
-
-		inValue = mathValue.Math.MathCalculation(inValue, mathValue.Value);
-	}
-
-	/// <inheritdoc cref="MathCalculation(MathValueFloat, float)"/>
-	public static byte MathCalculation(this MathValueByte mathValue, byte inValue)
-	{
-		if (mathValue == null)
-		{
-			return default;
-		}
-
-		return mathValue.Math.MathCalculation(inValue, mathValue.Value);
+			MathOption.None => inValue,
+			MathOption.Set => myValue,
+			MathOption.Add => (ushort)(inValue + myValue),
+			MathOption.Subtract => (ushort)(inValue - myValue),
+			MathOption.Multiply => (ushort)(inValue * myValue),
+			MathOption.Divide => (ushort)(inValue / myValue),
+			MathOption.Modulus => (ushort)(inValue % myValue),
+			MathOption.SubtractMyWithIn => (ushort)(myValue - inValue),
+			MathOption.DivideMyWithIn => (ushort)(myValue / inValue),
+			MathOption.ModulusMyWithIn => (ushort)(myValue % inValue),
+			_ => inValue,
+		};
 	}
 
 	/// <inheritdoc cref="MathCalculation(MathOption, float, float)"/>
@@ -223,6 +179,24 @@ public static class MathValueManager
 			MathOption.SubtractMyWithIn => (byte)(myValue - inValue),
 			MathOption.DivideMyWithIn => (byte)(myValue / inValue),
 			MathOption.ModulusMyWithIn => (byte)(myValue % inValue),
+			_ => inValue,
+		};
+	}
+
+	/// <inheritdoc cref="MathCalculation(MathOption, float, float)"/>
+	public static sbyte MathCalculation(this MathOption mathOption, sbyte inValue, sbyte myValue)
+	{
+		return mathOption switch
+		{
+			MathOption.None => inValue,
+			MathOption.Set => myValue,
+			MathOption.Add => (sbyte)(inValue + myValue),
+			MathOption.Subtract => (sbyte)(inValue - myValue),
+			MathOption.Multiply => (sbyte)(inValue * myValue),
+			MathOption.Divide => (sbyte)(inValue / myValue),
+			MathOption.SubtractMyWithIn => (sbyte)(myValue - inValue),
+			MathOption.DivideMyWithIn => (sbyte)(myValue / inValue),
+			MathOption.ModulusMyWithIn => (sbyte)(myValue % inValue),
 			_ => inValue,
 		};
 	}

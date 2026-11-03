@@ -6,7 +6,7 @@
 		<PackageProjectUrl>https://github.com/KadavasKingdom/LabApiExtensions</PackageProjectUrl>
 		<Authors>$(AssemblyName);KadavasKingdom;SlejmUr</Authors>
 		<Copyright>(c) 2025-2026 KadavasKingdom</Copyright>
-		<Version>0.4.0</Version>
+		<Version>0.4.1</Version>
 		<FileVersion>$(Verion)</FileVersion>
 		<DateAndTime>$([System.DateTime]::UtcNow.ToString('yy'))$([System.DateTime]::UtcNow.DayOfYear.ToString('000'))$([System.DateTime]::UtcNow.ToString('HHmm'))</DateAndTime>
 		<PackageVersion>$(Version).$(DateAndTime)</PackageVersion>
