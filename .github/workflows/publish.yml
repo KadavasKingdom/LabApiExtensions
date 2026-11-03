@@ -14,4 +14,4 @@ jobs:
       packages: write
     uses: KadavasKingdom/workflows/.github/workflows/package.yml@main
     secrets:
-      TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      gh_token: ${{ secrets.GITHUB_TOKEN }}
