@@ -8,7 +8,8 @@
 		<Copyright>(c) 2025-2026 KadavasKingdom</Copyright>
 		<Version>0.4.0</Version>
 		<FileVersion>$(Verion)</FileVersion>
-		<PackageVersion>$(Version).$([System.DateTime]::UtcNow.ToString("yyMMddHH"))</PackageVersion>
+		<DateAndTime>$([System.DateTime]::UtcNow.ToString('yy'))$([System.DateTime]::UtcNow.DayOfYear.ToString('000'))$([System.DateTime]::UtcNow.ToString('HHmm'))</DateAndTime>
+		<PackageVersion>$(Version).$(DateAndTime)</PackageVersion>
 		<PackageId>KadavasKingdom.LabApiExtensions</PackageId>
 		<PackageTags>scpsl;labapi;labapi-dependency</PackageTags>
 	</PropertyGroup>
