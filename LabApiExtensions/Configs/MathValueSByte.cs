@@ -8,7 +8,7 @@ namespace LabApiExtensions.Configs;
 /// </summary>
 /// <param name="Math">The mathematical operation to associate with the value.</param>
 /// <param name="Value">The numeric value to be used with the specified mathematical operation.</param>
-public record class MathValueSByte(MathOption Math = MathOption.None, sbyte Value = sbyte.MinValue)
+public record class MathValueSByte(MathOption Math = MathOption.None, sbyte Value = 0)
 {
 	/// <summary>
 	/// Calculate math with a given input.

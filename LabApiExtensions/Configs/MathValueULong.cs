@@ -8,7 +8,7 @@ namespace LabApiExtensions.Configs;
 /// </summary>
 /// <param name="Math">The mathematical operation to associate with the value.</param>
 /// <param name="Value">The numeric value to be used with the specified mathematical operation.</param>
-public record class MathValueULong(MathOption Math = MathOption.None, ulong Value = ulong.MinValue)
+public record class MathValueULong(MathOption Math = MathOption.None, ulong Value = 0)
 {
 	/// <summary>
 	/// Calculate math with a given input.
