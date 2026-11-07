@@ -17,6 +17,7 @@ jobs:
   build:
     permissions:
       contents: write
+      packages: read
     uses: KadavasKingdom/workflows/.github/workflows/build.yml@main
     secrets:
       gh_token: ${{ secrets.GITHUB_TOKEN }}
