@@ -11,6 +11,14 @@ namespace LabApiExtensions.Configs;
 public record class MathValueUInt(MathOption Math = MathOption.None, uint Value = 0)
 {
 	/// <summary>
+	/// Initializes a new instance of the <see cref="MathValueUInt"/> class.
+	/// </summary>
+	public MathValueUInt()
+		: this(MathOption.None, 0)
+	{
+	}
+
+	/// <summary>
 	/// Calculate math with a given input.
 	/// </summary>
 	/// <param name="inValue">The input value.</param>

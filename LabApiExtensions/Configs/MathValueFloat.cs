@@ -11,6 +11,14 @@ namespace LabApiExtensions.Configs;
 public record class MathValueFloat(MathOption Math = MathOption.None, float Value = 0)
 {
 	/// <summary>
+	/// Initializes a new instance of the <see cref="MathValueFloat"/> class.
+	/// </summary>
+	public MathValueFloat()
+		: this(MathOption.None, 0)
+	{
+	}
+
+	/// <summary>
 	/// Calculate math with a given input.
 	/// </summary>
 	/// <param name="inValue">The input value.</param>

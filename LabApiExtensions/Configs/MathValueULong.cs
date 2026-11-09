@@ -11,6 +11,14 @@ namespace LabApiExtensions.Configs;
 public record class MathValueULong(MathOption Math = MathOption.None, ulong Value = 0)
 {
 	/// <summary>
+	/// Initializes a new instance of the <see cref="MathValueULong"/> class.
+	/// </summary>
+	public MathValueULong()
+		: this(MathOption.None, 0)
+	{
+	}
+
+	/// <summary>
 	/// Calculate math with a given input.
 	/// </summary>
 	/// <param name="inValue">The input value.</param>

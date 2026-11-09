@@ -11,6 +11,14 @@ namespace LabApiExtensions.Configs;
 public record class MathValueSByte(MathOption Math = MathOption.None, sbyte Value = 0)
 {
 	/// <summary>
+	/// Initializes a new instance of the <see cref="MathValueSByte"/> class.
+	/// </summary>
+	public MathValueSByte()
+		: this(MathOption.None, 0)
+	{
+	}
+
+	/// <summary>
 	/// Calculate math with a given input.
 	/// </summary>
 	/// <param name="inValue">The input value.</param>
